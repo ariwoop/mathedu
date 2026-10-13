@@ -35,24 +35,36 @@
         color: #ffffff;
     }
     /* 탭 메뉴 스타일 (다크 모드) */
-    .tab-menu {
+        .tab-menu {
         display: flex;
-        justify-content: center;
-        gap: 10px;
+        justify-content: flex-start; /* 모바일에서 넘칠 때 자연스럽게 스크롤되도록 설정 */
+        gap: 8px;
         margin-bottom: 30px;
         border-bottom: 2px solid #333;
         padding-bottom: 15px;
+        overflow-x: auto; /* 화면이 좁을 때 가로 스크롤 생성 */
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch; /* 모바일 부드러운 스크롤 */
+    }
+    /* 스크롤바 디자인 (선택사항, 깔끔한 UI용) */
+    .tab-menu::-webkit-scrollbar {
+        height: 6px;
+    }
+    .tab-menu::-webkit-scrollbar-thumb {
+        background: #444;
+        border-radius: 3px;
     }
     .tab-btn {
         background-color: #2c2c2c;
         border: none;
-        padding: 10px 20px;
-        font-size: 16px;
+        padding: 10px 16px;
+        font-size: 15px; /* 모바일에서 너무 작아지지 않도록 고정 */
         font-weight: bold;
         cursor: pointer;
         border-radius: 6px;
         transition: all 0.2s;
         color: #b0b0b0;
+        flex-shrink: 0; /* 글자가 찌그러지지 않도록 크기 유지 */
     }
     .tab-btn:hover {
         background-color: #383838;

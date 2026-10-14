@@ -600,10 +600,10 @@ const originalCardsData = [
     { q: "총론의 인간상", a: "포용성과 창의성을 갖춘 주도적인 사람" },
     { q: "총론의 핵심역량", a: "자기관리, 지식정보처리, 창의적사고, 심미적감성, 협력적소통, 공동체" },
     { q: "수학교과 역량", a: "문제해결, 추론, 의사소통, 연결, 정보처리" },
-    { q: "내용체계의 구성", a: "핵심아이디어, 내용요소(지식이해, 과정기식/과정기능, 가치태도)" },
+    { q: "내용체계의 구성", a: "핵심아이디어, 내용요소(지식이해, 과정기능, 가치태도)" },
     { q: "수학과의 영역 (초·중)", a: "수와 연산, 변화와 관계, 도형과 측정, 자료와 가능성" },
     { q: "교육과정 문서 목차 (일러두기에서)", a: "교육과정설계의 개요, 성격, 목표, 내용체계, 성취기준, 교수학습, 평가" },
-    { q: "고등학교 선택 과목 체계", a: "공통: 공통수학1·2 / 일반선택: 대수, 미적분1, 확률과통계 / 진로선택: 미적분2, 기하, 경제수학, 인공지능수학 / 융합선택: (교육과정 상 과목)" },
+    { q: "고등학교 선택 과목 체계", a: "공통: 공통수학1·2 / 일반선택: 대수, 미적분1, 확률과통계 / 진로선택: 미적분2, 기하, 경제수학, 인공지능수학 / 융합선택" },
     { q: "수학교육 발달 순서", a: "수학교육근대화운동 -> 수학교육현대화운동 -> 기본으로 돌아가기" },
     { q: "클라인 무어 키워드", a: "메란교육과정, 감나지움/실험실법" },
     { q: "우리나라 교육과정", a: "1차: 경험 / 2차: 교과 / 3차: 학문 / 4차: 반성 / 7차: 수준별 / 09개정: 학년군" },
@@ -937,7 +937,7 @@ function renderEduCards() {
         card.innerHTML = `
             <div style="font-size: 13px; color: #85c1e9; margin-bottom: 8px; font-weight: bold;">Q${index + 1}.</div>
             <div style="font-size: 15px; color: #ffffff; font-weight: bold; margin-bottom: 12px; text-align: center;">${item.q}</div>
-            <div class="edu-card-answer" style="font-size: 14px; color: #f39c12; background-color: #1a1a1a; padding: 10px; border-radius: 4px; text-align: center; display: none; border: 1px dashed #d4ac0d; white-space: pre-line;">
+            <div class="card-answer" style="font-size: 14px; color: #f39c12; background-color: #1a1a1a; padding: 10px; border-radius: 4px; text-align: center; display: none; border: 1px dashed #d4ac0d; white-space: pre-line;">
                 💡 ${item.a}
             </div>
             <div style="font-size: 11px; color: #7f8c8d; text-align: center; margin-top: 8px;">클릭하여 정답 확인/숨기기</div>

@@ -123,6 +123,33 @@
         color: #95a5a6;
         margin-bottom: 20px;
     }
+    .katex-display, 
+    mjx-container[display="true"] {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        max-width: 100%;
+        padding: 4px 0; /* 스크롤바가 수식과 겹치지 않도록 여유 공간 */
+        
+        /* 스크롤바 항상 표시 (Firefox) */
+        scrollbar-color: #888 #f1f1f1;
+        scrollbar-width: thin;
+    }
+    .katex-display::-webkit-scrollbar, 
+    mjx-container[display="true"]::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .katex-display::-webkit-scrollbar-track, 
+    mjx-container[display="true"]::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .katex-display::-webkit-scrollbar-thumb, 
+    mjx-container[display="true"]::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
 </style>
 </head>
 <body>
@@ -150,28 +177,28 @@
         <p>㉠ 수학의 <span class="blank hidden" data-answer="개념">개념</span>, <span class="blank hidden" data-answer="원리">원리</span>, <span class="blank hidden" data-answer="법칙">법칙</span>을 이용하여 <span class="blank hidden" data-answer="해결 가능한">해결 가능한</span> 문제를 학생에게 <span class="blank hidden" data-answer="제시">제시</span>한다. 이때 <span class="blank hidden" data-answer="다양한 방법">다양한 방법</span> 으로 해결 가능한 문제, <span class="blank hidden" data-answer="여러 가지 해답">여러 가지 해답</span>이 나올 수 있는 문제 등을 활용할 수 있다.</p>
         <p>㉡ 문제에 주어진 <span class="blank hidden" data-answer="조건">조건</span>과 <span class="blank hidden" data-answer="정보">정보</span>를 <span class="blank hidden" data-answer="분석">분석</span>하고 적절한 문제해결 <span class="blank hidden" data-answer="계획">계획</span>을 수립하고 <span class="blank hidden" data-answer="실행">실행</span>하며 문제해결 <span class="blank hidden" data-answer="과정을">과정을</span> <span class="blank hidden" data-answer="반성하도록">반성하도록</span> 구체적인 <span class="blank hidden" data-answer="발문과">발문과</span> <span class="blank hidden" data-answer="권고를">권고를</span> 제시한다.</p>
         <p>㉢ 문제해결 <span class="blank hidden" data-answer="과정">과정</span> 및 <span class="blank hidden" data-answer="결과">결과</span>의 의미를 <span class="blank hidden" data-answer="재해석">재해석</span>하여 주어진 문제를 <span class="blank hidden" data-answer="변형">변형</span>하거나 <span class="blank hidden" data-answer="새로운">새로운</span> 문제를 <span class="blank hidden" data-answer="만들어">만들어</span> <span class="blank hidden" data-answer="해결하게">해결하게</span> 한다.</p>
-        <p>㉣ <span class="blank hidden" data-answer="성공적인">성공적인</span> 문제해결 경험을 바탕으로 <span class="blank hidden" data-answer="적극적이고">적극적이고</span> <span class="blank hidden" data-answer="자신감">자신감</span> 있게 문제해결에 <span class="blank hidden" data-answer="참여">참여</span>하게 하고, <span class="blank hidden" data-answer="단번에">단번에</span> 답이 나오지 않는 문제라도 <span class="blank hidden" data-answer="끈기">끈기</span> 있게 <span class="blank hidden" data-answer="도전">도전</span>하여 <span class="blank hidden" data-answer="성취감을">성취감을</span> 느끼게 한다.</p>
+        <p>㉣ <span class="blank hidden" data-answer="성공적인">성공적인</span> 문제해결 경험을 바탕으로 <span class="blank hidden" data-answer="적극적이고">적극적이고</span> <span class="blank hidden" data-answer="자신감있게">자신감있게</span> 문제해결에 <span class="blank hidden" data-answer="참여">참여</span>하게 하고, <span class="blank hidden" data-answer="단번에">단번에</span> 답이 나오지 않는 문제라도 <span class="blank hidden" data-answer="끈기있게">끈기있게</span> <span class="blank hidden" data-answer="도전">도전</span>하여 <span class="blank hidden" data-answer="성취감을">성취감을</span> 느끼게 한다.</p>
 
         <div class="concept-title">교수·학습 방법 : 추론 역량</div>
         <p>㉠ <span class="blank hidden" data-answer="관찰">관찰</span>, <span class="blank hidden" data-answer="실험">실험</span>, <span class="blank hidden" data-answer="측정">측정</span> 등 <span class="blank hidden" data-answer="구체적 조작">구체적 조작</span> 활동을 통해 수학의 개념, 원리, 법칙에 <span class="blank hidden" data-answer="흥미와">흥미와</span> <span class="blank hidden" data-answer="관심을">관심을</span> 갖고 <span class="blank hidden" data-answer="다양한 방법으로">다양한 방법으로</span> <span class="blank hidden" data-answer="탐구하고">탐구하고</span> 이해하게 한다.</p>
-        <p>㉡ <span class="blank hidden" data-answer="귀납">귀납</span>, <span class="blank hidden" data-answer="유추">유추</span> 등의 <span class="blank hidden" data-answer="개연적">개연적</span> 추론을 통해 수학적 <span class="blank hidden" data-answer="추측을">추측을</span> 제기하고 <span class="blank hidden" data-answer="정당화하며">정당화하며</span>, 수학적 <span class="blank hidden" data-answer="증거와">증거와</span> 논리적 <span class="blank hidden" data-answer="근거를">근거를</span> 바탕으로 <span class="blank hidden" data-answer="비판적으로">비판적으로</span> 사고하는 태도를 갖게 한다.</p>
+        <p>㉡ <span class="blank hidden" data-answer="귀납">귀납</span>, <span class="blank hidden" data-answer="유추">유추</span> 등의 <span class="blank hidden" data-answer="개연적 추론">개연적 추론</span>을 통해 <span class="blank hidden" data-answer="수학적 추측을">수학적 추측을</span> 제기하고 <span class="blank hidden" data-answer="정당화하며">정당화하며</span>, 수학적 <span class="blank hidden" data-answer="증거와">증거와</span> 논리적 <span class="blank hidden" data-answer="근거를">근거를</span> 바탕으로 <span class="blank hidden" data-answer="비판적으로">비판적으로</span> 사고하는 태도를 갖게 한다.</p>
         <p>㉢ 수학의 개념, 원리, 법칙을 도출하는 <span class="blank hidden" data-answer="과정과">과정과</span> 수학적 <span class="blank hidden" data-answer="절차를">절차를</span> <span class="blank hidden" data-answer="논리적이고">논리적이고</span> <span class="blank hidden" data-answer="체계적으로">체계적으로</span> 수행하고 <span class="blank hidden" data-answer="반성하게">반성하게</span> 한다.</p>
 
         <div class="concept-title">교수·학습 방법 : 의사소통 역량</div>
         <p>㉠ 수학 <span class="blank hidden" data-answer="용어">용어</span>, <span class="blank hidden" data-answer="기호">기호</span>, <span class="blank hidden" data-answer="표">표</span>, <span class="blank hidden" data-answer="그래프">그래프</span> 등의 수학적 <span class="blank hidden" data-answer="표현을">표현을</span> 정확하게 사용하고 <span class="blank hidden" data-answer="표현끼리">표현끼리</span> 변환하게 한다.</p>
         <p>㉡ 학생이 자신의 <span class="blank hidden" data-answer="사고와">사고와</span> <span class="blank hidden" data-answer="전략을">전략을</span> 수학적 <span class="blank hidden" data-answer="표현으로">표현으로</span> 나타내고 설명하면서 수학적 <span class="blank hidden" data-answer="표현의">표현의</span> <span class="blank hidden" data-answer="편리함을">편리함을</span> 인식하게 한다.</p>
         <p>㉢ 학생 간 <span class="blank hidden" data-answer="상호 작용과">상호 작용과</span> <span class="blank hidden" data-answer="질문이">질문이</span> 활발한 교실 <span class="blank hidden" data-answer="문화를">문화를</span> 조성하고 수학적으로 의미 있는 <span class="blank hidden" data-answer="의사소통이">의사소통이</span> 이루어지도록 적절한 <span class="blank hidden" data-answer="과제를">과제를</span> 제시하고 안내한다.</p>
-        <p>㉣ 수학적 <span class="blank hidden" data-answer="아이디어에">아이디어에</span> 대해 <span class="blank hidden" data-answer="상호">상호</span> 작용하는 과정에서 <span class="blank hidden" data-answer="타인을">타인을</span> 배려하고 의견을 <span class="blank hidden" data-answer="존중하는">존중하는</span> <span class="blank hidden" data-answer="태도를">태도를</span> 기르게 한다.</p>
+        <p>㉣ 수학적 <span class="blank hidden" data-answer="아이디어에">아이디어에</span> 대해 <span class="blank hidden" data-answer="상호 작용">상호 작용</span>하는 과정에서 <span class="blank hidden" data-answer="타인을">타인을</span> 배려하고 의견을 <span class="blank hidden" data-answer="존중하는">존중하는</span> <span class="blank hidden" data-answer="태도를">태도를</span> 기르게 한다.</p>
 
         <div class="concept-title">교수·학습 방법 : 연결 역량</div>
-        <p>㉠ <span class="blank hidden" data-answer="영역이나">영역이나</span> <span class="blank hidden" data-answer="학년(군)">학년(군)</span> 내용 간에 관련된 수학의 개념, 원리, 법칙 등을 <span class="blank hidden" data-answer="유기적으로">유기적으로</span> 연계하여 <span class="blank hidden" data-answer="새로운">새로운</span> 지식을 <span class="blank hidden" data-answer="생성하면서">생성하면서</span> <span class="blank hidden" data-answer="창의성을">창의성을</span> 기르게 한다.</p>
+        <p>㉠ <span class="blank hidden" data-answer="영역이나">영역이나</span> <span class="blank hidden" data-answer="학년(군)">학년(군)</span> 내용 간에 관련된 수학의 개념, 원리, 법칙 등을 <span class="blank hidden" data-answer="유기적으로">유기적으로</span> 연계하여 <span class="blank hidden" data-answer="새로운 지식">새로운 지식</span>을 <span class="blank hidden" data-answer="생성하면서">생성하면서</span> <span class="blank hidden" data-answer="창의성을">창의성을</span> 기르게 한다.</p>
         <p>㉡ <span class="blank hidden" data-answer="수학과 실생활">수학과 실생활</span>, <span class="blank hidden" data-answer="사회 및 자연 현상">사회 및 자연 현상</span>, <span class="blank hidden" data-answer="타 교과의 내용">타 교과의 내용</span>을 연계하는 <span class="blank hidden" data-answer="과제를">과제를</span> 활용하여 수학의 <span class="blank hidden" data-answer="유용성을">유용성을</span> 인식하게 한다.</p>
 
         <div class="concept-title">교수·학습 방법 : 정보처리 역량</div>
-        <p>㉠ <span class="blank hidden" data-answer="실생활">실생활</span> 및 <span class="blank hidden" data-answer="수학적">수학적</span> 문제 상황에서 <span class="blank hidden" data-answer="자료를">자료를</span> 탐색하고 <span class="blank hidden" data-answer="수집하며">수집하며</span> 수학적으로 <span class="blank hidden" data-answer="처리하여">처리하여</span> <span class="blank hidden" data-answer="합리적인">합리적인</span> <span class="blank hidden" data-answer="의사 결정">의사 결정</span>을 하는 태도를 기르게 한다.</p>
-        <p>㉡ <span class="blank hidden" data-answer="교구나">교구나</span> <span class="blank hidden" data-answer="공학">공학</span> 도구를 활용하여 <span class="blank hidden" data-answer="추상적인">추상적인</span> 수학 내용을 <span class="blank hidden" data-answer="시각화하고">시각화하고</span> 수학의 개념, 원리, 법칙에 대한 <span class="blank hidden" data-answer="직관적 이해와">직관적 이해와</span> <span class="blank hidden" data-answer="논리적 사고를">논리적 사고를</span> 돕는다.</p>
-        <p>㉢ 학생이 <span class="blank hidden" data-answer="주도적으로">주도적으로</span> <span class="blank hidden" data-answer="교구나">교구나</span> <span class="blank hidden" data-answer="공학">공학</span> 도구를 활용하여 <span class="blank hidden" data-answer="탐구하게">탐구하게</span> 한다.</p>
-        <p>㉣ <span class="blank hidden" data-answer="계산 기능 함양">계산 기능 함양</span>을 <span class="blank hidden" data-answer="목표로">목표로</span> 하지 않는 <span class="blank hidden" data-answer="교수·학습">교수·학습</span> 상황에서는 <span class="blank hidden" data-answer="복잡한 계산을">복잡한 계산을</span> 할 때 <span class="blank hidden" data-answer="공학">공학</span> 도구를 이용할 수 있게 한다.</p>
+        <p>㉠ <span class="blank hidden" data-answer="실생활 및 수학적 문제">실생활 및 수학적 문제</span> 상황에서 <span class="blank hidden" data-answer="자료를">자료를</span> 탐색하고 <span class="blank hidden" data-answer="수집하며">수집하며</span> 수학적으로 <span class="blank hidden" data-answer="처리하여">처리하여</span> <span class="blank hidden" data-answer="합리적인">합리적인</span> <span class="blank hidden" data-answer="의사 결정">의사 결정</span>을 하는 태도를 기르게 한다.</p>
+        <p>㉡ <span class="blank hidden" data-answer="교구나 공학 도구">교구나 공학 도구</span>를 활용하여 <span class="blank hidden" data-answer="추상적인">추상적인</span> 수학 내용을 <span class="blank hidden" data-answer="시각화하고">시각화하고</span> 수학의 개념, 원리, 법칙에 대한 <span class="blank hidden" data-answer="직관적 이해와">직관적 이해와</span> <span class="blank hidden" data-answer="논리적 사고를">논리적 사고를</span> 돕는다.</p>
+        <p>㉢ 학생이 <span class="blank hidden" data-answer="주도적으로">주도적으로</span> <span class="blank hidden" data-answer="교구나 공학 도구">교구나 공학 도구</span>를 활용하여 <span class="blank hidden" data-answer="탐구하게">탐구하게</span> 한다.</p>
+        <p>㉣ <span class="blank hidden" data-answer="계산 기능 함양">계산 기능 함양</span>을 <span class="blank hidden" data-answer="목표로">목표로</span> 하지 않는 <span class="blank hidden" data-answer="교수·학습 상황">교수·학습 상황</span>에서는 <span class="blank hidden" data-answer="복잡한 계산을">복잡한 계산을</span> 할 때 <span class="blank hidden" data-answer="공학 도구를">공학 도구를</span> 이용할 수 있게 한다.</p>
 
         <div class="concept-title">교수·학습 방법 : 학생 주도적 참여</div>
         <p>(나) 학생들이 수학 학습에 주도적으로 참여하는 교수·학습 환경과 분위기를 조성한다.</p>
@@ -522,7 +549,7 @@
         <div class="concept-title">📐 자주 잊어버리는 정의정리</div>
         
 <!-- 과목별 서브 탭 버튼 메뉴 (10개 과목) -->
-        <div class="sub-tab-menu" style="display: flex; gap: 6px; margin: 20px 0; overflow-x: auto; white-space: nowrap; padding-bottom: 5px;">
+        <div class="sub-tab-menu" style="display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0; padding-bottom: 5px;">
             <button class="sub-tab-btn active" onclick="filterFormulas('all', event)" style="background-color: #3498db; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">전체 보기</button>
             <button class="sub-tab-btn" onclick="filterFormulas('미적', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">미적</button>
             <button class="sub-tab-btn" onclick="filterFormulas('해석', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">해석</button>
@@ -1224,7 +1251,9 @@ function renderFormulaList() {
             ]
         });
     }
+    
 }
+
 
 </script>
 

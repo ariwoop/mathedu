@@ -133,6 +133,8 @@
         /* 스크롤바 항상 표시 (Firefox) */
         scrollbar-color: #888 #f1f1f1;
         scrollbar-width: thin;
+        font-size: 88% !important;
+        margin: 0.8em 0 !important;
     }
     .katex-display::-webkit-scrollbar, 
     mjx-container[display="true"]::-webkit-scrollbar {
@@ -1029,12 +1031,12 @@ const originalFormulaData = [
     { 
         category: "미적",
         title: "미적분학 - 역삼각함수 도함수", 
-        content: "$$\\frac{d}{dx}(\\sin^{-1}x) = \\frac{1}{\\sqrt{1-x^2}}, \\quad \\frac{d}{dx}(\\tan^{-1}x) = \\frac{1}{1+x^2}$$" 
+        content: "$$\\frac{d}{dx}(\\sin^{-1}x) = \\frac{1}{\\sqrt{1-x^2}}$$ $$\\frac{d}{dx}(\\tan^{-1}x) = \\frac{1}{1+x^2}$$" 
     },
     { 
         category: "미적",
         title: "삼각함수 배각 공식", 
-        content: "$$\\cos^2\\theta = \\frac{1+\\cos 2\\theta}{2}, \\quad \\sin^2\\theta = \\frac{1-\\cos 2\\theta}{2}$$" 
+        content: "$$\\cos^2\\theta = \\frac{1+\\cos 2\\theta}{2}$$ $$\\sin^2\\theta = \\frac{1-\\cos 2\\theta}{2}$$" 
     },
     { 
         category: "미적",
@@ -1075,14 +1077,14 @@ const originalFormulaData = [
     { 
         category: "해석",
         title: "해석학 - Raabe의 판정법", 
-        content: "• $\{x_n\}$ : 0이 아닌 실수열<br><div style='text-align: center; margin: 12px 0;'>$$\\lim_{n \\to \\infty} n \\left( 1 - \\left| \\frac{x_{n+1}}{x_n} \\right| \\right) = a$$</div>• 급수 $\\sum x_n$의 판정:<br>- $a > 1$ 일 때, 절대수렴<br>- $a < 1$ 일 때, 절대수렴하지 않음<br><div style='font-size: 13px; color: #e74c3c; margin-top: 6px;'>(⚠️ 다른 test와 반대임에 유의)</div>" 
+        content: "$\{x_n\}$ : 0이 아닌 실수열<br><div style='text-align: center; margin: 12px 0;'>$$\\lim_{n \\to \\infty} n \\left( 1 - \\left| \\frac{x_{n+1}}{x_n} \\right| \\right) = a$$</div>- $a > 1$ 일 때, $\\sum x_n$ 절대수렴<br>- $a < 1$ 일 때, $\\sum x_n$ 절대수렴하지 않음<br><div style='font-size: 13px; color: #e74c3c; margin-top: 6px;'>(⚠️ 다른 test와 반대임에 유의)</div>" 
     },
 
 
     { 
         category: "복소",
         title: "복소함수론 - Laurent 전개", 
-        content: "$C$: 원환영역의 임의의 단순 닫힌 곡선<br>$$f(z) = \\sum_{n=0}^{\\infty} a_n (z-z_0)^n + \\sum_{n=1}^{\\infty} b_n (z-z_0)^{-n}$$ $$a_n = \\frac{1}{2\\pi i} \\int_C \\frac{f(z)}{(z-z_0)^{n+1}} \\, dz, \\quad b_n = \\frac{1}{2\\pi i} \\int_C \\frac{f(z)}{(z-z_0)^{-n+1}} \\, dz$$" 
+        content: "$C$: 원환영역의 임의의 단순 닫힌 곡선<br>$$f(z) = \\sum_{n=0}^{\\infty} a_n (z-z_0)^n + \\sum_{n=1}^{\\infty} b_n (z-z_0)^{-n}$$ $$a_n = \\frac{1}{2\\pi i} \\int_C \\frac{f(z)}{(z-z_0)^{n+1}} \\, dz,$$ $$\\quad b_n = \\frac{1}{2\\pi i} \\int_C \\frac{f(z)}{(z-z_0)^{-n+1}} \\, dz$$" 
     },
     { 
         category: "복소",
@@ -1155,7 +1157,7 @@ const originalFormulaData = [
     { 
         category: "확통",
         title: "확률과 통계 - 공분산과 상관계수", 
-        content: "$$\\sigma_{XY} = E[(X - \\mu_X)(Y - \\mu_Y)] = E(XY) - \\mu_X \\mu_Y$$ $$\\rho_{XY} = \\frac{\\sigma_{XY}}{\\sigma_X \\sigma_Y}$$" 
+        content: "$$\\begin{aligned}\\sigma_{XY} &= E[(X - \\mu_X)(Y - \\mu_Y)] \\\\&= E(XY) - \\mu_X \\mu_Y\\end{aligned}$$ $$\\rho_{XY} = \\frac{\\sigma_{XY}}{\\sigma_X \\sigma_Y}$$" 
     },
     { 
         category: "확통",

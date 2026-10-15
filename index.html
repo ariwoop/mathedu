@@ -141,6 +141,7 @@
         <button class="tab-btn" onclick="switchTab('tab6', event)">고등학교</button>
         <button class="tab-btn" onclick="switchTab('tab-edumath', event)">수교론</button>
         <button class="tab-btn" onclick="switchTab('tab-edu', event)">교육학</button>
+        <button class="tab-btn" onclick="switchTab('tab-math', event)">내용학</button>
     </div>
 
     <!-- 탭 1: 교수·학습 방법 -->
@@ -492,7 +493,7 @@
 
     <!-- 탭: 수교론 암기 -->
     <div id="tab-edumath" class="tab-content">
-        <div class="concept-title">🧠 수교론 핵심 키워드 암기 카드</div>
+        <div class="concept-title">🧩 수교론 핵심 키워드 암기 카드</div>
         <div style="text-align: center; margin-bottom: 20px;">
             <button onclick="shuffleCards()" style="background-color: #3498db; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-right: 10px;">🔀 랜덤 섞기</button>
             <button onclick="resetCards()" style="background-color: #555; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;">🔄 기본 정렬</button>
@@ -516,6 +517,30 @@
         </div>
     </div>
 
+<!-- 탭: 전공 공식 요약 노트 -->
+    <div id="tab-math" class="tab-content">
+        <div class="concept-title">📐 자주 잊어버리는 정의정리</div>
+        
+<!-- 과목별 서브 탭 버튼 메뉴 (10개 과목) -->
+        <div class="sub-tab-menu" style="display: flex; gap: 6px; margin: 20px 0; overflow-x: auto; white-space: nowrap; padding-bottom: 5px;">
+            <button class="sub-tab-btn active" onclick="filterFormulas('all', event)" style="background-color: #3498db; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">전체 보기</button>
+            <button class="sub-tab-btn" onclick="filterFormulas('미적', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">미적</button>
+            <button class="sub-tab-btn" onclick="filterFormulas('해석', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">해석</button>
+            <button class="sub-tab-btn" onclick="filterFormulas('대수', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">대수</button>
+            <button class="sub-tab-btn" onclick="filterFormulas('위상', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">위상</button>
+            <button class="sub-tab-btn" onclick="filterFormulas('복소', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">복소</button>
+            <button class="sub-tab-btn" onclick="filterFormulas('미기', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">미기</button>
+            <button class="sub-tab-btn" onclick="filterFormulas('정수', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">정수</button>
+            <button class="sub-tab-btn" onclick="filterFormulas('선대', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">선대</button>
+            <button class="sub-tab-btn" onclick="filterFormulas('이산', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">이산</button>
+            <button class="sub-tab-btn" onclick="filterFormulas('확통', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">확통</button>
+        </div>
+
+        <!-- 공식 리스트가 출력될 공간 -->
+        <div id="formula-list-container" style="margin-top: 20px;">
+            <!-- 리스트 아이템들이 자바스크립트에 의해 동적으로 생성됩니다 -->
+        </div>
+    </div>
 
 </div>
 
@@ -551,6 +576,7 @@
         // 수교론 및 교육학 카드 초기 렌더링 호출 추가
         renderCards();
         renderEduCards();
+        renderFormulaList();
     });
 
     // 2. 스크롤 위치 저장
@@ -970,6 +996,236 @@ function resetEduCards() {
     eduCardsData = [...originalEduCardsData];
     renderEduCards();
 }
+
+// 전공 공식 요약 데이터 원본 (10개 과목 체계 적용)
+const originalFormulaData = [
+    { 
+        category: "미적",
+        title: "미적분학 - 역삼각함수 도함수", 
+        content: "$$\\frac{d}{dx}(\\sin^{-1}x) = \\frac{1}{\\sqrt{1-x^2}}, \\quad \\frac{d}{dx}(\\tan^{-1}x) = \\frac{1}{1+x^2}$$" 
+    },
+    { 
+        category: "미적",
+        title: "삼각함수 배각 공식", 
+        content: "$$\\cos^2\\theta = \\frac{1+\\cos 2\\theta}{2}, \\quad \\sin^2\\theta = \\frac{1-\\cos 2\\theta}{2}$$" 
+    },
+    { 
+        category: "미적",
+        title: "극곡선의 길이", 
+        content: "극곡선 $r = f(\\theta), \\; a \\le \\theta \\le b$인 곡선의 길이:<br>$$L = \\int_a^b \\sqrt{r^2 + \\left(\\frac{dr}{d\\theta}\\right)^2} d\\theta$$" 
+    },
+    { 
+        category: "미적",
+        title: "극곡선 영역의 넓이", 
+        content: "$R$을 $r = f(\\theta)$와 $\\theta = a, \\; \\theta = b$로 유계된 영역 ($f$는 양의 연속함수, $0 < b - a < 2\\pi$)<br>$R$의 넓이 $A$:<br>$$A = \\frac{1}{2} \\int_a^b r^2 d\\theta$$" 
+    },
+    { 
+        category: "미적",
+        title: "벡터미적분학 - 발산 정리", 
+        content: "$$\\iint_S \\mathbf{F} \\cdot \\mathbf{n} \\, dS = \\iiint_D \\nabla \\cdot \\mathbf{F} \\, dV$$" 
+    },
+
+    { 
+        category: "해석",
+        title: "해석학 - Darboux 정리", 
+        content: "$f : [a, b] \\to \\mathbb{R}$ 미분가능 $\\implies$ $f'(a)$와 $f'(b)$ 사이의 임의의 실수 $k$에 대하여<br><div style='text-align: center; margin: 12px 0;'>$$\\exists c \\in (a, b) \\text{ s.t. } f'(c) = k$$</div>" 
+    },
+    { 
+        category: "해석",
+        title: "해석학 - Cauchy 평균값 정리", 
+        content: "$f, g : [a, b]$ 연속, $(a, b)$ 미분가능, $\\forall x \\in (a, b), g'(x) \\neq 0$<br><div style='text-align: center; margin: 12px 0;'>$$\\exists c \\in (a, b) \\text{ s.t. } \\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$$</div>" 
+    },
+    { 
+        category: "해석",
+        title: "해석학 - 적분의 평균값 정리 (제2형)", 
+        content: "$f, g : [a, b]$ 연속, $g(x) \\ge 0$<br><div style='text-align: center; margin: 12px 0;'>$$\\exists c \\in (a, b) \\text{ s.t. } \\int_a^b f g \\, dx = f(c) \\int_a^b g \\, dx$$</div>" 
+    },
+    { 
+        category: "해석",
+        title: "해석학 - Abel의 판정법", 
+        content: "$\{x_n\}$ : 수렴하는 단조수열, $\\sum y_n$ : 수렴<br><div style='text-align: center; margin: 12px 0;'>$$\\implies \\sum x_n y_n \\text{ 수렴}$$</div>" 
+    },
+    { 
+        category: "해석",
+        title: "해석학 - Raabe의 판정법", 
+        content: "• $\{x_n\}$ : 0이 아닌 실수열<br><div style='text-align: center; margin: 12px 0;'>$$\\lim_{n \\to \\infty} n \\left( 1 - \\left| \\frac{x_{n+1}}{x_n} \\right| \\right) = a$$</div>• 급수 $\\sum x_n$의 판정:<br>- $a > 1$ 일 때, 절대수렴<br>- $a < 1$ 일 때, 절대수렴하지 않음<br><div style='font-size: 13px; color: #e74c3c; margin-top: 6px;'>(⚠️ 다른 test와 반대임에 유의)</div>" 
+    },
+
+
+    { 
+        category: "복소",
+        title: "복소함수론 - Laurent 전개", 
+        content: "$C$: 원환영역의 임의의 단순 닫힌 곡선<br>$$f(z) = \\sum_{n=0}^{\\infty} a_n (z-z_0)^n + \\sum_{n=1}^{\\infty} b_n (z-z_0)^{-n}$$ $$a_n = \\frac{1}{2\\pi i} \\int_C \\frac{f(z)}{(z-z_0)^{n+1}} \\, dz, \\quad b_n = \\frac{1}{2\\pi i} \\int_C \\frac{f(z)}{(z-z_0)^{-n+1}} \\, dz$$" 
+    },
+    { 
+        category: "복소",
+        title: "복소함수론 - 유수 및 무한대에서의 유수", 
+        content: "$f$가 단곡률 유한개 제외하고 전체에서 해석적일 때:<br>$$\\int_C f(z) \\, dz = 2\\pi i \\operatorname{Res}_{z=0} \\left( \\frac{1}{z^2} f\\left(\\frac{1}{z}\\right) \\right)$$" 
+    },
+    { 
+        category: "복소",
+        title: "복소함수론 - Jordan의 보조정리", 
+        content: "반원 $C_R$ 바깥 상반평면에서 해석적, $C_R$ 위 모든 $z$에 대해 $|f(z)| \\le M_R \\to 0$ as $R \\to \\infty$<br>$$\\lim_{R \\to \\infty} \\int_{C_R} f(z) e^{iaz} \\, dz = 0 \\quad (a > 0)$$" 
+    },
+    { 
+        category: "복소",
+        title: "복소함수론 - 편각 원리", 
+        content: "$$\\int_C \\frac{f'(z)}{f(z)} \\, dz = 2\\pi i (Z - P)$$($Z$: 영역 내 영점의 중복도 포함 개수, $P$: 영역 내 극점의 중복도 포함 개수)" 
+    },
+
+
+
+
+    { 
+        category: "미기",
+        title: "미분기하학 - 접선의 방정식", 
+        content: "$$X(t) = \\alpha(t_0) + t\\alpha'(t_0)$$" 
+    },
+    { 
+        category: "미기",
+        title: "미분기하학 - 곡선의 T, N, B, κ, τ", 
+        content: "• 단위속력곡선 ($|\\alpha'(s)| = 1$)<br>$$T = \\alpha', \\quad N = \\frac{T'}{\\kappa}, \\quad B = T \\times N$$ $$\\kappa = \\|T'\\|, \\quad \\tau = -\\langle B', N \\rangle$$ • 정칙곡선 ($\\alpha' \\neq 0$)<br>$$T = \\frac{\\alpha'}{\\|\\alpha'\\|}, \\quad N = B \\times T, \\quad B = \\frac{\\alpha' \\times \\alpha''}{\\|\\alpha' \\times \\alpha''\\|}$$ $$\\kappa = \\frac{\\|\\alpha' \\times \\alpha''\\|}{\\|\\alpha'\\|^3}, \\quad \\tau = \\frac{\\langle \\alpha' \\times \\alpha'', \\alpha''' \\rangle}{\\|\\alpha' \\times \\alpha''\\|^2}$$" 
+    },
+    { 
+        category: "미기",
+        title: "미분기하학 - 법곡률(Normal Curvature)", 
+        content: "$$k_n = \\langle \\mathbf{T}', \\mathbf{U} \\rangle = \\kappa \\langle \\mathbf{N}, \\mathbf{U} \\rangle$$• $(du, dv)$ 방향:$$k_n = \\frac{II}{I} = \\frac{L(du)^2 + 2M dudv + N(dv)^2}{E(du)^2 + 2F dudv + G(dv)^2}$$• 정칙 곡선 $\\alpha'$ 방향:$$k_n = \\frac{\\langle \\alpha'', \\mathbf{U} \\rangle}{\\langle \\alpha', \\alpha' \\rangle}$$" 
+    },
+    { 
+        category: "미기",
+        title: "미분기하학 - 측지곡률(Geodesic Curvature)", 
+        content: "$$\\kappa_g = \\langle \\alpha'', \\mathbf{V} \\rangle \\quad (\\text{단, } \\mathbf{V} = \\mathbf{U} \\times \\mathbf{T})$$ $$\\kappa_g = \\kappa \\langle \\mathbf{U}, \\mathbf{B} \\rangle = \\frac{\\langle \\alpha' \\times \\alpha'', \\mathbf{U} \\rangle}{\\|\\alpha'\\|^3}$$" 
+    },
+    { 
+        category: "미기",
+        title: "미분기하학 - 가우스 곡률과 평균 곡률", 
+        content: "$$K = \\frac{LN - M^2}{EG - F^2} = k_1 k_2$$ $$H = \\frac{EN + GL - 2FM}{2(EG - F^2)} = \\frac{k_1 + k_2}{2}$$" 
+    },
+    { 
+        category: "미기",
+        title: "미분기하학 - 전곡률 (Total Curvature)", 
+        content: "• 곡선의 전곡률 (정칙 곡선 $\\alpha(t)$, $a \\le t \\le b$):<br>$$\\int_a^b \\kappa(t) \\|\\alpha'(t)\\| \\, dt$$<br>• 곡선의 전곡률 (평면 단순 닫힌 곡선, 회전수 $N$):<br>$$\\int \\kappa \\, ds = 2\\pi N$$<br>• 곡면의 전곡률 (컴팩트 곡면 $M$, 가우스 곡률 $K$):<br>$$\\iint_M K \\, dS = \\iint_D \\frac{LN - M^2}{EG - F^2} \\sqrt{EG - F^2} \\, dudv$$" 
+    },
+    { 
+        category: "위상",
+        title: "위상수학 - 연결성과 컴팩트", 
+        content: "• 연결의 연속상은 연결이다.<br>• 위상공간에서 $A$ : 컴팩트 $\\iff f(A)$ : 컴팩트<br>• cpt의 연속상은 cpt<br>• cpt의 폐부부분집합은 cpt<br>• $T_2$ 공간의 cpt 부분집합은 폐집합" 
+    },
+
+    { 
+        category: "정수",
+        title: "정수론 - 헨젤의 정리", 
+        content: "$p^k \\mid f(a)$ 일 때, 다음 합동식으로 해 $t$를 구하여 $a + p^k t$ 로 확장 $$f'(a) t \\equiv -\\frac{f(a)}{p^k} \\pmod p$$" 
+    },
+
+    { 
+        category: "이산",
+        title: "이산수학 - 유향그래프의 행렬", 
+        content: "$B$가 유향그래프의 근접행렬, $A$와 $D$는 방향제거한 그래프의 인접행렬과 차수행렬일 때, $$B B^T = D - A$$" 
+    },
+
+
+    { 
+        category: "확통",
+        title: "확률과 통계 - 공분산과 상관계수", 
+        content: "$$\\sigma_{XY} = E[(X - \\mu_X)(Y - \\mu_Y)] = E(XY) - \\mu_X \\mu_Y$$ $$\\rho_{XY} = \\frac{\\sigma_{XY}}{\\sigma_X \\sigma_Y}$$" 
+    },
+    { 
+        category: "확통",
+        title: "확률과 통계 - 적률생성함수", 
+        content: "$$M_X(t) = E(e^{tX})$$ $$M_X^{(k)}(0) = E(X^k) \\quad (k = 1, 2, \\dots)$$" 
+    },
+    { 
+        category: "확통",
+        title: "확률과 통계 - 표본평균과 표본분산의 성질", 
+        content: "$$S^2 = \\frac{1}{n-1} \\sum_{i=1}^n (X_i - \\overline{X})^2$$ $$E(\\overline{X}) = \\mu, \\quad \\operatorname{Var}(\\overline{X}) = \\frac{\\sigma^2}{n}, \\quad E(S^2) = \\sigma^2$$" 
+    },
+    { 
+        category: "확통",
+        title: "확률과 통계 - 모평균의 신뢰구간", 
+        content: "$$\\left[ \\overline{X} - z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}}, \\; \\overline{X} + z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}} \\right]$$ $$\\left[ \\overline{X} - t_{\\alpha/2}(n-1) \\frac{S}{\\sqrt{n}}, \\; \\overline{X} + t_{\\alpha/2}(n-1) \\frac{S}{\\sqrt{n}} \\right]$$" 
+    },
+    { 
+        category: "확통",
+        title: "확률과 통계 - 모비율의 신뢰구간", 
+        content: "$$\\left[ \\hat{p} - z_{\\alpha/2} \\sqrt{\\frac{\\hat{p}\\hat{q}}{n}}, \\; \\hat{p} + z_{\\alpha/2} \\sqrt{\\frac{\\hat{p}\\hat{q}}{n}} \\right]$$" 
+    },
+    { 
+        category: "확통",
+        title: "확률과 통계 - 가설 검정의 기본 개념과 용어", 
+        content: "• 가설 설정:<br>- 귀무가설 ($H_0$): 효과가 없다 (차이가 없다)<br>- 대립가설 ($H_1$): 효과가 있다 (차이가 있다)<br><br>• 기각역과 검정통계량:<br>- 기각역: $H_1$이 참이라고 판단하는 영역<br>- 검정통계량값이 기각역에 포함 $\\implies H_0$ 기각 ($H_1$ 채택)<br>- 검정통계량값이 기각역에 미포함 $\\implies H_0$ 기각 실패 ($H_1$을 주장할 충분한 근거 없음)<br><br>• 검정통계량 ($Z$ 통계량):<br>$$Z = \\frac{\\overline{X} - \\mu_0}{\\sigma / \\sqrt{n}}$$<br><br>• 유의수준 ($\\alpha$):<br>- 기각역 영역의 확률 = 1종 오류를 범할 확률 ($H_0$이 참인데 기각할 확률)" 
+    },
+
+];
+
+// 현재 선택된 과목 필터 상태 관리용 변수
+let currentCategory = 'all';
+
+// 서브 탭 클릭 시 필터링하고 렌더링하는 함수
+function filterFormulas(category, event) {
+    currentCategory = category;
+
+    // 서브 탭 버튼 활성화 스타일 전환
+    document.querySelectorAll('.sub-tab-btn').forEach(btn => {
+        btn.style.backgroundColor = '#2c2c2c';
+        btn.style.color = '#b0b0b0';
+    });
+    if (event && event.currentTarget) {
+        event.currentTarget.style.backgroundColor = '#3498db';
+        event.currentTarget.style.color = 'white';
+    }
+
+    renderFormulaList();
+}
+
+// 요약 노트 형식으로 화면에 과목별 순서대로 렌더링하는 함수
+function renderFormulaList() {
+    const container = document.getElementById('formula-list-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    // 1. 전체 보기이거나 선택된 과목에 해당하는 데이터만 추출 (순서 유지)
+    let filteredData = currentCategory === 'all' 
+        ? [...originalFormulaData] 
+        : originalFormulaData.filter(item => item.category === currentCategory);
+
+    // 2. 화면에 순서대로 그리기
+    filteredData.forEach((item, index) => {
+        const itemBox = document.createElement('div');
+        itemBox.style.cssText = `
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-left: 4px solid #3498db;
+            border-radius: 6px;
+            padding: 18px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        `;
+        
+        itemBox.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 15px; color: #5dade2; font-weight: bold;">${index + 1}. ${item.title}</span>
+                <span style="font-size: 11px; background-color: #2b3e50; color: #85c1e9; padding: 2px 8px; border-radius: 4px;">${item.category}</span>
+            </div>
+            <div class="formula-text" style="font-size: 16px; color: #ffffff; line-height: 2.0; padding-left: 5px;">
+                ${item.content}
+            </div>
+        `;
+
+        container.appendChild(itemBox);
+    });
+
+    // 렌더링 직후 KaTeX 수식 자동 변환 실행
+    if (window.renderMathInElement) {
+        renderMathInElement(container, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ]
+        });
+    }
+}
+
 </script>
 
 </body>

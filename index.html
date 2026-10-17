@@ -158,7 +158,20 @@
 
 <div class="container">
     <h1>수학임용 빵구💨노트</h1>
-
+<!-- 실시간 검색바 영역 -->
+    <div style="margin-bottom: 20px;">
+        <input type="text" id="searchInput" placeholder="🔍 키워드 검색 (예: 개정팀시공...)" onkeyup="filterContent()" style="
+            width: 100%;
+            padding: 12px 16px;
+            background-color: #2c2c2c;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 15px;
+            box-sizing: border-box;
+            outline: none;
+        ">
+    </div>
     <!-- 탭 메뉴 버튼 -->
     <div class="tab-menu">
         <button class="tab-btn active" onclick="switchTab('tab1', event)">교수·학습 방법</button>
@@ -1435,7 +1448,48 @@ function renderFormulaList() {
     
 }
 
+// 전체 탭 통합 실시간 검색 기능 함수
+function filterContent() {
+    const rawKeyword = document.getElementById('searchInput').value.toLowerCase().trim();
+    // 띄어쓰기를 모두 제거한 검색어 생성
+    const keyword = rawKeyword.replace(/\s+/g, '');
+    
+    // 검색어가 없으면 모든 요소를 원래 상태로 복원
+    if (keyword === '') {
+        document.querySelectorAll('.tab-content div, .tab-content p').forEach(el => {
+            if (el.matches('#card-container > div, #edu-card-container > div')) {
+                el.style.display = 'flex';
+            } else if (el.matches('#formula-list-container > div, #pedagogy-list-container > div, .tab-content p')) {
+                el.style.display = 'block';
+            }
+        });
+        return;
+    }
 
+    // 1. 모든 카드 및 리스트 아이템 탐색 (#card-container, #edu-card-container, #formula-list-container, #pedagogy-list-container)
+    const allCardsAndLists = document.querySelectorAll('#card-container > div, #edu-card-container > div, #formula-list-container > div, #pedagogy-list-container > div');
+    
+    allCardsAndLists.forEach(item => {
+        // 텍스트 내부의 공백도 모두 제거한 후 비교
+        const text = item.textContent.toLowerCase().replace(/\s+/g, '');
+        if (text.includes(keyword)) {
+            item.style.display = item.closest('#card-container, #edu-card-container') ? 'flex' : 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+
+    // 2. 일반 성취기준 탭들의 <p> 태그 탐색
+    const allParagraphs = document.querySelectorAll('.tab-content:not(#tab1):not(#tab-edumath):not(#tab-edu):not(#tab-math) p');
+    allParagraphs.forEach(p => {
+        const text = p.textContent.toLowerCase().replace(/\s+/g, '');
+        if (text.includes(keyword)) {
+            p.style.display = 'block';
+        } else {
+            p.style.display = 'none';
+        }
+    });
+}
 </script>
 
 </body>

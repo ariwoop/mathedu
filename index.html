@@ -1349,15 +1349,12 @@ function renderPedagogyList() {
     if (!container) return;
     container.innerHTML = '';
 
-    // ✨ [핵심] 먼저 현재 내가 선택해서 보고 있는 서브탭(카테고리)의 데이터만 가져옵니다.
     let filteredData = pedagogyData.filter(item => item.category === currentPedagogyCategory);
 
-    // 검색어 처리 (띄어쓰기 무시)
     const searchInput = document.getElementById('searchInput');
     const rawKeyword = searchInput ? searchInput.value.toLowerCase().trim() : '';
     const keyword = rawKeyword.replace(/\s+/g, '');
 
-    // 검색어가 있을 때: 현재 보고 있는 서브탭 안에서만 문장 단위로 필터링
     if (keyword !== '') {
         let processedData = [];
 
@@ -1365,6 +1362,12 @@ function renderPedagogyList() {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = item.content;
             
+            // 빈칸(.blank)의 정답을 텍스트로 치환하여 검색 정확도 높이기
+            tempDiv.querySelectorAll('.blank').forEach(blank => {
+                const ans = blank.getAttribute('data-answer');
+                if (ans) blank.textContent = ans;
+            });
+
             const titleEl = tempDiv.querySelector('.concept-title');
             const titleHtml = titleEl ? titleEl.outerHTML : '';
             const pTags = tempDiv.querySelectorAll('p');
@@ -1393,7 +1396,6 @@ function renderPedagogyList() {
         return;
     }
 
-    // 화면에 렌더링
     filteredData.forEach((item) => {
         const itemBox = document.createElement('div');
         itemBox.style.cssText = `margin-bottom: 25px;`;
@@ -1516,7 +1518,7 @@ function filterContent() {
         return;
     }
 
-    // 탭1 현재 서브탭 내에서만 검색
+    // 탭1 현재 서브탭 내에서만 검색 (빈칸 정답 data-answer 포함 추출)
     const pedagogyContainer = document.getElementById('pedagogy-list-container');
     if (pedagogyContainer && document.getElementById('tab1').classList.contains('active')) {
         pedagogyContainer.innerHTML = '';
@@ -1526,14 +1528,22 @@ function filterContent() {
         currentSubData.forEach(item => {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = item.content;
+            
+            // 빈칸(.blank) 요소가 있다면 텍스트를 실제 data-answer 값으로 치환하여 검색 대상 텍스트 생성
+            tempDiv.querySelectorAll('.blank').forEach(blank => {
+                const ans = blank.getAttribute('data-answer');
+                if (ans) blank.textContent = ans;
+            });
+
             const titleEl = tempDiv.querySelector('.concept-title');
             const titleHtml = titleEl ? titleEl.outerHTML : '';
             const pTags = tempDiv.querySelectorAll('p');
 
             let matchedParagraphs = [];
             pTags.forEach(p => {
-                if (p.textContent.toLowerCase().replace(/\s+/g, '').includes(keyword)) {
-                    matchedParagraphs.push(p.outerHTML);
+                const cleanText = p.textContent.toLowerCase().replace(/\s+/g, '');
+                if (cleanText.includes(keyword)) {
+                    matchedParagraphs.push(p.outerHTML); // 원본 HTML 유지하여 출력
                 }
             });
 
@@ -1557,14 +1567,25 @@ function filterContent() {
         }
     }
 
-    // 나머지 카드/리스트/성취기준 탭 검색 처리
+    // 나머지 카드/리스트/성취기준 탭 검색 처리 (빈칸 정답 data-answer 포함)
     document.querySelectorAll('#card-container > div, #edu-card-container > div, #formula-list-container > div').forEach(item => {
-        const text = item.textContent.toLowerCase().replace(/\s+/g, '');
+        // 복사본을 만들어 blank 요소의 텍스트를 data-answer로 교체 후 텍스트 추출
+        const clone = item.cloneNode(true);
+        clone.querySelectorAll('.blank').forEach(b => {
+            const ans = b.getAttribute('data-answer');
+            if (ans) b.textContent = ans;
+        });
+        const text = clone.textContent.toLowerCase().replace(/\s+/g, '');
         item.style.display = text.includes(keyword) ? (item.closest('#card-container, #edu-card-container') ? 'flex' : 'block') : 'none';
     });
 
     document.querySelectorAll('.tab-content:not(#tab1):not(#tab-edumath):not(#tab-edu):not(#tab-math) p').forEach(p => {
-        const text = p.textContent.toLowerCase().replace(/\s+/g, '');
+        const clone = p.cloneNode(true);
+        clone.querySelectorAll('.blank').forEach(b => {
+            const ans = b.getAttribute('data-answer');
+            if (ans) b.textContent = ans;
+        });
+        const text = clone.textContent.toLowerCase().replace(/\s+/g, '');
         p.style.display = text.includes(keyword) ? 'block' : 'none';
     });
 }

@@ -828,25 +828,29 @@
             let startX = 0;
             let currentX = 0;
             let isDragging = false;
-        
+    
             cardElement.addEventListener('touchstart', (e) => {
                 startX = e.touches[0].clientX;
                 isDragging = true;
             }, {passive: true});
-        
+    
             cardElement.addEventListener('touchmove', (e) => {
                 if (!isDragging) return;
                 currentX = e.touches[0].clientX;
                 let diff = currentX - startX;
+                
+                // ✨ 핵심 수정: 왼쪽으로 밀 때(diff가 0보다 작을 때)만 카드가 따라오도록 설정
                 if (diff < 0) {
                     cardElement.style.transform = `translateX(${diff}px)`;
                 }
             }, {passive: true});
-        
+    
             cardElement.addEventListener('touchend', () => {
                 if (!isDragging) return;
                 isDragging = false;
                 let diff = currentX - startX;
+                
+                // ✨ 핵심 수정: 왼쪽으로 100픽셀 이상 확실하게 밀었을 때만 숨김 처리 실행
                 if (diff < -100) {
                     hiddenSet.add(origIndex);
                     cardElement.classList.add('swiped-out');

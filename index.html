@@ -266,7 +266,26 @@
             btn.style.borderColor = '#444';
             btn.textContent = '👓 숨김 (OFF)';
         }
+        
+        // 열려 있던 정답 상태 기억
+        const openedAnswers = [];
+        document.querySelectorAll('#card-container > div').forEach((card, idx) => {
+            const ansDiv = card.querySelector('.card-answer');
+            if (ansDiv && ansDiv.style.display === 'block') {
+                openedAnswers.push(card.getAttribute('data-original-index'));
+            }
+        });
+
         renderCards();
+
+        // 렌더링 직후 정답 상태 복원
+        document.querySelectorAll('#card-container > div').forEach(card => {
+            const origIdx = card.getAttribute('data-original-index');
+            if (origIdx !== null && openedAnswers.includes(origIdx)) {
+                const ansDiv = card.querySelector('.card-answer');
+                if (ansDiv) ansDiv.style.display = 'block';
+            }
+        });
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -378,24 +397,33 @@
         }
     });
 
-    function renderCards() {
+function renderCards() {
         const container = document.getElementById('card-container');
         if (!container) return;
+
+        // ✨ 1. 카드를 다시 그리기 전에, 현재 열려 있는 정답들의 '고유 번호'를 미리 수집해 둡니다.
+        const openedOriginalIndices = [];
+        document.querySelectorAll('#card-container > div').forEach(card => {
+            const ansDiv = card.querySelector('.card-answer');
+            const origIdx = card.getAttribute('data-original-index');
+            if (ansDiv && ansDiv.style.display === 'block' && origIdx !== null) {
+                openedOriginalIndices.push(parseInt(origIdx, 10));
+            }
+        });
+
         container.innerHTML = '';
 
         const searchInput = document.getElementById('searchInput');
         const searchKeyword = searchInput ? searchInput.value.toLowerCase().trim().replace(/\s+/g, '') : '';
 
-        let hiddenList = hiddenCards; // 기존 Set 객체 사용
-
-        // 1. 필터링 로직: 숨겨진 카드 보기 모드(showHiddenMode)가 켜져 있으면 숨긴 카드도 포함해서 보여줌
+        // 숨김 조건에 맞는 카드들 필터링
         let visibleCards = cardsData.filter((item) => {
             const origIndex = originalCardsData.indexOf(item);
-            const isHidden = hiddenList.has(origIndex);
+            const isHidden = hiddenCards.has(origIndex);
             const cardText = (item.q + item.a).toLowerCase().replace(/\s+/g, '');
             const isMatch = searchKeyword === '' || cardText.includes(searchKeyword);
 
-            if (isHidden && !showHiddenMode && searchKeyword === '') return false;
+            if (isHidden && searchKeyword === '' && !showHiddenMode) return false;
             if (!isMatch) return false;
             return true;
         });
@@ -405,12 +433,15 @@
             return;
         }
 
-        // 2. 화면 렌더링
+        // ✨ 2. visibleCards를 순회하면서 화면에 보여지는 순서대로 Q1, Q2, Q3... 번호 부여
         visibleCards.forEach((item, index) => {
             const origIndex = originalCardsData.indexOf(item);
-            const isHidden = hiddenList.has(origIndex);
+            const isHidden = hiddenCards.has(origIndex);
 
             const card = document.createElement('div');
+            // 정답 상태 유지를 위해 고유 인덱스는 속성으로 심어둠
+            card.setAttribute('data-original-index', origIndex);
+            
             card.style.cssText = `
                 background-color: #252525;
                 border: ${isHidden ? '1.5px dashed #f39c12' : '1px solid #333'};
@@ -426,9 +457,10 @@
                 position: relative;
             `;
             
+            // ✨ 핵심: 번호는 현재 화면 순서인 index + 1을 사용합니다.
             card.innerHTML = `
                 <div style="font-size: 13px; color: #85c1e9; margin-bottom: 8px; font-weight: bold;">
-                    Q${index + 1}. ${isHidden ? '<span style="color:#f39c12; font-size:11px;">(숨김 상태)</span>' : ''}
+                    Q${index + 1}. ${isHidden ? '<span style="color:#f39c12; font-size:11px;">(숨김)</span>' : ''}
                 </div>
                 <div style="font-size: 15px; color: #ffffff; font-weight: bold; margin-bottom: 12px; text-align: center;">${item.q}</div>
                 <div class="card-answer" style="font-size: 14px; color: #f39c12; background-color: #1a1a1a; padding: 10px; border-radius: 4px; text-align: center; display: none; border: 1px dashed #d4ac0d;">
@@ -437,12 +469,21 @@
                 <div style="font-size: 11px; color: #7f8c8d; text-align: center; margin-top: 8px;">클릭하여 정답 확인</div>
             `;
 
+            const ansDiv = card.querySelector('.card-answer');
+
+            // ✨ 3. 아까 수집한 고유 번호 목록에 해당하면 정답 창을 다시 열어줌 (닫힘 방지)
+            if (openedOriginalIndices.includes(origIndex)) {
+                ansDiv.style.display = 'block';
+            }
+
             card.addEventListener('click', () => {
-                const ansDiv = card.querySelector('.card-answer');
-                ansDiv.style.display = ansDiv.style.display === 'none' ? 'block' : 'none';
+                if (ansDiv.style.display === 'none' || ansDiv.style.display === '') {
+                    ansDiv.style.display = 'block';
+                } else {
+                    ansDiv.style.display = 'none';
+                }
             });
 
-            // ✨ 숨김 상태 여부(isHidden)를 함께 전달하여 우측 상단 버튼 모양과 기능을 다르게 설정
             setupCardInteractions(card, origIndex, hiddenCards, renderCards, isHidden);
 
             container.appendChild(card);
@@ -786,7 +827,6 @@
     function setupCardInteractions(cardElement, origIndex, hiddenSet, renderCallback, isHidden = false) {
         cardElement.classList.add('swipeable-card');
 
-        // PC용 우측 상단 버튼 (일반 카드: '×' 숨기기 / 숨긴 카드: '↩️' 숨기기 취소)
         const actionBtn = document.createElement('button');
         actionBtn.innerHTML = isHidden ? '↩️' : '×';
         actionBtn.title = isHidden ? '숨기기 취소' : '숨기기';
@@ -811,53 +851,90 @@
 
         actionBtn.onclick = (e) => {
             e.stopPropagation();
+            
+            // ✨ [추가] 숨기기 버튼을 누르기 전 열려 있던 정답들의 고유 인덱스 수집
+            const openedOriginalIndices = [];
+            document.querySelectorAll('#card-container > div').forEach(card => {
+                const ans = card.querySelector('.card-answer');
+                const origIdx = card.getAttribute('data-original-index');
+                if (ans && ans.style.display === 'block' && origIdx !== null) {
+                    openedOriginalIndices.push(parseInt(origIdx, 10));
+                }
+            });
+
             if (isHidden) {
-                // 숨기기 취소 동작
                 hiddenSet.delete(origIndex);
             } else {
-                // 숨기기 동작
                 hiddenSet.add(origIndex);
                 cardElement.classList.add('swiped-out');
             }
-            setTimeout(() => renderCallback(), 300);
+            
+            setTimeout(() => {
+                renderCallback(); // 카드 다시 그림
+                
+                // ✨ [추가] 새로 그려진 카드들 중 아까 열려 있던 카드들의 정답을 다시 열어줌
+                document.querySelectorAll('#card-container > div').forEach(card => {
+                    const origIdx = card.getAttribute('data-original-index');
+                    if (origIdx !== null && openedOriginalIndices.includes(parseInt(origIdx, 10))) {
+                        const ans = card.querySelector('.card-answer');
+                        if (ans) ans.style.display = 'block';
+                    }
+                });
+            }, 300);
         };
         cardElement.appendChild(actionBtn);
 
-        // 모바일 터치 스와이프 (일반 카드일 때만 우측으로 밀어서 숨기기 가능)
+        // 모바일 터치 스와이프
         if (!isHidden) {
             let startX = 0;
             let currentX = 0;
             let isDragging = false;
-    
+
             cardElement.addEventListener('touchstart', (e) => {
                 startX = e.touches[0].clientX;
-                currentX = startX; // 초기화 시점 일치
+                currentX = startX;
                 isDragging = true;
             }, {passive: true});
-    
+
             cardElement.addEventListener('touchmove', (e) => {
                 if (!isDragging) return;
                 currentX = e.touches[0].clientX;
-                let diff = currentX - startX; // 왼쪽으로 밀면 음수(-)가 됨
-                
-                // ✨ 핵심: 왼쪽으로 밀 때(diff가 0보다 작을 때)만 카드가 왼쪽으로 따라오도록 설정
+                let diff = currentX - startX;
                 if (diff < 0) {
                     cardElement.style.transform = `translateX(${diff}px)`;
                 }
             }, {passive: true});
-    
+
             cardElement.addEventListener('touchend', () => {
                 if (!isDragging) return;
                 isDragging = false;
                 let diff = currentX - startX;
                 
-                // ✨ 핵심: 왼쪽으로 80픽셀 이상 확실하게 밀었을 때만 숨김 처리 실행
                 if (diff < -80) {
+                    // ✨ [추가] 스와이프 시에도 열려 있던 정답 상태 기억
+                    const openedOriginalIndices = [];
+                    document.querySelectorAll('#card-container > div').forEach(card => {
+                        const ans = card.querySelector('.card-answer');
+                        const origIdx = card.getAttribute('data-original-index');
+                        if (ans && ans.style.display === 'block' && origIdx !== null) {
+                            openedOriginalIndices.push(parseInt(origIdx, 10));
+                        }
+                    });
+
                     hiddenSet.add(origIndex);
                     cardElement.classList.add('swiped-out');
-                    setTimeout(() => renderCallback(), 300);
+                    
+                    setTimeout(() => {
+                        renderCallback();
+                        document.querySelectorAll('#card-container > div').forEach(card => {
+                            const origIdx = card.getAttribute('data-original-index');
+                            if (origIdx !== null && openedOriginalIndices.includes(parseInt(origIdx, 10))) {
+                                const ans = card.querySelector('.card-answer');
+                                if (ans) ans.style.display = 'block';
+                            }
+                        });
+                    }, 300);
                 } else {
-                    // 살짝 건드렸거나 오른쪽으로 밀었으면 제자리로 복귀
                     cardElement.style.transform = 'translateX(0px)';
                 }
                 startX = 0;

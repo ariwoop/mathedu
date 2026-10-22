@@ -828,26 +828,26 @@
             let startX = 0;
             let currentX = 0;
             let isDragging = false;
-
+        
             cardElement.addEventListener('touchstart', (e) => {
                 startX = e.touches[0].clientX;
                 isDragging = true;
             }, {passive: true});
-
+        
             cardElement.addEventListener('touchmove', (e) => {
                 if (!isDragging) return;
                 currentX = e.touches[0].clientX;
                 let diff = currentX - startX;
-                if (diff > 0) {
+                if (diff < 0) {
                     cardElement.style.transform = `translateX(${diff}px)`;
                 }
             }, {passive: true});
-
+        
             cardElement.addEventListener('touchend', () => {
                 if (!isDragging) return;
                 isDragging = false;
                 let diff = currentX - startX;
-                if (diff > 100) {
+                if (diff < -100) {
                     hiddenSet.add(origIndex);
                     cardElement.classList.add('swiped-out');
                     setTimeout(() => renderCallback(), 300);

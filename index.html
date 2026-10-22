@@ -4,29 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2214%22 font-size=%2214%22>💨</text></svg>">    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://via.placeholder.com/180x180/1e1e1e/85c1e9?text=💨">
-    <link rel="apple-touch-icon-precomposed" href="https://via.placeholder.com/180x180/1e1e1e/85c1e9?text=💨">
-    <link rel="manifest" href='data:application/manifest+json,{
-        "name": "수학임용 빵구노트",
-        "short_name": "빵구노트",
-        "start_url": "./",
-        "display": "standalone",
-        "background_color": "#121212",
-        "theme_color": "#121212",
-        "icons": [
-            {
-                "src": "https://via.placeholder.com/192x192/1e1e1e/85c1e9?text=💨",
-                "sizes": "192x192",
-                "type": "image/png"
-            },
-            {
-                "src": "https://via.placeholder.com/512x512/1e1e1e/85c1e9?text=💨",
-                "sizes": "512x512",
-                "type": "image/png",
-                "purpose": "any maskable"
-            }
-        ]
-    }'>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
         delimiters: [
@@ -58,10 +35,9 @@
         margin-bottom: 20px;
         color: #ffffff;
     }
-    /* 탭 메뉴 스타일 (모바일 최적화 가로 스크롤 적용) */
     .tab-menu {
         display: flex;
-        flex-wrap: wrap; /* 줄바꿈 허용 */
+        flex-wrap: wrap;
         justify-content: flex-start;
         gap: 8px;
         margin-bottom: 30px;
@@ -118,7 +94,6 @@
         font-size: clamp(14px, 2vw, 16px);
         text-align: justify;
     }
-    /* 빈칸 스타일 (다크 모드) */
     .blank {
         display: inline-block;
         background-color: #2b3e50;
@@ -140,48 +115,37 @@
         color: #f39c12;
         border: 1px solid #d4ac0d;
     }
-    .info {
-        text-align: center;
-        font-size: 13px;
-        color: #95a5a6;
-        margin-bottom: 20px;
-    }
     .katex-display, 
     mjx-container[display="true"] {
         overflow-x: auto !important;
         overflow-y: hidden !important;
         max-width: 100%;
-        padding: 4px 0; /* 스크롤바가 수식과 겹치지 않도록 여유 공간 */
-        
-        /* 스크롤바 항상 표시 (Firefox) */
+        padding: 4px 0;
         scrollbar-color: #888 #f1f1f1;
         scrollbar-width: thin;
         font-size: 88% !important;
         margin: 0.8em 0 !important;
     }
-    .katex-display::-webkit-scrollbar, 
-    mjx-container[display="true"]::-webkit-scrollbar {
-        height: 6px;
+    .swipeable-card {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    touch-action: pan-y;
+    position: relative;
     }
-
-    .katex-display::-webkit-scrollbar-track, 
-    mjx-container[display="true"]::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
+    .swiped-out {
+        opacity: 0;
+        transform: translateX(100%);
+        max-height: 0 !important;
+        margin-bottom: 0 !important;
+        overflow: hidden;
     }
-
-    .katex-display::-webkit-scrollbar-thumb, 
-    mjx-container[display="true"]::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 3px;
-    }
-</style>
+    </style>
 </head>
 <body>
 
 <div class="container">
     <h1 onclick="location.reload()" style="cursor: pointer;">수학임용 빵구💨노트</h1>
-<!-- 실시간 검색바 영역 -->
+    
+    <!-- 실시간 검색바 영역 -->
     <div style="margin-bottom: 20px;">
         <input type="text" id="searchInput" placeholder="🔍 키워드 검색" onkeyup="filterContent()" style="
             width: 100%;
@@ -195,6 +159,7 @@
             outline: none;
         ">
     </div>
+
     <!-- 탭 메뉴 버튼 -->
     <div class="tab-menu">
         <button class="tab-btn active" onclick="switchTab('tab1', event)">교수·학습 방법</button>
@@ -208,10 +173,8 @@
         <button class="tab-btn" onclick="switchTab('tab-math', event)">내용학</button>
     </div>
 
-<!-- 탭: 전공 공식 요약 노트 -->
+    <!-- 탭: 교수·학습 방법 -->
     <div id="tab1" class="tab-content">
-       
-<!-- 서브 탭 버튼 메뉴 -->
         <div class="sub-tab-menu" style="display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0; padding-bottom: 5px;">
             <button class="sub-tab-btn active" onclick="filterPedagogy('수학교과역량', event)" style="background-color: #3498db; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">수학교과역량</button>
             <button class="sub-tab-btn" onclick="filterPedagogy('교수학습방안', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">교수학습방안</button>
@@ -219,332 +182,33 @@
             <button class="sub-tab-btn" onclick="filterPedagogy('평가방안', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">평가방안</button>
             <button class="sub-tab-btn" onclick="filterPedagogy('기타', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">기타</button>
         </div>
-
-    <div id="pedagogy-list-container" style="margin-top: 20px;">
-            <!-- 리스트 아이템들이 자바스크립트에 의해 동적으로 생성됩니다 -->
-        </div>
+        <div id="pedagogy-list-container" style="margin-top: 20px;"></div>
     </div>
 
-    <!-- 탭 2: 중학교 '수와 연산' 성취기준 -->
-    <div id="tab2" class="tab-content">
-        <div class="concept-title">'수와 연산' 성취기준</div>
-        <p>1 소인수분해</p>
-        <p>[9수01-01] 소인수분해의 뜻을 알고, 자연수를 소인수분해 할 수 있다.</p>
-        <p>[9수01-02] 소인수분해를 이용하여 최대공약수와 최소공배수를 구할 수 있다.</p>
-        <p>2 정수와 유리수</p>
-        <p>[9수01-03] <span class="blank hidden" data-answer="다양한">다양한</span> 상황을 이용하여 음수의 <span class="blank hidden" data-answer="필요성">필요성</span>을 인식하고, 양수와 음수, 정수와 유리수의 개념을 이해한다.</p>
-        <p>[9수01-04] 정수와 유리수의 대소 관계를 판단할 수 있다.</p>
-        <p>[9수01-05] 정수와 유리수의 사칙계산의 원리를 이해하고, 그 계산을 할 수 있다.</p>
-        <p>3 유리수와 순환소수</p>
-        <p>[9수01-06] 순환소수의 뜻을 알고, <span class="blank hidden" data-answer="유리수">유리수</span>와 <span class="blank hidden" data-answer="순환소수">순환소수</span>의 관계를 설명할 수 있다.</p>
-        <p>4 제곱근과 실수</p>
-        <p>[9수01-07] 제곱근의 뜻과 성질을 알고, 제곱근의 대소 관계를 판단할 수 있다.</p>
-        <p>[9수01-08] 무리수의 개념을 이해하고, 무리수의 <span class="blank hidden" data-answer="유용성">유용성</span>을 인식할 수 있다.</p>
-        <p>[9수01-09] 실수의 대소 관계를 판단하고 설명할 수 있다.</p>
-        <p>[9수01-10] 근호를 포함한 식의 사칙계산의 원리를 이해하고, 그 계산을 할 수 있다.</p>
-        
-        <div class="concept-title">'수와 연산' 성취기준 해설</div>
-        <p>&lt;최대공약수와 최소공배수&gt;</p>
-        <p>① [9수01-02] <span class="blank hidden" data-answer="초등학교">초등학교</span>에서 학습한 <span class="blank hidden" data-answer="최대공약수">최대공약수</span>와 <span class="blank hidden" data-answer="최소공배수">최소공배수</span>의 <span class="blank hidden" data-answer="개념">개념</span>을 바탕으로 <span class="blank hidden" data-answer="소인수분해">소인수분해</span>를 이용하여 최대공약수와 최소공배수를 구하게 한다. 최대공약수와 최소공배수는 <span class="blank hidden" data-answer="자연수">자연수</span>의 <span class="blank hidden" data-answer="소인수분해">소인수분해</span>를 이용하는 <span class="blank hidden" data-answer="범위">범위</span>에서 다루고, 최대공약수와 최소공배수의 <span class="blank hidden" data-answer="활용">활용</span> 문제는 다루지 않는다.</p>
-        <p>&lt;정수의 사칙계산&gt;</p>
-        <p>② [9수01-05] 정수의 <span class="blank hidden" data-answer="사칙계산">사칙계산</span>의 원리는 <span class="blank hidden" data-answer="여러">여러</span> <span class="blank hidden" data-answer="가지">가지</span> <span class="blank hidden" data-answer="모델">모델</span>을 이용하여 <span class="blank hidden" data-answer="직관적">직관적</span>으로 이해하게 하고, <span class="blank hidden" data-answer="실생활">실생활</span>에서 사칙계산의 <span class="blank hidden" data-answer="유용성">유용성</span>을 인식하게 한다.</p>
+    <!-- 탭 2: 수와 연산 -->
+    <div id="tab2" class="tab-content"></div>
 
-        <p>&lt;순환소수 관련&gt;</p>
-        <p>③ [9수01-06] 순환소수를 <span class="blank hidden" data-answer="분수">분수</span>로 고치는 것은 순환소수가 <span class="blank hidden" data-answer="유리수">유리수</span>임을 이해할 수 있는 정도로 다룬다. <span class="blank hidden" data-answer="유한소수">유한소수</span>를 <span class="blank hidden" data-answer="순환소수">순환소수</span>로 나타내는 것은 다루지 않는다.</p>
-        <p>&lt;무리수, 실수&gt;</p>
-        <p>④ [9수01-08] <span class="blank hidden" data-answer="실생활">실생활</span>에서 사용되는 <span class="blank hidden" data-answer="무리수">무리수</span>의 예를 찾아보는 활동을 통해 무리수의 <span class="blank hidden" data-answer="필요성">필요성</span>과 <span class="blank hidden" data-answer="유용성">유용성</span>을 인식하게 한다. 실수는 <span class="blank hidden" data-answer="유리수">유리수</span>와 <span class="blank hidden" data-answer="무리수">무리수</span>로 이루어짐을 이해하게 하고, <span class="blank hidden" data-answer="수">수</span> 체계의 <span class="blank hidden" data-answer="논리적인">논리적인</span> <span class="blank hidden" data-answer="아름다움">아름다움</span>에 관심을 갖게 한다.</p>
+    <!-- 탭 3: 변화와 관계 -->
+    <div id="tab3" class="tab-content"></div>
 
-        <div class="concept-title">'수와 연산' 성취기준 적용 시 고려 사항</div>
-        <p>① '수와 연산' 영역에서는 용어와 기호로 '소수, 합성수, 거듭제곱, 지수, 밑, 소인수, 소인수분해, 서로소, 양수, 음수, 양의 정수, 음의 정수, 정수, 수직선, 양의 유리수, 음의 유리수, 유리수, 절댓값, 교환법칙, 결합법칙, 분배법칙, 역수, 유한소수, 무한소수, 순환소수, 순환마디, 제곱근, 근호, 무리수, 실수, 분모의 유리화, 양의 부호(+), 음의 부호(-), ||, ≤, ≥, 순환소수 표현(예: 7.215), √'를 다룬다.</p>
-        <p>② 정수와 유리수의 <span class="blank hidden" data-answer="사칙계산">사칙계산</span>의 <span class="blank hidden" data-answer="원리">원리</span>를 이용하는 <span class="blank hidden" data-answer="문제">문제</span>를 <span class="blank hidden" data-answer="해결">해결</span>하기 위해 <span class="blank hidden" data-answer="더 나은">더 나은</span> <span class="blank hidden" data-answer="계산 방법">계산 방법</span> 을 <span class="blank hidden" data-answer="끈기">끈기</span> 있게 찾아보게 하고, 풀이 <span class="blank hidden" data-answer="과정">과정</span>과 <span class="blank hidden" data-answer="결과">결과</span>를 <span class="blank hidden" data-answer="반성하는">반성하는</span> <span class="blank hidden" data-answer="태도">태도</span>를 갖게 한다.</p>
-        <p>&lt;제곱근과 무리수 관련&gt;</p>
-        <p>③ <span class="blank hidden" data-answer="제곱근">제곱근</span>과 <span class="blank hidden" data-answer="무리수">무리수</span>는 <span class="blank hidden" data-answer="피타고라스">피타고라스</span> 정리를 이용하여 도입할 수 있다.</p>
-        <p>④ <span class="blank hidden" data-answer="한">한</span> 변의 길이가 1인 <span class="blank hidden" data-answer="정사각형">정사각형</span>의 <span class="blank hidden" data-answer="대각선">대각선</span>의 길이 등을 이용하여 무리수의 <span class="blank hidden" data-answer="존재">존재</span>를 <span class="blank hidden" data-answer="직관적">직관적</span>으로 이해하게 한다.</p>
-        <p>⑤ <span class="blank hidden" data-answer="제곱근">제곱근</span>의 <span class="blank hidden" data-answer="값">값</span>은 <span class="blank hidden" data-answer="계산기">계산기</span> 등을 이용하여 구할 수 있음을 알게 한다.</p>
-        <p>&lt;정수와 유리수, 사칙계산 관련&gt;</p>
-        <p>⑥ <span class="blank hidden" data-answer="정수">정수</span>, <span class="blank hidden" data-answer="유리수">유리수</span>와 관련하여 지나치게 복잡한 계산을 포함하는 문제는 다루지 않는다.</p>
-        <p>⑦ <span class="blank hidden" data-answer="사칙계산">사칙계산</span> 이외의 <span class="blank hidden" data-answer="이항연산">이항연산</span> 문제는 다루지 않는다.</p>
-    </div>
+    <!-- 탭 4: 도형과 측정 -->
+    <div id="tab4" class="tab-content"></div>
 
-    <!-- 탭: 중학교 '변화와 관계' 성취기준 -->
-    <div id="tab3" class="tab-content">
-        <div class="concept-title">'변화와 관계' 성취기준</div>
-        <p>1 문자의 사용과 식</p>
-        <p>[9수02-01] 다양한 상황을 문자를 사용한 식으로 나타내어 그 <span class="blank hidden" data-answer="유용성">유용성</span>을 인식하고, 식의 값을 구할 수 있다.</p>
-        <p>[9수02-02] 일차식의 덧셈과 뺄셈의 원리를 이해하고, 그 계산을 할 수 있다.</p>
-        <p>2 일차방정식</p>
-        <p>[9수02-03] 방정식과 그 해의 뜻을 알고, 등식의 성질을 설명할 수 있다.</p>
-        <p>[9수02-04] 일차방정식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.</p>
-        <p>3 좌표평면과 그래프</p>
-        <p>[9수02-05] 순서쌍과 좌표를 이해하고, 그 <span class="blank hidden" data-answer="편리함">편리함</span>을 인식할 수 있다.</p>
-        <p>[9수02-06] 다양한 상황을 그래프로 <span class="blank hidden" data-answer="나타내고">나타내고</span>, 주어진 그래프를 <span class="blank hidden" data-answer="해석할">해석할</span> 수 있다.</p>
-        <p>[9수02-07] 정비례, 반비례 관계를 이해하고, 그 관계를 표, 식, 그래프로 나타낼 수 있다.</p>
-        <p>4 식의 계산</p>
-        <p>[9수02-08] 지수법칙을 이해하고, 이를 이용하여 식을 간단히 할 수 있다.</p>
-        <p>[9수02-09] 다항식의 덧셈과 뺄셈의 원리를 이해하고, 그 계산을 할 수 있다.</p>
-        <p>[9수02-10] '(단항식)×(다항식)', '(다항식)÷(단항식)'과 같은 곱셈과 나눗셈의 원리를 이해하고, 그 계산을 할 수 있다.</p>
-        <p>5 일차부등식</p>
-        <p>[9수02-11] 부등식과 그 해의 뜻을 알고, 부등식의 성질을 설명할 수 있다.</p>
-        <p>[9수02-12] 일차부등식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.</p>
-        <p>6 연립일차방정식</p>
-        <p>[9수02-13] 미지수가 2개인 연립일차방정식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.</p>
-        <p>7 일차함수와 그 그래프</p>
-        <p>[9수02-14] 함수의 개념을 이해하고, 함숫값을 구할 수 있다.</p>
-        <p>[9수02-15] 일차함수의 개념을 이해하고, 그 그래프를 그릴 수 있다.</p>
-        <p>[9수02-16] 일차함수의 그래프의 성질을 이해하고, 이를 활용하여 문제를 해결할 수 있다.</p>
-        <p>8 일차함수와 일차방정식의 관계</p>
-        <p>[9수02-17] <span class="blank hidden" data-answer="일차함수">일차함수</span>와 미지수가 2개인 <span class="blank hidden" data-answer="일차방정식">일차방정식</span>의 <span class="blank hidden" data-answer="관계">관계</span>를 설명할 수 있다.</p>
-        <p>[9수02-18] 두 <span class="blank hidden" data-answer="일차함수">일차함수</span>의 그래프와 <span class="blank hidden" data-answer="연립일차방정식">연립일차방정식</span>의 <span class="blank hidden" data-answer="관계">관계</span>를 설명할 수 있다.</p>
-        <p>9 다항식의 곱셈과 인수분해</p>
-        <p>[9수02-19] 다항식의 곱셈과 인수분해를 할 수 있다.</p>
-        <p>10 이차방정식</p>
-        <p>[9수02-20] 이차방정식을 풀 수 있고, 이를 활용하여 문제를 해결할 수 있다.</p>
-        <p>11 이차함수와 그 그래프</p>
-        <p>[9수02-21] 이차함수의 개념을 이해한다.</p>
-        <p>[9수02-22] 이차함수의 그래프를 그릴 수 있고, 그 성질을 설명할 수 있다.</p>
+    <!-- 탭 5: 자료와 가능성 -->
+    <div id="tab5" class="tab-content"></div>
 
-        <div class="concept-title">'변화와 관계' 성취기준 해설</div>
-        <p>&lt;좌표, 좌표평면&gt;</p>
-        <p>① [9수02-05] <span class="blank hidden" data-answer="실생활">실생활</span>에서 <span class="blank hidden" data-answer="좌표">좌표</span>가 사용되는 <span class="blank hidden" data-answer="예">예</span>를 찾아보고 이를 <span class="blank hidden" data-answer="수직선">수직선</span>과 <span class="blank hidden" data-answer="좌표평면">좌표평면</span> 위에 <span class="blank hidden" data-answer="표현해">표현해</span> 보며, 그 <span class="blank hidden" data-answer="유용성">유용성</span>과 <span class="blank hidden" data-answer="편리함">편리함</span>을 인식하게 한다.</p>
-        <p>&lt;그래프&gt;</p>
-        <p>② [9수02-06] <span class="blank hidden" data-answer="다양한">다양한</span> 상황을 <span class="blank hidden" data-answer="그래프">그래프</span>로 나타내어 <span class="blank hidden" data-answer="증가">증가</span>와 <span class="blank hidden" data-answer="감소">감소</span>, <span class="blank hidden" data-answer="주기적">주기적</span> 변화 등 <span class="blank hidden" data-answer="변화">변화</span> 상태를 <span class="blank hidden" data-answer="쉽게">쉽게</span> 파악할 수 있게 한다. 주어진 그래프를 <span class="blank hidden" data-answer="해석">해석</span>하여 그래프가 나타내는 상황을 <span class="blank hidden" data-answer="설명">설명</span>하게 함으로써 그래프의 <span class="blank hidden" data-answer="유용성">유용성</span>을 인식하게 한다.</p>
-        <p>&lt;정비례, 반비례&gt;</p>
-        <p>③ [9수02-07] 속력과 <span class="blank hidden" data-answer="거리">거리</span>, 속력과 <span class="blank hidden" data-answer="시간">시간</span>과 같은 <span class="blank hidden" data-answer="실생활">실생활</span>의 <span class="blank hidden" data-answer="예">예</span>를 통해 <span class="blank hidden" data-answer="정비례">정비례</span>와 <span class="blank hidden" data-answer="반비례">반비례</span> 관계를 <span class="blank hidden" data-answer="직관적으로">직관적으로</span> 이해하게 하고, 정비례와 반비례 관계가 성립하는 <span class="blank hidden" data-answer="실생활">실생활</span>의 <span class="blank hidden" data-answer="예">예</span>를 찾아 설명하게 한다.</p>
-        <p>&lt;지수법칙&gt;</p>
-        <p>④ [9수02-08] <span class="blank hidden" data-answer="지수법칙">지수법칙</span>은 지수가 <span class="blank hidden" data-answer="자연수">자연수</span>인 범위에서 <span class="blank hidden" data-answer="단항식">단항식</span>의 <span class="blank hidden" data-answer="곱셈">곱셈</span>과 <span class="blank hidden" data-answer="나눗셈">나눗셈</span>을 하는 데 필요한 정도로 다룬다.</p>
-        <p>&lt;다항식의 나눗셈&gt;</p>
-        <p>⑤ [9수02-10] 다항식의 <span class="blank hidden" data-answer="나눗셈">나눗셈</span>에서는 <span class="blank hidden" data-answer="다항식">다항식</span>을 <span class="blank hidden" data-answer="단항식">단항식</span>으로 나누어 그 <span class="blank hidden" data-answer="몫">몫</span>이 <span class="blank hidden" data-answer="다항식">다항식</span>이 되는 경우만 다룬다.</p>
-        <p>&lt;다항식의 곱셈과 인수분해&gt;</p>
-        <p>⑥ [9수02-19] 다항식의 <span class="blank hidden" data-answer="곱셈">곱셈</span>과 다항식의 <span class="blank hidden" data-answer="인수분해">인수분해</span>의 <span class="blank hidden" data-answer="역관계">역관계</span>를 이해하고, 이와 <span class="blank hidden" data-answer="유사">유사</span>한 <span class="blank hidden" data-answer="관계">관계</span>를 찾아보는 활동을 하게 한다. 다항식의 곱셈과 인수분해는 다음의 경우를 다룬다.<br>
-        $m(a+b)=ma+mb$, $(a+b)^{2}=a^{2}+2ab+b^{2}$, $(a-b)^{2}=a^{2}-2ab+b^{2}$, $(a+b)(a-b)=a^{2}-b^{2}$, $(x+a)(x+b)=x^{2}+(a+b)x+ab$, $(ax+b)(cx+d)=acx^{2}+(ad+bc)x+bd$</p>
-        <p>&lt;이차함수의 최대, 최소&gt;</p>
-        <p>⑦ [9수02-22] 이차함수 $y=f(x)$ 에서 <span class="blank hidden" data-answer="최댓값">최댓값</span>과 <span class="blank hidden" data-answer="최솟값">최솟값</span>은 $x$의 범위가 <span class="blank hidden" data-answer="실수 전체">실수 전체</span> 인 경우만 다룬다.</p>
-
-        <div class="concept-title">'변화와 관계' 성취기준 적용 시 고려사항</div>
-        <p>① '변화와 관계' 영역에서는 용어와 기호로 '대입, 다항식, 항, 단항식, 상수항, 계수, 차수, 일차식, 동류항, 등식, 방정식, 미지수, 해, 근, 항등식, 이항, 일차방정식, 전개, 변수, 좌표, 순서쌍, 좌표, 좌표, 원점, 좌표축, x축, y축, 좌표평면, 제1사분면, 제2사분면, 제3사분면, 제4사분면, 그래프, 정비례, 반비례, 부등식, 일차부등식, 연립방정식, 함수, 함숫값, 일차함수, 기울기, 절편, y절편, 평행이동, 직선의 방정식, 인수, 인수분해, 완전제곱식, 이차방정식, 중근, 근의 공식, 이차함수, 포물선, 축, 꼭짓점, 최댓값, 최솟값, $f(x)$, $y=f(x)$'를 다룬다.</p>
-        <p>&lt;문자와 수, 문자와 일상 언어&gt;</p>
-        <p>② 문자와 <span class="blank hidden" data-answer="수">수</span>, 문자와 <span class="blank hidden" data-answer="일상 언어">일상 언어</span>의 <span class="blank hidden" data-answer="공통점">공통점</span>과 <span class="blank hidden" data-answer="차이점">차이점</span>에 대한 탐색을 통해 문자의 <span class="blank hidden" data-answer="특징">특징</span>을 이해하고, 자신의 <span class="blank hidden" data-answer="삶">삶</span> 속에서 문자의 <span class="blank hidden" data-answer="유용성">유용성</span>을 인식하게 한다.</p>
-        <p>&lt;수에서 다항식으로 확장&gt;</p>
-        <p>③ <span class="blank hidden" data-answer="수">수</span>에 대한 <span class="blank hidden" data-answer="사칙연산">사칙연산</span>과 <span class="blank hidden" data-answer="소인수분해">소인수분해</span>가 <span class="blank hidden" data-answer="다항식">다항식</span>으로 <span class="blank hidden" data-answer="확장">확장</span>될 수 있음을 인식하게 한다.</p>
-        <p>&lt;방정식, 부등식, 함수의 도입&gt;</p>
-        <p>④ 방정식과 부등식, 함수는 <span class="blank hidden" data-answer="다양한 상황">다양한 상황</span>을 통해 <span class="blank hidden" data-answer="도입">도입</span>하고, 그 <span class="blank hidden" data-answer="필요성">필요성</span>을 인식하게 한다.</p>
-        <p>&lt;방정식과 부등식의 지도&gt;</p>
-        <p>⑤ 방정식과 부등식은 <span class="blank hidden" data-answer="여러 가지">여러 가지</span> 방법으로 풀어 보면서 <span class="blank hidden" data-answer="더 나은">더 나은</span> 풀이 <span class="blank hidden" data-answer="방법">방법</span>으로 <span class="blank hidden" data-answer="해">해</span>를 찾게 한다. 구한 <span class="blank hidden" data-answer="해">해</span>가 문제 상황에 <span class="blank hidden" data-answer="적합">적합</span>한지 <span class="blank hidden" data-answer="확인">확인</span>하는 과정을 통해 <span class="blank hidden" data-answer="타당한">타당한</span> <span class="blank hidden" data-answer="근거">근거</span>에 따라 자신의 의견을 <span class="blank hidden" data-answer="논리적으로">논리적으로</span> <span class="blank hidden" data-answer="설명">설명</span>하는 태도를 갖게 한다.</p>
-        <p>&lt;함수-변환 활동&gt;</p>
-        <p>⑥ 다양한 상황을 <span class="blank hidden" data-answer="일상 언어">일상 언어</span>, 표, <span class="blank hidden" data-answer="그래프">그래프</span>, <span class="blank hidden" data-answer="식">식</span>으로 나타내고 이들 사이의 <span class="blank hidden" data-answer="상호 변환">상호 변환</span> 활동을 하게 한다.</p>
-        <p>&lt;함수 개념 도입&gt;</p>
-        <p>⑦ 함수의 개념은 <span class="blank hidden" data-answer="다양한">다양한</span> 상황에서 <span class="blank hidden" data-answer="한 양이 변함에 따라 다른 양이 하나씩 정해지는 두 양 사이의 대응 관계">한 양이 변함에 따라 다른 양이 하나씩 정해지는 두 양 사이의 대응 관계</span>를 이용하여 도입한다.</p>
-        <p>&lt;일차함수, 이차함수 지도&gt;</p>
-        <p>⑧ <span class="blank hidden" data-answer="다양한 상황">다양한 상황</span>을 이용하여 일차함수와 이차함수의 의미를 다룬다.</p>
-        <p>&lt;공학 도구 활용-함수의 그래프&gt;</p>
-        <p>⑨ <span class="blank hidden" data-answer="공학">공학</span> 도구를 이용하여 함수의 <span class="blank hidden" data-answer="그래프">그래프</span>를 그리거나 함수의 그래프의 <span class="blank hidden" data-answer="성질">성질</span>을 탐구하게 한다.</p>
-        <p>&lt;이차방정식 관련&gt;</p>
-        <p>⑩ 이차방정식은 <span class="blank hidden" data-answer="해가 실수">해가 실수</span>인 경우만 다룬다. 이차방정식의 <span class="blank hidden" data-answer="근과 계수와의 관계">근과 계수와의 관계</span>는 다루지 않는다.</p>
-        <p>&lt;수학적 모델링, 생태전환&gt;</p>
-        <p>⑫ <span class="blank hidden" data-answer="실생활">실생활</span>이나 <span class="blank hidden" data-answer="사회 및 자연">사회 및 자연</span> 현상과 관련된 <span class="blank hidden" data-answer="문제">문제</span>를 해결할 때 <span class="blank hidden" data-answer="수학적 모델링">수학적 모델링</span>을 <span class="blank hidden" data-answer="적용">적용</span>하고 <span class="blank hidden" data-answer="도전적으로">도전적으로</span> 문제를 해결할 수 있게 한다. 이때, <span class="blank hidden" data-answer="환경 및 기후">환경 및 기후</span> 변화 등과 관련된 다양한 문제 상황을 통해 <span class="blank hidden" data-answer="생태전환">생태전환</span>에 관심을 갖게 한다.</p>
-        <p>&lt;방정식, 부등식, 함수 활용 관련&gt;</p>
-        <p>⑬ 방정식, 부등식, 함수에 대한 지나치게 복잡한 활용 문제는 다루지 않는다</p>
-        <p>⑭ '식의 값', '좌변', '우변', '양변', '이차식', '전개식', '연립일차방정식', '소거', '가감법', '대입법', '함수의 그래프' 용어는 교수·학습 상황에서 사용할 수 있다.</p>
-    </div>
-
-    <!-- 탭: 중학교 '도형과 측정' 성취기준 -->
-    <div id="tab4" class="tab-content">
-        <div class="concept-title">'도형과 측정' 성취기준</div>
-        <p>1 기본 도형</p>
-        <p>[9수03-01] 점, 선, 면, 각을 이해하고, <span class="blank hidden" data-answer="실생활">실생활</span> 상황과 연결하여 점, 직선, 평면의 <span class="blank hidden" data-answer="위치">위치</span> 관계를 설명할 수 있다.</p>
-        <p>[9수03-02] 평행선에서 동위각과 엇각의 성질을 이해하고 설명할 수 있다.</p>
-        
-        <p>2 작도와 합동</p>
-        <p>[9수03-03] 삼각형을 작도하고, 그 과정을 설명할 수 있다.</p>
-        <p>[9수03-04] 삼각형의 <span class="blank hidden" data-answer="합동 조건">합동 조건</span>을 이해하고, 이를 이용하여 두 삼각형이 합동인지 <span class="blank hidden" data-answer="판별할">판별할</span> 수 있다.</p>
-        
-        <p>3 평면도형의 성질</p>
-        <p>[9수03-05] 다각형의 성질을 이해하고 설명할 수 있다.</p>
-        <p>[9수03-06] 부채꼴의 중심각과 호의 관계를 이해하고, 이를 이용하여 부채꼴의 호의 길이와 넓이를 구할 수 있다.</p>
-        
-        <p>4 입체도형의 성질</p>
-        <p>[9수03-07] 구체적인 <span class="blank hidden" data-answer="모형">모형</span>이나 <span class="blank hidden" data-answer="공학">공학</span> 도구를 이용하여 <span class="blank hidden" data-answer="다면체와">다면체와</span> <span class="blank hidden" data-answer="회전체의">회전체의</span> 성질을 탐구하고, 이를 설명할 수 있다.</p>
-        <p>[9수03-08] 입체도형의 겉넓이와 부피를 구할 수 있다.</p>
-        
-        <p>5 삼각형과 사각형의 성질</p>
-        <p>[9수03-09] <span class="blank hidden" data-answer="이등변삼각형">이등변삼각형</span>의 성질을 <span class="blank hidden" data-answer="이해하고">이해하고</span> <span class="blank hidden" data-answer="정당화할">정당화할</span> 수 있다.</p>
-        <p>[9수03-10] 삼각형의 <span class="blank hidden" data-answer="외심과">외심과</span> <span class="blank hidden" data-answer="내심의">내심의</span> 성질을 이해하고 정당화할 수 있다.</p>
-        <p>[9수03-11] 사각형의 성질을 이해하고 정당화할 수 있다.</p>
-        
-        <p>6 도형의 닮음</p>
-        <p>[9수03-12] 도형의 닮음의 뜻과 닮은 도형의 성질을 이해하고, 닮음비를 구할 수 있다.</p>
-        <p>[9수03-13] 삼각형의 <span class="blank hidden" data-answer="닮음 조건">닮음 조건</span>을 이해하고, 이를 이용하여 두 삼각형이 닮음인지 <span class="blank hidden" data-answer="판별할">판별할</span> 수 있다.</p>
-        <p>[9수03-14] 평행선 사이의 선분의 길이의 비를 구할 수 있다.</p>
-        
-        <p>7 피타고라스 정리</p>
-        <p>[9수03-15] <span class="blank hidden" data-answer="피타고라스">피타고라스</span> 정리를 이해하고 정당화할 수 있다.</p>
-        
-        <p>8 삼각비</p>
-        <p>[9수03-16] 삼각비의 뜻을 알고, 간단한 삼각비의 값을 구할 수 있다.</p>
-        <p>[9수03-17] 삼각비를 활용하여 여러 가지 문제를 해결할 수 있다.</p>
-        
-        <p>9 원의 성질</p>
-        <p>[9수03-18] 원의 <span class="blank hidden" data-answer="현에">현에</span> 관한 성질과 <span class="blank hidden" data-answer="접선에">접선에</span> 관한 성질을 이해하고 정당화할 수 있다.</p>
-        <p>[9수03-19] <span class="blank hidden" data-answer="원주각의">원주각의</span> 성질을 이해하고 정당화할 수 있다.</p>
-
-        <div class="concept-title">'도형과 측정' 성취기준 해설</div>
-        <p>&lt;점, 선, 면, 각 지도&gt;</p>
-        <p>① [9수03-01] 점, 선, 면, 각과 관련된 용어는 <span class="blank hidden" data-answer="다양한">다양한</span> 상황에서 <span class="blank hidden" data-answer="직관적으로">직관적으로</span> <span class="blank hidden" data-answer="이해하게">이해하게</span> 한다.</p>
-        
-        <p>&lt;삼각형 작도&gt;</p>
-        <p>② [9수03-03] 주어진 삼각형과 <span class="blank hidden" data-answer="합동인">합동인</span> 삼각형을 <span class="blank hidden" data-answer="작도하는">작도하는</span> 활동을 하고, <span class="blank hidden" data-answer="자신의">자신의</span> <span class="blank hidden" data-answer="방법을">방법을</span> <span class="blank hidden" data-answer="설명하게">설명하게</span> 한다.</p>
-        
-        <p>&lt;다각형의 성질&gt;</p>
-        <p>③ [9수03-05] 삼각형의 <span class="blank hidden" data-answer="내각과">내각과</span> <span class="blank hidden" data-answer="외각의">외각의</span> 크기, 다각형의 <span class="blank hidden" data-answer="내각과">내각과</span> <span class="blank hidden" data-answer="외각의">외각의</span> 크기의 <span class="blank hidden" data-answer="합">합</span>, 다각형의 <span class="blank hidden" data-answer="대각선의">대각선의</span> 개수를 구하는 과정을 탐구하여 다각형의 <span class="blank hidden" data-answer="성질을">성질을</span> <span class="blank hidden" data-answer="추측하고">추측하고</span> <span class="blank hidden" data-answer="일반화할">일반화할</span> 수 있게 한다.</p>
-        
-        <p>&lt;다면체, 회전체 지도&gt;</p>
-        <p>④ [9수03-07] 구체적인 <span class="blank hidden" data-answer="사물">사물</span>, <span class="blank hidden" data-answer="전개도">전개도</span>, <span class="blank hidden" data-answer="교구">교구</span>, <span class="blank hidden" data-answer="컴퓨터">컴퓨터</span> 프로그램 등을 이용하여 다면체와 회전체를 관찰하고 그 <span class="blank hidden" data-answer="성질을">성질을</span> 탐구하게 한다. 회전체 <span class="blank hidden" data-answer="단면의">단면의</span> <span class="blank hidden" data-answer="모양은">모양은</span> 회전체의 <span class="blank hidden" data-answer="성질을">성질을</span> <span class="blank hidden" data-answer="이해하는">이해하는</span> 데 필요한 정도로 다룬다.</p>
-        
-        <p>&lt;이등변 삼각형 성질 지도&gt;</p>
-        <p>⑤ [9수03-09] <span class="blank hidden" data-answer="종이접기">종이접기</span>, <span class="blank hidden" data-answer="작도">작도</span>, <span class="blank hidden" data-answer="공학">공학</span> 도구 등을 이용하여 이등변삼각형의 <span class="blank hidden" data-answer="성질을">성질을</span> <span class="blank hidden" data-answer="추측하게">추측하게</span> 하고, 그 성질을 삼각형의 <span class="blank hidden" data-answer="합동 조건을">합동 조건을</span> 이용하여 <span class="blank hidden" data-answer="정당화할">정당화할</span> 수 있게 한다. 이때, <span class="blank hidden" data-answer="증명">증명</span>이라는 용어를 도입하고, 그 <span class="blank hidden" data-answer="필요성을">필요성을</span> 인식하게 한다.</p>
-        
-        <p>&lt;사각형 성질 지도&gt;</p>
-        <p>⑥ [9수03-11] 사각형의 성질은 <span class="blank hidden" data-answer="대각선에">대각선에</span> 관한 성질을 위주로 다룬다. 여러 가지 <span class="blank hidden" data-answer="사각형의">사각형의</span> <span class="blank hidden" data-answer="성질을">성질을</span> 통해 사각형 사이의 <span class="blank hidden" data-answer="관계를">관계를</span> 설명하게 한다.</p>
-        
-        <p>&lt;피타고라스 정리&gt;</p>
-        <p>⑦ [9수03-15] 피타고라스 정리는 <span class="blank hidden" data-answer="다양한 활동을">다양한 활동을</span> 통하여 <span class="blank hidden" data-answer="추측하고">추측하고</span> <span class="blank hidden" data-answer="정당화할">정당화할</span> 수 있게 한다. 피타고라스 정리의 <span class="blank hidden" data-answer="역은">역은</span> <span class="blank hidden" data-answer="직관적으로">직관적으로</span> <span class="blank hidden" data-answer="이해하게">이해하게</span> 하고, 이를 <span class="blank hidden" data-answer="이용하여">이용하여</span> <span class="blank hidden" data-answer="세 변">세 변</span> 의 길이가 주어진 삼각형이 <span class="blank hidden" data-answer="직각삼각형인지">직각삼각형인지</span> <span class="blank hidden" data-answer="판별하게">판별하게</span> 한다.</p>
-        
-        <p>&lt;삼각비 활용&gt;</p>
-        <p>⑧ [9수03-17] 삼각비를 활용하여 직접 <span class="blank hidden" data-answer="측정하기">측정하기</span> 어려운 <span class="blank hidden" data-answer="거리나">거리나</span> <span class="blank hidden" data-answer="높이">높이</span> 등을 구해 보는 활동을 통해 <span class="blank hidden" data-answer="유용성을">유용성을</span> 인식하고 <span class="blank hidden" data-answer="흥미를">흥미를</span> 느낄 수 있게 한다.</p>
-
-        <div class="concept-title">'도형과 측정' 성취기준 적용 시 고려 사항</div>
-        <p>① '도형과 측정' 영역에서는 용어와 기호로 '교점, 교선, 두 점 사이의 거리, 중점, 수직이등분선, 꼬인 위치, 교각, 맞꼭지각, 엇각, 동위각, 평각, 직교, 수선의 발, 작도, 대변, 대각, 삼각형의 합동 조건, 내각, 외각, 부채꼴, 중심각, 호, 현, 활꼴, 할선, 다면체, 각뿔, 정다면체, 회전체, 회전축, 원뿔대, 증명, 접선, 접점, 접한다, 외심, 외접, 외접원, 내심, 내접, 내접원, 중선, 무게중심, 닮음, 닮음비, 삼각형의 닮음 조건, 피타고라스 정리, 삼각비, 사인, 코사인, 탄젠트, 원주각, $\overline{AB}$, $\overleftrightarrow{AB}$, $\overrightarrow{AB}$, $/ /$, $\angle ABC$, $\perp$, $\triangle ABC$, $\equiv$, $\overset{\frown}{AB}$, $\pi$, $\square ABCD$, $\sim$, $\sin A$, $\cos A$, $\tan A$'를 다룬다.</p>
-        
-        <p>&lt;합동, 닮음 지도&gt;</p>
-        <p>② 다양한 <span class="blank hidden" data-answer="교구나">교구나</span> <span class="blank hidden" data-answer="공학">공학</span> 도구를 이용하여 <span class="blank hidden" data-answer="합동과">합동과</span> <span class="blank hidden" data-answer="닮음의">닮음의</span> 의미를 이해하게 한다.</p>
-        
-        <p>&lt;다각형, 다면체 관련&gt;</p>
-        <p>③ 다각형과 다면체는 그 모양이 <span class="blank hidden" data-answer="볼록인">볼록인</span> 경우만 다룬다.</p>
-        
-        <p>&lt;평면도형과 입체도형의 관계&gt;</p>
-        <p>④ 간단한 입체도형의 <span class="blank hidden" data-answer="단면을">단면을</span> 관찰하는 활동과 <span class="blank hidden" data-answer="전개도를">전개도를</span> 접어 간단한 입체도형을 <span class="blank hidden" data-answer="만드는">만드는</span> 활동을 통해 <span class="blank hidden" data-answer="평면도형과">평면도형과</span> <span class="blank hidden" data-answer="입체도형의">입체도형의</span> <span class="blank hidden" data-answer="관계를">관계를</span> <span class="blank hidden" data-answer="직관적으로">직관적으로</span> <span class="blank hidden" data-answer="이해">이해</span>하게 한다.</p>
-        
-        <p>&lt;도형의 성질 지도&gt;</p>
-        <p>⑤ 다양한 <span class="blank hidden" data-answer="교구나">교구나</span> <span class="blank hidden" data-answer="공학">공학</span> 도구를 이용하여 도형을 <span class="blank hidden" data-answer="그리거나">그리거나</span> <span class="blank hidden" data-answer="만들어">만들어</span> 보는 활동을 통해 도형의 <span class="blank hidden" data-answer="성질을">성질을</span> <span class="blank hidden" data-answer="추론하고">추론하고</span> <span class="blank hidden" data-answer="토론할">토론할</span> 수 있게 한다.</p>
-        
-        <p>&lt;도형의 성질 정당화 방법&gt;</p>
-        <p>⑥ 도형의 성질을 <span class="blank hidden" data-answer="이해하고">이해하고</span> <span class="blank hidden" data-answer="정당화하는">정당화하는</span> 방법은 <span class="blank hidden" data-answer="관찰이나">관찰이나</span> <span class="blank hidden" data-answer="실험을">실험을</span> 통한 확인, <span class="blank hidden" data-answer="사례">사례</span>나 <span class="blank hidden" data-answer="근거">근거</span> 제시를 통한 <span class="blank hidden" data-answer="설명">설명</span>, <span class="blank hidden" data-answer="유사성">유사성</span>에 근거한 <span class="blank hidden" data-answer="추론">추론</span>, <span class="blank hidden" data-answer="증명">증명</span> 등이 있으며, 이를 학생 <span class="blank hidden" data-answer="수준에">수준에</span> 맞게 활용할 수 있다.</p>
-        
-        <p>&lt;정당화 지도 관련&gt;</p>
-        <p>⑦ 도형의 성질을 정당화하는 <span class="blank hidden" data-answer="다양한">다양한</span> <span class="blank hidden" data-answer="방법을">방법을</span> 통해 <span class="blank hidden" data-answer="체계적으로">체계적으로</span> 사고하고 타인을 <span class="blank hidden" data-answer="논리적으로">논리적으로</span> <span class="blank hidden" data-answer="설득">설득</span>하는 태도를 갖게 한다.</p>
-        
-        <p>&lt;증명 지도 관련&gt;</p>
-        <p>⑧ 증명을 할 때, '<span class="blank hidden" data-answer="가정">가정</span>', '<span class="blank hidden" data-answer="결론">결론</span>' 용어는 다루지 않는다.</p>
-        
-        <p>&lt;피타고라스 정리, 삼각비 관련&gt;</p>
-        <p>⑨ <span class="blank hidden" data-answer="수학사를">수학사를</span> 통하여 <span class="blank hidden" data-answer="피타고라스">피타고라스</span> 정리, <span class="blank hidden" data-answer="삼각비에">삼각비에</span> 관심을 가지고 그 유용성을 인식하게 한다.</p>
-        
-        <p>&lt;삼각비 관련&gt;</p>
-        <p>⑩ <span class="blank hidden" data-answer="삼각비">삼각비</span> 사이의 <span class="blank hidden" data-answer="관계는">관계는</span> 다루지 않는다.</p>
-        <p>⑪ 삼각비의 값은 <span class="blank hidden" data-answer="0°">0°</span>에서 <span class="blank hidden" data-answer="90°">90°</span>까지의 각도에 대한 것만 다룬다.</p>
-        
-        <p>&lt;도형의 성질 관련&gt;</p>
-        <p>⑫ 주변의 <span class="blank hidden" data-answer="건축물">건축물</span>, <span class="blank hidden" data-answer="문화유산">문화유산</span>, <span class="blank hidden" data-answer="예술 작품">예술 작품</span> 등에서 도형의 <span class="blank hidden" data-answer="성질을">성질을</span> 찾게 하여 수학에 대한 <span class="blank hidden" data-answer="흥미와">흥미와</span> <span class="blank hidden" data-answer="관심을">관심을</span> 가질 수 있게 한다.</p>
-        
-        <p>&lt;평면도형, 입체도형 지도 관련&gt;</p>
-        <p>⑬ 복잡하게 변형된 <span class="blank hidden" data-answer="평면도형의">평면도형의</span> 넓이와 둘레의 길이, 입체도형의 <span class="blank hidden" data-answer="겉넓이와">겉넓이와</span> <span class="blank hidden" data-answer="부피를">부피를</span> 구하는 문제는 다루지 않는다.</p>
-        
-        <p>&lt;정당화 평가 관련&gt;</p>
-        <p>⑭ 도형의 성질을 <span class="blank hidden" data-answer="이해하고">이해하고</span> <span class="blank hidden" data-answer="정당화하는">정당화하는</span> 것을 평가할 때는 <span class="blank hidden" data-answer="증명">증명</span> 과정에서 지나치게 <span class="blank hidden" data-answer="엄밀한">엄밀한</span> <span class="blank hidden" data-answer="형식">형식</span> 논리 <span class="blank hidden" data-answer="규칙의">규칙의</span> 이용을 요구하는 문제는 다루지 않는다.</p>
-        
-        <p>&lt;원주각 활용 관련&gt;</p>
-        <p>⑮ <span class="blank hidden" data-answer="원과">원과</span> <span class="blank hidden" data-answer="비례에">비례에</span> 관한 성질은 다루지 않는다.</p>
-        <p>⑯ '(도형의) 대응', '삼각형의 중점연결정리', '접선의 길이' 용어는 교수·학습 상황에서 사용할 수 있다.</p>
-    </div>
-
-    <!-- 탭 5: 중학교 '자료와 가능성' 성취기준 -->
-    <div id="tab5" class="tab-content">
-        <div class="concept-title">'자료와 가능성' 성취기준</div>
-        <p>1 대표값</p>
-        <p>[9수04-01] 중앙값, 최빈값의 뜻을 알고, <span class="blank hidden" data-answer="자료">자료</span>의 <span class="blank hidden" data-answer="특성">특성</span>에 따라 적절한 <span class="blank hidden" data-answer="대푯값을">대푯값을</span> 선택하여 구할 수 있다.</p>
-        <p>2 도수분포표와 상대도수</p>
-        <p>[9수04-02] 자료를 줄기와 잎 그림, 도수분포표, 히스토그램, 도수분포다각형으로 나타내고 해석할 수 있다.</p>
-        <p>[9수04-03] 상대도수를 구하고, 상대도수의 분포를 <span class="blank hidden" data-answer="표나">표나</span> <span class="blank hidden" data-answer="그래프로">그래프로</span> 나타내고 <span class="blank hidden" data-answer="해석할">해석할</span> 수 있다.</p>
-        <p>[9수04-04] 통계적 탐구 문제를 <span class="blank hidden" data-answer="설정하고">설정하고</span>, 공학 도구를 이용하여 자료를 <span class="blank hidden" data-answer="수집하여">수집하여</span> <span class="blank hidden" data-answer="분석하고">분석하고</span>, 그 결과를 <span class="blank hidden" data-answer="해석할">해석할</span> 수 있다.</p>
-        <p>3 경우의 수와 확률</p>
-        <p>[9수04-05] 경우의 수를 구할 수 있다.</p>
-        <p>[9수04-06] 확률의 <span class="blank hidden" data-answer="개념과">개념과</span> 그 기본 <span class="blank hidden" data-answer="성질을">성질을</span> 이해하고, 확률을 구할 수 있다.</p>
-        <p>4 산포도</p>
-        <p>[9수04-07] 분산과 표준편차를 구하고 자료의 <span class="blank hidden" data-answer="분포를">분포를</span> <span class="blank hidden" data-answer="설명할">설명할</span> 수 있다.</p>
-        <p>5 상자그림과 산점도</p>
-        <p>[9수04-08] 공학 도구를 이용하여 자료를 <span class="blank hidden" data-answer="상자그림으로">상자그림으로</span> 나타내고 <span class="blank hidden" data-answer="분포를">분포를</span> <span class="blank hidden" data-answer="비교할">비교할</span> 수 있다.</p>
-        <p>[9수04-09] 자료를 <span class="blank hidden" data-answer="산점도로">산점도로</span> 나타내고 <span class="blank hidden" data-answer="상관관계를">상관관계를</span> 말할 수 있다.</p>
-
-        <div class="concept-title">'자료와 가능성' 성취기준 해설</div>
-        <p>&lt;대푯값&gt;</p>
-        <p>① [9수04-01] 대푯값에는 초등학교에서 학습한 <span class="blank hidden" data-answer="평균">평균</span> 이외에도 <span class="blank hidden" data-answer="중앙값">중앙값</span>, <span class="blank hidden" data-answer="최빈값">최빈값</span>이 있음을 알고 그 <span class="blank hidden" data-answer="필요성을">필요성을</span> 인식하게 한다. 자료의 <span class="blank hidden" data-answer="특성">특성</span>에 따라 적절한 <span class="blank hidden" data-answer="대푯값을">대푯값을</span> <span class="blank hidden" data-answer="선택하여">선택하여</span> 구해 보고, 각 대푯값이 <span class="blank hidden" data-answer="어떤 상황에서">어떤 상황에서</span> <span class="blank hidden" data-answer="유용하게">유용하게</span> 사용될 수 있는지 <span class="blank hidden" data-answer="토론하게">토론하게</span> 한다.</p>
-        <p>&lt;상대도수&gt;</p>
-        <p>② [9수04-03] 상대도수는 <span class="blank hidden" data-answer="도수의">도수의</span> <span class="blank hidden" data-answer="총합이">총합이</span> 다른 <span class="blank hidden" data-answer="두 집단의">두 집단의</span> 분포를 <span class="blank hidden" data-answer="비교하는">비교하는</span> 상황에서 <span class="blank hidden" data-answer="간단히">간단히</span> 다루고, 상대도수의 <span class="blank hidden" data-answer="필요성과">필요성과</span> <span class="blank hidden" data-answer="유용성을">유용성을</span> 인식하게 한다.</p>
-        <p>&lt;통계적 탐구 문제 해결&gt;</p>
-        <p>③ [9수04-04] 다양한 맥락에서 해결하고자 하는 <span class="blank hidden" data-answer="통계적 탐구">통계적 탐구</span> 문제를 설정하고 적절한 <span class="blank hidden" data-answer="계획을">계획을</span> 세워 <span class="blank hidden" data-answer="자료">자료</span>를 <span class="blank hidden" data-answer="수집">수집</span>하게 한다. 수집한 자료를 자료의 <span class="blank hidden" data-answer="특성과">특성과</span> <span class="blank hidden" data-answer="목적에">목적에</span> 맞게 <span class="blank hidden" data-answer="표">표</span>, <span class="blank hidden" data-answer="그래프">그래프</span>, <span class="blank hidden" data-answer="수치">수치</span> 등으로 나타내어 <span class="blank hidden" data-answer="분석하고">분석하고</span>, 그 <span class="blank hidden" data-answer="결과">결과</span>를 <span class="blank hidden" data-answer="탐구">탐구</span> 문제와 연결하여 <span class="blank hidden" data-answer="해석하게">해석하게</span> 한다. <span class="blank hidden" data-answer="자료를">자료를</span> <span class="blank hidden" data-answer="수집하고">수집하고</span> <span class="blank hidden" data-answer="분석할">분석할</span> 때는 <span class="blank hidden" data-answer="인터넷 검색">인터넷 검색</span>, <span class="blank hidden" data-answer="웹 기반 소프트웨어">웹 기반 소프트웨어</span>, <span class="blank hidden" data-answer="통계 프로그램">통계 프로그램</span> 등을 활용하게 한다. 수집한 자료나 분석 결과가 <span class="blank hidden" data-answer="적절한지">적절한지</span> <span class="blank hidden" data-answer="판단하여">판단하여</span> <span class="blank hidden" data-answer="계획을">계획을</span> <span class="blank hidden" data-answer="수정하고">수정하고</span>, <span class="blank hidden" data-answer="통계적 근거를">통계적 근거를</span> 바탕으로 <span class="blank hidden" data-answer="토론하는">토론하는</span> 등 <span class="blank hidden" data-answer="통계적 문제해결">통계적 문제해결</span><span class="blank hidden" data-answer="과정에">과정에</span> <span class="blank hidden" data-answer="주도적으로">주도적으로</span> 참여하게 한다.</p>
-        <p>&lt;경우의 수 지도 관련&gt;</p>
-        <p>④ [9수04-05] 경우의 수는 <span class="blank hidden" data-answer="두">두</span> 경우의 수를 <span class="blank hidden" data-answer="합하거나">합하거나</span> <span class="blank hidden" data-answer="곱하는">곱하는</span> 경우 정도로만 다루고, <span class="blank hidden" data-answer="순열과">순열과</span> <span class="blank hidden" data-answer="조합을">조합을</span> 이용하면 쉽게 해결되는 등의 복잡한 경우의 수를 구하는 문제는 다루지 않는다.</p>
-        <p>&lt;확률 개념 지도&gt;</p>
-        <p>⑤ [9수04-06] 확률은 <span class="blank hidden" data-answer="실험이나">실험이나</span> <span class="blank hidden" data-answer="관찰을">관찰을</span> 통해 구한 <span class="blank hidden" data-answer="상대도수로서의">상대도수로서의</span> 의미와 <span class="blank hidden" data-answer="경우의 수의">경우의 수의</span> <span class="blank hidden" data-answer="비율로서의">비율로서의</span> 의미를 <span class="blank hidden" data-answer="연결하여">연결하여</span> 이해하게 한다. <span class="blank hidden" data-answer="경우의 수의 비율">경우의 수의 비율</span>로 확률을 다룰 때, 각 경우가 <span class="blank hidden" data-answer="발생할">발생할</span> <span class="blank hidden" data-answer="가능성이">가능성이</span> <span class="blank hidden" data-answer="동등하다는">동등하다는</span> 것을 <span class="blank hidden" data-answer="가정한다는">가정한다는</span> 점에 유의하게 한다.</p>
-        <p>&lt;상자그림&gt;</p>
-        <p>⑥ [9수04-08] 상자그림을 다룰 때에는 <span class="blank hidden" data-answer="두 집단">두 집단</span>의 <span class="blank hidden" data-answer="분포를">분포를</span> <span class="blank hidden" data-answer="비교하고">비교하고</span> <span class="blank hidden" data-answer="해석하는">해석하는</span> 활동에 <span class="blank hidden" data-answer="중점을">중점을</span> 두고, 이를 통해 상자그림의 <span class="blank hidden" data-answer="유용성을">유용성을</span> 인식하게 한다.</p>
-        <p>&lt;상관관계&gt;</p>
-        <p>⑦ [9수04-09] 상관관계는 양의 상관관계, 음의 상관관계, 상관관계가 없는 경우로 구분하여 다룬다.</p>
-
-        <div class="concept-title">'자료와 가능성' 성취기준 적용 시 고려 사항</div>
-        <p>① '자료와 가능성' 영역에서는 용어와 기호로 '변량, 대푯값, 중앙값, 최빈값, 줄기와 입 그림, 계급, 계급의 크기, 도수, 도수분포표, 히스토그램, 도수분포다각형, 상대도수, 사건, 확률, 산포도, 편차, 분산, 표준편차, 사분위수, 상자그림, 산점도, 상관관계'를 다룬다.</p>
-        <p>&lt;오류 찾는 활동&gt;</p>
-        <p>② <span class="blank hidden" data-answer="눈금">눈금</span> 등을 <span class="blank hidden" data-answer="부적절하게">부적절하게</span> 사용하여 <span class="blank hidden" data-answer="자료를">자료를</span> <span class="blank hidden" data-answer="부정확하게">부정확하게</span> 나타낸 <span class="blank hidden" data-answer="표나">표나</span> <span class="blank hidden" data-answer="그래프에서">그래프에서</span> <span class="blank hidden" data-answer="오류를">오류를</span> 찾는 <span class="blank hidden" data-answer="활동을">활동을</span> 통해 <span class="blank hidden" data-answer="비판적으로">비판적으로</span> 사고하는 태도를 갖게 한다.</p>
-        <p>&lt;공학적 도구 이용&gt;</p>
-        <p>③ 자료를 <span class="blank hidden" data-answer="수집하고">수집하고</span> <span class="blank hidden" data-answer="정리하여">정리하여</span> <span class="blank hidden" data-answer="표나">표나</span> <span class="blank hidden" data-answer="그래프로">그래프로</span> 나타내거나 <span class="blank hidden" data-answer="대푯값과">대푯값과</span> <span class="blank hidden" data-answer="산포도를">산포도를</span> 구할 때 공학 도구를 이용할 수 있게 하고, 공학 도구의 <span class="blank hidden" data-answer="편리함과">편리함과</span> 유용성을 인식하게 한다.</p>
-        <p>&lt;범 교과 학습 주제&gt;</p>
-        <p>④ '자료와 가능성' 영역에서 <span class="blank hidden" data-answer="환경">환경</span>, <span class="blank hidden" data-answer="지속가능한 발전">지속가능한 발전</span> 등 <span class="blank hidden" data-answer="범교과">범교과</span> 학습 주제를 소재로 다루고, 이를 탐구하는 과정에서 <span class="blank hidden" data-answer="체계적으로">체계적으로</span> 사고하고 <span class="blank hidden" data-answer="합리적으로">합리적으로</span> 의사 결정을 할 수 있게 한다.</p>
-        <p>&lt;진로 연계 교육&gt;</p>
-        <p>⑤ 진로연계교육을 실시할 때는 학생의 <span class="blank hidden" data-answer="흥미">흥미</span>, <span class="blank hidden" data-answer="관심">관심</span>, <span class="blank hidden" data-answer="진로">진로</span>에 맞는 탐구 문제를 설정하여 <span class="blank hidden" data-answer="통계 프로젝트">통계 프로젝트</span>를 수행하게 할 수 있다.</p>
-        <p>⑥ '계급값', '경우의 수' 용어는 교수·학습 상황에서 사용할 수 있다.</p>
-    </div>
-
-    <!-- 탭 6: 고등학교 성취기준 -->
-    <div id="tab6" class="tab-content">
-        <div class="concept-title">[공통수학1·2] 주요 항목 정리</div>
-        <p>&lt;최대·최소 관련&gt;</p>
-        <p>성취기준 해설: [10공수1-02-06] 이차함수의 최대, 최소는 <span class="blank hidden" data-answer="제한된 범위에서">제한된 범위에서</span>만 다룬다.</p>
-        <p>(중학교) 이차함수 $y=f(x)$에서 최댓값과 최솟값은 <span class="blank hidden" data-answer="x의 범위가 실수 전체인 경우">x의 범위가 실수 전체인 경우</span>만 다룬다.</p>
-        
-        <p>&lt;행렬&gt;</p>
-        <p>성취기준 해설: [10공수1-04-02] 행렬의 연산에서는 행렬의 <span class="blank hidden" data-answer="덧셈">덧셈</span>, <span class="blank hidden" data-answer="뺄셈">뺄셈</span>, <span class="blank hidden" data-answer="실수배">실수배</span> 및 <span class="blank hidden" data-answer="곱셈">곱셈</span>을 다루고, <span class="blank hidden" data-answer="행과 열의 수가 각각 2를 넘지 않는">행과 열의 수가 각각 2를 넘지 않는</span> 범위에서 행렬의 곱셈을 할 수 있게 한다.</p>
-        <p>성취기준 적용 시 고려사항: 행렬의 연산에 관한 <span class="blank hidden" data-answer="대수적 구조의 성질">대수적 구조의 성질</span>을 일반화하여 법칙으로 다루지 않으며, <span class="blank hidden" data-answer="지나치게 복잡한 행렬의 연산 문제">지나치게 복잡한 행렬의 연산 문제</span> 는 다루지 않는다.</p>
-
-        <p>&lt;내분&gt;</p>
-        <p>① 성취기준 해설: [10공수2-01-01] 선분의 내분을 도입하기 전에 <span class="blank hidden" data-answer="두 점 사이의 거리">두 점 사이의 거리</span>를 구하는 방법을 다루고, 내분은 <span class="blank hidden" data-answer="수직선 위에서">수직선 위에서</span>, <span class="blank hidden" data-answer="좌표평면 위에서">좌표평면 위에서</span>구할 수 있도록 점차 확장하여 다룬다.</p>
-
-        <div class="concept-title">[확률과 통계] 주요 항목 정리</div>
-        <p>&lt;수학적 통계, 확률적 통계&gt;</p>
-        <p>① 성취기준 해설: [12확통02-01] 확률 개념을 도입할 때 <span class="blank hidden" data-answer="수학적 확률과 통계적 확률">수학적 확률과 통계적 확률</span>을 사용하며, 중학교에서 학습한 확률과 연계되는 내용은 <span class="blank hidden" data-answer="필요할 경우에만">필요할 경우에만</span> 간단히 다룬다.</p>
-        <p>② 성취기준 적용 시 고려사항: 통계적 확률과 수학적 확률의 관계를 이해하고 통계적 확률을 다룰 때 <span class="blank hidden" data-answer="충분히 많은 횟수의 시행">충분히 많은 횟수의 시행</span>을 구현하기 위하여 <span class="blank hidden" data-answer="공학 도구">공학 도구</span>를 이용할 수 있다.</p>
-
-        <p>&lt;모비율&gt;</p>
-        <p>① 성취기준 해설: [12확통03-06] 표본평균 및 표본비율은 추출한 표본에 따라 다른 값을 가질 수 있는 <span class="blank hidden" data-answer="확률 변수">확률 변수</span>임을 알게 하고, 모평균 및 모비율의 추정에 관한 <span class="blank hidden" data-answer="수학적 원리">수학적 원리</span>를 이해하게 한다. 모평균 추정은 모집단의 분포가 <span class="blank hidden" data-answer="정규분포">정규분포</span>인 경우만 다루고, <span class="blank hidden" data-answer="모비율">모비율</span>의 추정은 표본의 크기가 <span class="blank hidden" data-answer="큰 경우만">큰 경우만</span> 다룬다.</p>
-        <p>② 성취기준 해설: [12확통03-07] <span class="blank hidden" data-answer="공학 도구를">공학 도구를</span> 이용하여 실생활 자료에서 모평균 또는 모비율을 추정하고, 그 결과를 해석하는 과정을 통해 <span class="blank hidden" data-answer="유용성을">유용성을</span> 인식할 수 있다.</p>
-        <p>③ 성취기준 적용 시 고려사항: 모평균 및 모비율의 추정을 지도할 때, <span class="blank hidden" data-answer="복잡한 신뢰구간의 계산">복잡한 신뢰구간의 계산</span>은 다루지 않는다.</p>
-        <p>④ 성취기준 적용 시 고려사항: 모집단의 설정, 표본추출, 모평균 또는 모비율의 추정과 그 결과의 해석을 평가할 때는 <span class="blank hidden" data-answer="통계적 문제해결에">통계적 문제해결에</span> 기반한 평가를 할 수 있다.</p>
-
-        <div class="concept-title">[미적분1] 주요 항목 정리</div>
-        <p>&lt;정적분 정의&gt;</p>
-        <p>① 성취기준 해설: [12미적1-03-03] <span class="blank hidden" data-answer="닫힌 구간 [a, b]에서 연속함수 f(x)의 함숫값이 음이 아닌 경우 함수 f(x)의 그래프와 x축으로 둘러싸인 도형의 넓이">닫힌 구간 $[a, b]$에서 연속함수 $f(x)$의 함숫값이 음이 아닌 경우 함수 $f(x)$의 그래프와 $x$축으로 둘러싸인 도형의 넓이</span>를 $f(x)$의 $a$에서 $b$까지의 정적분이라 하고, 이를 <span class="blank hidden" data-answer="일반적인 연속함수">일반적인 연속함수</span>에 대한 정적분의 정의로 확장한다.</p>
-    </div>
+    <!-- 탭 6: 고등학교 -->
+    <div id="tab6" class="tab-content"></div>
 
     <!-- 탭: 수교론 암기 -->
     <div id="tab-edumath" class="tab-content">
         <div class="concept-title">🧩 수교론 핵심 키워드 암기 카드</div>
         <div style="text-align: center; margin-bottom: 20px;">
             <button onclick="shuffleCards()" style="background-color: #3498db; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-right: 10px;">🔀 랜덤 섞기</button>
-            <button onclick="resetCards()" style="background-color: #555; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;">🔄 기본 정렬</button>
+            <button onclick="resetCards()" style="background-color: #555; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-right: 10px;">🔄 기본 정렬</button>
+            <button id="toggleHiddenBtn" onclick="toggleShowHiddenCards()" style="background-color: #2c2c2c; color: #b0b0b0; border: 1px solid #444; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.2s;">👓 숨김 (OFF)</button>
         </div>
-        
-        <div id="card-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
-            <!-- 카드 아이템들이 자바스크립트에 의해 동적으로 생성됩니다 -->
-        </div>
+        <div id="card-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;"></div>
     </div>
 
     <!-- 탭: 교육학 암기 카드 -->
@@ -554,17 +218,12 @@
             <button onclick="shuffleEduCards()" style="background-color: #3498db; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-right: 10px;">🔀 랜덤 섞기</button>
             <button onclick="resetEduCards()" style="background-color: #555; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;">🔄 기본 정렬</button>
         </div>
-        
-        <div id="edu-card-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
-            <!-- 카드 아이템들이 자바스크립트에 의해 동적으로 생성됩니다 -->
-        </div>
+        <div id="edu-card-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;"></div>
     </div>
 
-<!-- 탭: 전공 공식 요약 노트 -->
+    <!-- 탭: 내용학 공식 요약 노트 -->
     <div id="tab-math" class="tab-content">
         <div class="concept-title">📐 자주 잊어버리는 정의정리</div>
-        
-<!-- 과목별 서브 탭 버튼 메뉴 (10개 과목) -->
         <div class="sub-tab-menu" style="display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0; padding-bottom: 5px;">
             <button class="sub-tab-btn active" onclick="filterFormulas('all', event)" style="background-color: #3498db; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">전체 보기</button>
             <button class="sub-tab-btn" onclick="filterFormulas('미적', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">미적</button>
@@ -578,31 +237,49 @@
             <button class="sub-tab-btn" onclick="filterFormulas('이산', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">이산</button>
             <button class="sub-tab-btn" onclick="filterFormulas('확통', event)" style="background-color: #2c2c2c; color: #b0b0b0; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">확통</button>
         </div>
-
-        <!-- 공식 리스트가 출력될 공간 -->
-        <div id="formula-list-container" style="margin-top: 20px;">
-            <!-- 리스트 아이템들이 자바스크립트에 의해 동적으로 생성됩니다 -->
-        </div>
+        <div id="formula-list-container" style="margin-top: 20px;"></div>
     </div>
-
 </div>
 
+<!-- 데이터 파일들을 먼저 로드합니다 -->
+<script src="mathedu-data.js"></script>
+<script src="edu-data.js"></script>
+<script src="content-data.js"></script>
+<script src="curriculum-data.js"></script>
+
 <script>
-    // 1. 페이지 로드 시 저장된 탭과 스크롤 위치 복원
+    let cardsData = [...originalCardsData];
+    let eduCardsData = [...originalEduCardsData];
+    let showHiddenMode = false;
+
+    function toggleShowHiddenCards() {
+        showHiddenMode = !showHiddenMode;
+        const btn = document.getElementById('toggleHiddenBtn');
+        if (showHiddenMode) {
+            btn.style.backgroundColor = '#3498db';
+            btn.style.color = 'white';
+            btn.style.borderColor = '#3498db';
+            btn.textContent = '👓 숨김 (ON)';
+        } else {
+            btn.style.backgroundColor = '#2c2c2c';
+            btn.style.color = '#b0b0b0';
+            btn.style.borderColor = '#444';
+            btn.textContent = '👓 숨김 (OFF)';
+        }
+        renderCards();
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
         const savedTab = localStorage.getItem('selectedTab');
         const savedScroll = localStorage.getItem('scrollPos');
 
         if (savedTab) {
-            // 모든 탭 내용 숨기기 및 active 해제
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
-            // 저장된 탭 보이기
             const targetTab = document.getElementById(savedTab);
             if (targetTab) targetTab.classList.add('active');
 
-            // 해당하는 버튼 active 설정
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 if (btn.getAttribute('onclick').includes(`('${savedTab}',`)) {
                     btn.classList.add('active');
@@ -615,15 +292,13 @@
                 window.scrollTo(0, parseInt(savedScroll));
             }, 100);
         }
-        // 탭1 서브탭 상태 복원 추가
+
         const savedPedagogyCategory = localStorage.getItem('selectedPedagogyCategory');
         if (savedPedagogyCategory) {
             currentPedagogyCategory = savedPedagogyCategory;
-            
-            // 해당 서브탭 버튼의 active 스타일 적용
             document.querySelectorAll('#tab1 .sub-tab-btn').forEach(btn => {
                 if (btn.getAttribute('onclick').includes(`'${savedPedagogyCategory}'`)) {
-                    btn.classList.add('active'); // active 클래스나 배경색 설정
+                    btn.classList.add('active');
                     btn.style.backgroundColor = '#3498db';
                     btn.style.color = 'white';
                 } else {
@@ -633,44 +308,56 @@
                 }
             });
         }
-        // 초기 렌더링 함수들 호출 (이 부분이 빠져있으면 화면에 그려지지 않습니다)
-        renderPedagogyList(); // 탭1(교수·학습 방법) 렌더링 추가
+        if (document.getElementById('tab2') && window.tab2Data) document.getElementById('tab2').innerHTML = window.tab2Data;
+        if (document.getElementById('tab3') && window.tab3Data) document.getElementById('tab3').innerHTML = window.tab3Data;
+        if (document.getElementById('tab4') && window.tab4Data) document.getElementById('tab4').innerHTML = window.tab4Data;
+        if (document.getElementById('tab5') && window.tab5Data) document.getElementById('tab5').innerHTML = window.tab5Data;
+        if (document.getElementById('tab6') && window.tab6Data) document.getElementById('tab6').innerHTML = window.tab6Data;
+
+        if (window.renderMathInElement) {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
+            });
+        }
+
+        renderPedagogyList();
         renderCards();
         renderEduCards();
         renderFormulaList();
     });
 
-    // 2. 스크롤 위치 저장
     window.addEventListener('scroll', () => {
         localStorage.setItem('scrollPos', window.scrollY);
     });
 
-    // 3. 통합 탭 전환 함수
     function switchTab(tabId, event) {
         localStorage.setItem('selectedTab', tabId);
-
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active');
-        });
-        
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
         document.getElementById(tabId).classList.add('active');
-        
         if (event && event.currentTarget) {
             event.currentTarget.classList.add('active');
         }
 
-        // ✨ 탭을 바꿨을 때 검색창에 검색어가 입력되어 있다면 즉시 검색 상태 유지하기
+        if (window.renderMathInElement && targetTab) {
+            renderMathInElement(targetTab, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
+            });
+        }
+
         const searchKeyword = document.getElementById('searchInput').value.trim();
         if (searchKeyword !== '') {
             filterContent();
         }
     }
 
-    // 빈칸 클릭 토글 기능
     document.addEventListener('click', (event) => {
         const el = event.target;
         if (el.classList.contains('blank')) {
@@ -685,957 +372,493 @@
         }
     });
 
-    // 화면에 처음 그려질 때 고정된 탭(예: 탭2~5 등)에 있는 빈칸들의 초기 텍스트 설정
     document.querySelectorAll('.tab-content:not(#tab1) .blank').forEach(el => {
         if (!el.textContent.includes('□')) {
             el.textContent = '[□□]';
         }
     });
 
-    
-// 암기 카드 데이터 원본
-const originalCardsData = [
-    { q: "총론의 인간상", a: "포용성과 창의성을 갖춘 주도적인 사람" },
-    { q: "총론의 핵심역량", a: "자기관리, 지식정보처리, 창의적사고, 심미적감성, 협력적소통, 공동체" },
-    { q: "수학교과 역량", a: "문제해결, 추론, 의사소통, 연결, 정보처리" },
-    { q: "내용체계의 구성", a: "핵심아이디어, 내용요소(지식이해, 과정기능, 가치태도)" },
-    { q: "수학과의 영역 (초·중)", a: "수와 연산, 변화와 관계, 도형과 측정, 자료와 가능성" },
-    { q: "교육과정 문서 목차 (일러두기에서)", a: "교육과정설계의 개요, 성격, 목표, 내용체계, 성취기준, 교수학습, 평가" },
-    { q: "고등학교 선택 과목 체계", a: "공통: 공통수학1·2 / 일반선택: 대수, 미적분1, 확률과통계 / 진로선택: 미적분2, 기하, 경제수학, 인공지능수학 / 융합선택: (교육과정 상 과목)" },
-    { q: "수학교육 발달 순서", a: "수학교육근대화운동 -> 수학교육현대화운동 -> 기본으로 돌아가기" },
-    { q: "클라인 무어 키워드", a: "메란교육과정, 감나지움/실험실법" },
-    { q: "우리나라 교육과정", a: "1차: 경험 / 2차: 교과 / 3차: 학문 / 4차: 반성 / 7차: 수준별 / 09개정: 학년군" },
-    { q: "형식 불역의 원리", a: "기존 수체계에서 성립하던 성질이 확장된 수체계에서도 변하지 않고 성립" },
-    { q: "음수 발생 맥락", a: "방정식의 해를 확장하고자 하는 대수적 필요성, 방정식 풀이의 일반성을 확보하려는 필요성" },
-    { q: "음수 학습 방해 요인", a: "수 개념을 양적인 관념, 크기와 연관 짓는 것" },
-    { q: "인식론적 장애", a: "어떤 특정 맥락에서는 성공적이고 유용한 지식으로 학생의 인지구조의 일부가 되어 있지만 새로운 문제 상황에서는 부적합해진 지식" },
-    { q: "셈돌모델 특징", a: "소멸법칙, 정수를 동치류로 정의, 곱셈과 나눗셈을 설명하는 데는 한계를 갖는다. 음수 곱하기 음수가 양수가 된다는 것을 그냥 받아들이게 하는 것과 다르지 않다." },
-    { q: "수직선 모델에서 음수 부호의 의미", a: "뺄셈, 왼쪽을 향한다, 반대방향" },
-    { q: "형식적 지도 모델", a: "형식불역의 원리(x+a=0의 해로 음수 -a를 정의), 귀납적 외삽법, 해석기하학(기하적 대수적 형식불역의 원리, 프로이덴탈)" },
-    { q: "형식적 모델의 장단점", a: "장점: 대수적 성질 명확한 증명 / 단점: 실제적이고 유용한 수체계 가치 경험 못함" },
-    { q: "미적분학 기본정리 1, 2 교과서 명칭", a: "1. 적분과 미분의 관계 / 2. 미적분의 기본정리" },
-    { q: "연합주의 (손다이크) 키워드 2개", a: "효과의 법칙(자극-반응), 추론적사고(여러 생각 선택하여 습관으로 해결 불가한 새로운 문제 결합)" },
-    { q: "형태심리학 키워드 2개", a: "관계적 결정성의 원리(전체는 요소의 단순한 모자이크적 집합 아님, 내적관련성, 부분은 전체에 의해 규정), 통찰(내적인 구조적 관련성 파악)" },
-    { q: "연합주의와 형태심리학 차이", a: "연합주의: 과거 경험으로부터 해결 습관들의 응용에 관심 / 형태심리학: 새로운 상황에 대한 창의적이고 신기한 해결에 관심" },
-    { q: "베르트하이머 키워드 2개", a: "평행사변형 기능적 동질성 이해, 생산적 사고(전체에 대한 부분의 구조적 기능 파악)" },
-    { q: "폴리아의 문제해결 촉진 요소", a: "우회로 질문, 통찰력" },
-    { q: "카토나의 학습 방법", a: "규칙성 찾는 유의미 학습" },
-    { q: "피아제: 경험적 추상화", a: "아동의 외부대상이 갖는 성질로부터 일반적 지식을 끌어내는 것" },
-    { q: "피아제: 반영적 추상화", a: "아동의 활동에 대한 일반적 조정으로부터 이루어지는 것" },
-    { q: "피아제: 의사경험적 추상화", a: "활동으로 구성, 결과확인은 외부대상" },
-    { q: "피아제 추상화 관련 용어 (반사, 내면화, 주제화)", a: "반사: 전단계에서 얻은 것을 상위 단계로 옮김 / 내면화: 행동과 관련된 어떤 내적 구성이 이루어져서 행동을 의식하고 다른 행동과 결합할 수 있게 하는 것 / 주제화: 하위 단계에서 사고의 도구였던 것이 사고의 대상을 삼는 것" },
-    { q: "피아제 동화와 조절", a: "동화: 기존의 어떤 쉠을 고수하면서 가능한 넓은 범위의 상황을 그에 종속시키려고 시도하는 보수적 기능으로서 기존의 인지구조에 대한 대상의 해석 / 조절: 당면한 문제를 해결하기 위해 자신의 쉠을 조절, 분화하는 적응 기능" },
-    { q: "피아제 이론의 시사점", a: "인지적 불균형의 갈등 상황 제공, 반성적 사고 촉진 위한 교사의 의도적 노력 필요" },
-    { q: "브루너 키워드 3개", a: "지식의 구조(각 학문의 기저를 이루는 핵심적 개념 원리, 고등 지식과 초보 지식 사이 간격 좁힘, 수학적 안목 형성이 수학교육 목적), 발견학습(지식의 구조에 대한 발견을 통하여 수학적 안목 형성), EIS이론(활동적표현, 영상적표현, 상징적표현" },
-    { q: "EIS이론의 시사점과 비판점", a: "아동의 지능 발달은 활동적 영상적 상징적 표현의 순서로 이루어지는 표현 수단의 발달과 그 사이의 조정 능력의 발달을 의미\n대수 구조의 본질은 교환 분배 결합이라는 기본법칙의 아이디어지만 드러나지 않는다. 상징적 표현했다고 대수구조 파악했는지 모름." },
-    { q: "대수 발달 단계", a: "언어적 대수 단계(풀이의 전체적인 과정이 일상언어로 기술) -> 생략적 대수 단계(미지수로 표현하기 위해 문자를 사용하기 시작) -> 기호적 대수 단계(문자를 미지의 양 뿐만 아니라 주어진 양을 나타내는 데에도 사용)" },
-    { q: "대수 관점 변화", a: "절차적인 관점(수치를 얻기 위해 수를 가지고 행하는 산술적 연산) -> 구조적인 관점(대수식 자체에 행해지는 연산)" },
-    { q: "피콕의 대수 발달", a: "산술대수 -> 기호대수" },
-    { q: "프로이덴탈: 변수 지도", a: "다가이름으로서의 변수 지도: 문자에 수를 대입하는 것이 아니라 수에 문자를 대입" },
-    { q: "피셔 키워드", a: "닫힌수학(이론과 실재가 완전히 분리) / 열린수학(주체의 참여, 이론의 토대가 되는 실재를 고려)" },
-    { q: "변수 개념의 본질", a: "변하는 대상(동적 측면) / 다가 이름(정적 측면)" },
-    { q: "Usiskin 대수학습에서 변수의 의미 4개", a: "자리지기로서의 미지수, 다가이름으로서의 부정소, 독립·매개·종속변수, 형식적 조작의 대상" },
-    { q: "변수 개념 인지장애 5개", a: "변수기호의 임의성에 대한 이해 결여 / 변수가 나타내는 대상 범위 제한 / 변수를 포함한 대수식을 불완전한 식으로 인지 / 변수는 특정 대상을 대신한다고 생각 / 독립변수 종속변수 개념을 불완전하게 이해" },
-    { q: "대수적 전략 3개만", a: "대수적 원리(기본적인 성질이 유지되도록 구조를 확장하는 형식불역의 원리) / 대칭성 알아보기 / 분석적 사고" },
-    { q: "딘즈 닫힌상태에서 열린상태 과정", a: "개폐연속체: 개념형성의 단계를 거쳐 형성된 수학적 개념은 닫힌상태로 되지만 분석과 적용 과정에서 열린상태로 변하여 보다 높은 수준의 재구성이 이루어짐" },
-    { q: "딘즈 수학 학습원리 4가지", a: "역동적 원리: 예비놀이 구조화된놀이 실습놀이 순차적 제공\n구성의 원리: 아동은 분석적 사고를 하기 이전에 구성적 사고를 발달시키므로 분석보다는 구성을 고려하는 것이 우선\n지각적 다양성의 원리: 동일한 개념 주제에 대해 다양한 수단을 사용하여 가능한 한 많은 변화\n수학적 다양성의 원리: 개념은 변하지 않게 유지하면서 가능한 한 많은 변인을 변화" },
-    { q: "딘즈 6단계 학습과정", a: "자게공표기형 / 자유놀이 -> 게임 -> 공통성탐구 -> 표현 -> 기호화 -> 형식화" },
-    { q: "스켐프  □ 이해와 □ 이해", a: "도구적 이해: 이유는 모른 채 암기한 규칙을 문제해결에 적용 / 관계적 이해: 무엇을 어떻게 해야할지 왜 그런지를 모두 알고 일반적인 수학적 관계로부터 특수한 규칙이나 절차를 연역" },
-    { q: "스켐프 도구적 이해가 불가피한 상황", a: "너무 많은 시간이 소요, 특정한 기능을 이용한 능력 필요, 인지발달수준에 관계적 이해가 어려운 경우" },
-    { q: "스켐프 □ 지능과 □ 지능", a: "직관적 지능: 외부자료를 수용기를 통해 인식, 중재사고활동을 거치지 않고 수용기를 통하여 이루어짐 / 반영적 지능: 문제를 직관적으로 해결한 사고과정을 수용기로 인식, 중재사고활동이 자기 반성적 인식의 대상이 됨" },
-    { q: "스켐프 지휘체계", a: "감지기를 통해 탐구활동으로 현재상태를 유지하여 ~을 확인한다. 목표상태인 ~이 성립함에 대한 내적표현이 이루어지고, 비교자를 통해 현재상태와 목표상태를 비교한다. 행동계획인 ~을 통하여 현재상태에서 목표상태에 도달하게 된다." },
-    { q: "오스벨 유의미수용학습 조건", a: "학습과제(실사성,구속성): 논리적 유의미가 +관련정착아이디어: 잠재적 유의미가 +유의미 학습자세: 유의미학습 / 관련정착아이디어: 새로운 의미가 학습자에게 인식될 배경" },
-    { q: "오스벨 유의미 학습원리 3가지", a: "통합적 조정의 원리: 새로운 학습내용과 이미 학습된 내용의 유사성 차이점을 분명히 하여 인지구조 내에서 의식적으로 통합되도록 함 / 점진적 분화의 원리: 일반적 포괄적 아이디어를 우선 제시하고 점차 특수화 세분화된 방향으로 조직 / 선행조직자: 구체적인 학습과제 내용과 잘 연계되도록 도우면서 동시에 잠재적으로 내재한 정착 아이디어의 일반적인 내용과도 관련 가능하도록 돕는 역할" },
-    { q: "관련정착아이디어와 새로운 지식 사이의 거리", a: "잠재적 거리, 짧으면 새로운 지식 이해에 도움, 길면 탐구능력 발달에 유용" },
-    { q: "오스벨 포괄성 일반성 낮은 새로운 지식 통합", a: "포섭: 포괄성과 일반성이 높은 인지구조 내 지식이 포괄성 일반성 낮은 새로운 지식을 통합" },
-    { q: "비고츠키 발달수준 2개", a: "실제적 발달수준: 다른 사람의 도움없이 독립적으로 문제를 해결할 수 있는 수준 / 잠재적 발달수준: 유능한 또래나 교사의 도움을 얻어 문제를 해결할 수 있는 수준" },
-    { q: "비고츠키 두 수준의 사이, 도움 / 개념 2개", a: "근접발달영역, 비계 설정 / 자발적 개념(자신의 노력을 통하여 발달), 비자발적 개념(어른의 영향을 결정적으로 받은 개념)" },
-    { q: "근접발달영역의 단계", a: "1단계(도움받아 수행) -> 2단계(스스로 부분적 수행) -> 3단계(완전히 수행) -> 4단계(탈자동화)" },
-    { q: "비고츠키 이론 유사개념 2개", a: "폴리아 문제해결교육 1단계의 모방, 프로이덴탈 안내된 재발명" },
-    { q: "절대주의 이후 수리철학", a: "논리주의: 러셀 패러독스, 선택공리 등을 받아들여야 했음 / 직관주의: 배중률 반대, 구성가능함을 보여야 믿음 / 형식주의: 괴델 불완전성 정리, 기호의 유한번의 연쇄" },
-    { q: "구성주의 3개", a: "조작적 구성주의, 급진적 구성주의, 사회적 구성주의" },
-    { q: "급진적 구성주의 원리 3개", a: "지식의 자주적 구성의 원리, 지식의 생장 지향성의 원리, 지식의 비객관성의 원리" },
-    { q: "사회적 구성주의 과정 1, 과정2", a: "과정1: 개인의 주관적 지식이 공표되어 공적인 비판과 재구성 과정을 거쳐 합의된 객관적 지식으로 되는 것(사회적 상호작용 강조)\n과정2: 객관적 수학적 지식에 대한 내적 주관적 표상을 구성하는 것(표현 강조)" },
-    { q: "프로이덴탈 교수학적 현상학", a: "수학적 개념과 구조라는 본질을 그 본질이 조직의 수단으로 작용하는 어떤 현상과 관련하여 기술하고 교수학적으로 적용하는 것" },
-    { q: "반교수학적 전도", a: "현상으로부터 본질에 이르도록 하는 방향과 반대로 본질을 단지 학습자에게 부과하는 접근 형식" },
-    { q: "수학화 활동에 초점 폴리아 □, 라카토스 □, 프로이덴탈 □", a: "발생상태로서의 수학, 비형식적 수학, 실행수학(↔기성수학:결과에 초점)" },
-    { q: "프로이덴탈 수학화", a: "현실을 수학자의 필요에 맞게 적절히 손질하여 새로운 것, 즉 본질로 조직해내는 조직화 활동" },
-    { q: "수학화 과정", a: "현상과 본질의 교대 작용에 의해 수준상승이 이루어지는 불연속적인 과정" },
-    { q: "수평적 수학화", a: "현실 내의 문제 장면을 형식적인 수학적 처리가 가능하도록 변환하는 것, 현실적인 것으로 체험된 세계에서 좀 더 추상적인 기호의 세계로 이행되는 것" },
-    { q: "수직적 수학화", a: "세련된 좀 더 높은 수학적 처리가 가능하도록 하는 것, 추상화된 기호의 세계에서 기호들이 계속 형성되고 이해되고 반성되는 것" },
-    { q: "수학화의 의의", a: "이전 수학 수업에서 도외시되었던 실험하기, 관찰하기, 귀납적 추론 등의 구체적 활동이 기호화, 일반화, 형식화와 마찬가지로 수학화 과정에 적합함을 명백하게 한다." },
-    { q: "프로이덴탈 수준 상승", a: "바닥수준->탐구수준 / 바닥 수준의 활동을 탐구 수준에서의 수학적 활동을 준비하는 예비수학적 활동으로 파악해야 한다 / 프로이덴탈은 수준의 상승을 가능하게 하는 중요한 정신적 활동을 반성적 사고" },
-    { q: "사고실험 역할", a: "안내된 재발명을 가능하게 한다" },
-    { q: "프로이덴탈 귀납의 논리 거부하고 □로부터 곧바로 그 구조에 대한 깊은 통찰을 제공 ", a: "전형적인 예제 ex) 경로의 수 구하기, 파스칼 삼각형" },
-    { q: "수학은 관계가 풍부한 현실에서 발생, 재창조", a: "발전적 조작 가능성" },
-    { q: "사고실험 2개", a: "수업 장면과 관련한 사고실험: 가상적인 학생들과 그들의 반응을 생각하면서 그에 따라 가르치거나 저술하는 태도 / 수업 내용과 관련한 사고실험: 수학적 개념을 발명했거나 수학적 방법을 개선한 개인 수학자의 마음 속에 어떤 일이 일어났는지에 대해서 추측" },
-    { q: "현실주의적 수학교육의 수학화 과정 단계", a: "(1단계) 현실세계의 문맥을 직관적으로 탐구하는 단계: 문제의 수학적 측면을 알아내고 규칙성을 발견 / (2단계) 수평적 수학화 단계: 현실 상황으로부터 수학적 개념을 추출 / (3단계) 수직적 수학화 단계: 형식화와 추상화가 중심 / (4단계) 응용적 수학화 단계: 개념을 새로운 문제에 적용함으로써 개념을 강화하고 일반화" },
-    { q: "현상 -> □ -> 본질", a: "심상" },
-    { q: "반힐레 기하학습수준", a: "시기분관추?형엄 / 시각적 인식 수준(전체적인 모양새로 도형을 인식) -> 기술적 분석적 인식 수준(도형의 성질에 주목하여 도형의 성질을 분석) -> 관계적 추상적 인식 수준(도형의 성질이나 도형 자체가 논리적으로 정렬, 필요조건 충분조건 구분) -> 형식적 연역 수준(공리적 방법 의의를 이해, 무정의 용어, 공리, 정의, 정리, 논리적 차이점 인식) -> 엄밀한 수학적 수준(형식적 추론)" },
-    { q: "기하학습수준의 특징", a: "순차적 발달, 성숙보다 교육 내용 방법에 더 의존, 언어 확장과 관계, 수단의 대상화(주변사물-도형-성질-명제-논리)" },
-    { q: "반힐레 교수학습단계", a: "질안발자통 / 질의 안내 단계(대화를 통해서 새로운 학습 주제를 소개) -> 안내된 탐구 단계(학습 주제 특징에 익숙, 탐구 분야 구조를 점진적 파악) -> 발전적 명료화 단계(개념화와 어휘 정렬, 표현하는 활동을 통해 명확히 함) -> 자유 탐구 단계(문제해결적 성격의 복잡한 과제 도전) -> 통합 단계(관찰을 재검토하고 요약, 그동안 배운 새로운 개념과 관련성 통합)" },
-    { q: "함수 개념의 역사적 발달", a: "전기대논집 / 전함수 단계(천체운동, 비례관계, 삼각함수, 구면삼각법, 탄젠트 경사) -> 기하적 함수 단계(동적 대상, 다가 대응, 운동을 그래프 표현) -> 대수적 함수 단계(정적 대상, 일가 대응, f(x) 기호 사용, 오일러 변량 사이 관계 나타내는 해석적 표현을 함수라 정의, 진동현 문제로 함수 개념 확장, 변수 제거 시도하다 다시 정의하여 독립 종속 변수 구분 명확) -> 논리적 함수 단계(디리클레, 푸리에 급수, 일가성, 임의성 강조하여 함수 정의) -> 집합적 함수 단계(부르바키 순서쌍, 데데킨트 사상)" },
-    { q: "함수의 여러 측면", a: "종속성, 그래프, 공식, 행동, 과정, 대응, 순서쌍, 대상" },
-    { q: "그래프 양적 접근, 질적 접근", a: "양적 접근: 정확한 수치적 자료를 이용해서 정확하게 그림으로써 변화의 특징을 설명하고 예측 / 질적 접근: 수량화되지 않은 상태로 개략적으로 표현하고 설명" },
-    { q: "Janvier 번역 활동", a: "상황언어적표현 -> 표:측정하기, 그래프:그래프개형그리기, 공식:모델링 / 표 -> 상황언어적표현:읽기, 그래프:점찍기, 공식:공식알아내기 / 그래프 -> 상황언어적표현:해석하기, 표:점의좌표읽기, 공식:곡선알아내기 / 공식 -> 상황언어적표현:매개변수인식하기, 표:계산하기, 그래프:그래프개형그리기" },
-    { q: "라카토스 반례 다루는 방법", a: "괴물배제법: 증명된 추측은 반례가 잘못되었다고 보고 반례를 배제하여 원래의 추측을 존속, 개념들을 다시 정의하여 반례를 추측이 성립하는 영역 밖으로 몰아내고 추측을 살리는 방법 / 예외배제법: 예외에 대하여 조건절을 첨가하여 안전한 영역으로 철수하는 방법, 과대 과소 일반화 초래 여지 / 보조정리합체법: 반례가 출현하게 된 원인이 되는 부분추측을 찾아 그것을 원래 추측에 합체시키고 증명을 고치는 방법, 발견과 정당화의 논리가 분리되지 않고 통합" },
-    { q: "라카토스 수학적 지식 성장과정", a: "1단계(추측을 제기) -> 2단계(추측을 부분추측으로 분해) -> 3단계(반례등장, 추측과 증명을 반박) -> 4단계(증명 검토하여 증명과 추측을 개선)" },
-    { q: "함수 지도 관점", a: "프로이덴탈 교수학적 현상학에 따른 함수 지도: 다양한 현상 직관적 경험 -> 종속성 인식 -> 표 그래프 식으로 연결 -> 구체적 함수 이름 알기 -> 속성 파악 -> 함수 개념 도입 / 구조주의적 관점에 따른 함수 지도: 대응을 통해 함수 정의 -> 정의역 치역 공역 등 지도 -> 특정한 함수 다루면서 응용문제로 함수현상 다루기" },
-    { q: "발견술 의미", a: "분석법: 풀이 계획을 발견하는 과정 / 종합법: 그 계획을 실행하는 과정" },
-    { q: "□,□분석은 결론에 대한 □조건 찾는 과정 2개", a: "명제,증명 분석은 결론에 대한 충분조건 찾는 과정 / 작도,방정식 분석은 결론에 대한 필요조건 찾는 과정" },
-    { q: "폴리아 좋은 문제", a: "여러 가지 개념, 일반화 가능, 다양한 해법, 실생활 탐구" },
-    { q: "폴리아 수학적 문제해결과정 권고, 발문", a: "문제이해: 미지인 것은 무엇인가, 그림을 그려보아라, 적절한 기호를 붙여라 / 계획수립: 전에 이와 유사한 문제를 본 적 있는가, 관련된 문제를 알고 있는가, 도움이 될 것 같은 어떤 사실이나 정리를 알고 있는가 / 계획실행 / 반성: 결과를 점검할 수 있는가, 풀이과정을 점검할 수 있는가, 결과를 다른 방법으로 이끌어낼 수 있는가, 결과나 방법을 다른 문제에 활용할 수 있는가" },
-    { q: "숀팰드, 버튼 문제해결과정", a: "(숀팰드) 분석및이해 – 계획 – 탐구 – 실행 – 검증 / (버튼) 도입 – 공략 – 검토 - 확장" },
-    { q: "숀팰드 문제해결 행동관련 요인", a: "자원: 문제를 해결하기 위해 개인이 사용할 수 있는 도구와 기법, 수학적 지식, 직관, 알고리즘, 법칙에 대한 이해 / 발견술: 생소하고 비정형적 문제 해결하기 위한 전략과 기술, 유추, 일반화, 특수화, 보조문제 이용하기, 거꾸로 풀기 / 통제: 지원과 전략의 선택과 수행에 관한 전반적 결정 능력, 계획하기, 감시와 평가, 의사 결정 / 신념체계: 수학에 대해 가지고 있는 가치관, 선입견" },
-    { q: "반힐레 학습수준이론, 피아제 학습심리이론 공통점과 차이점", a: "(공통점) 스스로 지식 구성 활동 중심, 반힐레의 관계망, 피아제의 쉠 / (차이점) 반힐레: 내용 조직화로 관계망 구성, 논리적 추론 가능 / 피아제: 내용과 논리적 조작은 독립적으로 발달" },
-    { q: "절대주의 준경험주의 사회적구성주의 증명의 의미", a: "절대주의: 정당화의 수단 / 준경험주의: 발견의 수단 / 사회적 구성주의: 확신과 설명의 수단" },
-    { q: "절대주의 준경험주의 증명 방법 강조점", a: "절대주의: 종합적 측면 / 준경험주의: 분석적 측면" },
-    { q: "수학적 모델링 절차", a: "현상 관찰 문제상황 밝히고 중요 요인 찾기 -> 요인 관계 추측 수학적 해석하여 모델 구축 -> 수학적 분석을 모델에 적용 -> 결과를 얻고 재해석하여 결론 도출" },
-    { q: "수학적 모델링 특징", a: "비수학적 문제 상황에서 출발하여 수학적 표상을 찾는 것, 수학화와 유사" },
-    { q: "수학적 모델링 사이클", a: "문제 -> 형식화 <- 검증 -> 보고 / 계산 -> 해석" },
-    { q: "문제제기 의미", a: "원래의 문제를 재해석하게 되고 원래의 문제를 해결할 수 있는 단서가 생김\n원래의 문제를 이전과는 전혀 다른 새로운 관점에서 볼 수 있게 하여 그 의미를 보다 명확하게 이해하고 새로운 생각하게 함" },
-    { q: "문제제기 단계", a: "수용(주어진 것을 유지하며 탐구) / 도전(주어진 것을 뒤집어 보고 변형)\n도전 단계에서 what if not 전략: 출발점선택하기, 속성열거하기, 속성부정하기, 문제제기하기, 설정된문제분석하기" },
-    { q: "문제제기 역할", a: "창의력 도움, 학생수준 파악, 수준이 낮은 학생도 의미있는 수학학습활동 제공 / (폴리아) 문제제기는 문제해결수단, 계획수립단계: 보조문제 작성하여 해결해봄으로 문제해결의 단서 찾는 방식, 반성단계: 새로운 문제 찾아 해결" },
-    { q: "추론 3개, 한계점", a: "연역적추론: 이미 참이라고 알려진 성질 등을 이용하여 새로운 참인 명제를 이끌어 내는 것 / 귀납적추론: 실험 측정 관찰 구체적 조작 등으로 몇 가지 사례로 어떤 명제가 참임을 보이고 전체 범주에서 참임을 주장하는 것 / 유추 / 수학적 발견에 중요한 도구이며 개연성 높은 추론 방식이지만 참임을 보장 못하므로 반드시 증명을 통해 확인을 시도해야 한다." },
-    { q: "개념□, 개념□", a: "개념정의: 개념 정확히 설명하는 언어적 정의 / 개념이미지: 개념과 정신적으로 관련된 모든 성질, 과정, 심상들로 이루어진 인지구조, 입력-개념이미지-출력:직관적반응" },
-    { q: "APOS 이론", a: "행동: 대상에 대한 변환을 적용, 낱낱의 변환 / 과정: 행동이 내면화되어 동일한 조작을 할 수 있는 정신적 구조가 생긴 상태, 가무한 / 대상: 과정을 전체적으로 인식, 과정은 대상화되어 하나의 대상이 됨, 실무한 / 스키마: 행동, 과정, 대상이 조직화되고 연결" },
-    { q: "Sfard 수학개념형성과정", a: "과정으로서의 조작적 방법(원은 컴퍼스 돌려서 얻은 곡선) / 대상으로서의 구조적 방법(원은 주어진 점과 같은 거리인 점의 자취)" },
-    { q: "미적분 역사적 발달", a: "아르키메데스(구적법) 케플러(포도주통부피) 카발리에리(불가분량) 뉴턴(역학적관점,유율법) 라이프니츠(접선,적분기호) 코시(극한,입실론델타) 바이어스트라스(입실론델타엄밀하게전개)" },
-    { q: "미분 역사 발생 순서, 22개정 순서, 각 단점", a: "정적분 – 미분 – 미적분학 기본정리 – 부정적분: 적분 난이도 높음, 구분구적법 복잡 / (22개정) 미분 – 부정적분 – 정적분 – 미적분학 기본정리: 미적분학 기본정리가 큰 의미 못 가짐" },
-    { q: "수학을 발생된 것으로 학습자가 발생 경험하도록", a: "역사 발생적 원리 / 고전적 역사 발생적 원리(클라인, 푸엥카레): 재현의 법칙에 충실하게 수학의 역사적 발달과 개인의 수학 학습 사이의 평행성 어느 정도 인정 / 현대적 역사 발생적 원리(프로이덴탈): 현실적 문맥을 통해 재구성" },
-    { q: "쉐발라드 교수학적 변환", a: "학문적 지식을 교수학적 지식으로 변환하는 것, 교육적 의도에 의한 지식의 변형" },
-    { q: "□지식 □지식(□지식 □지식), 각 대상", a: "학문적 지식(수학자), 교수학적 지식(가르칠 지식(교사), 학습된 지식(학생))" },
-    { q: "교수학적 변환론에서 삼원적 관계", a: "교사, 학생, 지식" },
-    { q: "지식의 파손성", a: "지식은 주의깊게 다루지 않으면 본래의 의미가 손상되기 쉽다, 가르치려는 의도에 따라 지식이 변형될 때에도 지식의 의미가 상당히 손상될 수 있다." },
-    { q: "개인화 배경화", a: "개개인 나름대로의 지식 이해 과정" },
-    { q: "탈개인화 탈배경화", a: "정돈된 지식의 표현 과정" },
-    { q: "교수학적 변환론에서 삼원적 관계", a: "교사, 학생, 지식" },
-    { q: "쉐발라드 극단적인 교수현상", a: "메타인지 이동: 개인화 배경화 강조, 교수학적 보조 수단에 학생들의 사고가 집중 / 형식적 고착: 개인화 배경화 간과, 공식화된 지식의 논리적 표현에만 의존, 공식의 의미보다는 연습시키는 과정에 주목 / 토파즈식 외면치레: 탈개인화 탈배경화 강조, 학생이 학습할 수 있는 환경을 교사가 제거, 명백한 힌트, 유도질문 / 조르단식 외면치레: 탈개인화 탈배경화 간과, 학생의 사소한 행동을 보고 특정한 수학 지식을 형성했다고 과대평가하여 잘못 판단" },
-    { q: "브루소 교수학적 계약", a: "교사와 학생이 각자 수행해야 하는 행동이 무엇인지 알고 책임을 지고 의무를 파악해야 하는 규칙들의 집합" },
-    { q: "딘즈 효과", a: "교사에 의해 교수학적 계약이 이루어지지 않은 경우" },
-    { q: "브루소 교수학적 상황", a: "교수학적 의도가 담긴 수학적 문제 상황을 통해서 학생과 상호작용하는 상황, 교사는 학생에게 지식 전달, 학생은 지식 획득" },
-    { q: "브루소 비교수학적 상황", a: "교사의 중재 없이도 학생들이 스스로 수학적 지식을 문제해결의 도구로 활용할 수 있는 상황" },
-    { q: "브루소 책임의 양도", a: "교수학적 상황 -> 비교수학적 상황" },
-    { q: "브루소 수학적 개념의 발생 단계", a: "원형 수학적 개념 단계(무의식적 암묵적 사용) -> 의사수학적 개념 단계(친숙한 용어) -> 이론적인 수학적 개념 단계(완전한 구조)" },
-    { q: "브루소 교수 상황 단계", a: "행동 상황(수학적 지식 암묵적 사용)->형식화 상황(의식하고 표현)->타당화 상황(타당성을 입증)->제도화 상황(교사가 개입하여 정리)" },
-    { q: "인식론적 장애 요인", a: "일상어(극한 가까이 간다) / 직관(가무한, 연속의 개념이미지 끊어짐) / 과도한 일반화(유한에서 성립하므로 무한에서도 성립) / 은유(상수함수 일정하다)" },
-    { q: "22개정 평가의 방향", a: "학생의 수학 학습에 대한 정보를 수집 활용하여 학생의 주도적 학습과 성장을 지원하고 교사의 수업 개선을 돕도록 지속적으로 평가를 실시한다." },
-    { q: "수학과 평가절차", a: "평가목적설정 – 평가영역및목표설정 – 평가틀개발 – 평가도구개발 – 평가실시 - 채점및결과보고" },
-    { q: "평가틀", a: "평가도구 개발 과정에서 준거사항: 행동영역, 내용영역, 평가목표, 성취수준, 요소별 출제비율" },
-    { q: "평가도구", a: "인지적 영역(지필평가 위한 평가문항개발, 채점기준, 예상답안 작성) / 정의적 영역(관찰 면담 위한 평가요목 개발, 기록 작성)" },
-    { q: "서술형 문항 채점 방법", a: "총체적 점수화 방법(풀이 전반에 걸쳐 하나의 점수를 부여) / 분석적 점수화 방법(단계별로 채점요소를 세우고 점수 부여)" },
-    { q: "부적절한 요소 점수를 검토 보완 수정 위한 것", a: "가채점" },
-    { q: "프로젝트", a: "실행계획서, 무엇을 할 것인가 뿐 아니라 그것을 실제로 수행하여 자료를 제시하고 그 결과를 평가하는 것을 포함한다. / 열린반응: 여러 가지 답이 나올 수 있는 문제" },
-    { q: "관찰 및 면담 의미", a: "인지적 영역 뿐 아니라 정의적 영역까지 평가, 심화된 자료 수집 가능, 다른 평가의 보조 역할" },
-    { q: "관찰 및 면담 기록 방법", a: "일화기록법(구체적 행동 사례를 간략히 기술) / 체크리스트(행동 단위를 미리 분류하고 행동을 표시) / 평적척도법(일정한 척도에 따라 분류하고 측정)" },
-    { q: "포트폴리오 평가의 학생,교사 이점", a: "학생: 자기 자신의 변화 과정, 강점 약점 성실성 잠재가능성을 스스로 인식 / 교사: 학생의 과거 현재 쉽게 파악, 발전 방향 조언 가능" },
-    { q: "컴퓨터를 이용한 교수 학습 양식", a: "개인교사형, 학생주도형(프로그래밍), 보조도구형(기호 조작 자체가 목적인 경우 사용 금지), 탐구학습형" },
-    { q: "프로그래밍 활동에서 □ 활동은 반성의 기회", a: "오류수정" },
-    { q: "무리수 비분수표현, 소수표현", a: "통약불가능성, 비순환성 / (통약가능) 대수적 측면: 모든 수는 정수의 비로 표현가능하다 / 기하적 측면: 모든 크기들은 공통척도를 갖는다" },
-    { q: "기하 개념 □ 관련성, □ 관련성", a: "수직적 관련성(개념들 간의 계통성, 논리적 종속 관계), 수평적 관련성(여러 개념을 동시에 파악)" },
-    { q: "기하 개념 장애", a: "개념의 개별화: 각각의 개념을 분리된 것으로 파악 / 개념의 고착화: 개념을 특정 맥락에만 고착시키는 경향 -> 딘즈 수학적 다양성의 원리로 본질적 비본질적 성질을 비교 / 선행개념의 방해: 어떤 대상에서 두드러지는 개념은 다른 개념으로 해석하는 것을 방해 ex) 듀발 중복장애: 변선각 등을 여러번 고려" },
-    { q: "프로이덴탈 기하영역에서의 수학화 단계", a: "도형이라는본질로조직 – 도형의성질발견 – 국소적조직화(정의하기,증명하기) - 전체적조직화(공리화) - 존재론적 결합 끊기" },
-    { q: "국소적 조직화", a: "공리에서 출발하는 것이 아니라 학습자가 접하고 있는 영역에서 참이라고 인정되는 사실, 즉 학습자의 실제로부터 시작해서 부분적으로 조직하는 것" },
-    { q: "전반적 조직화", a: "정의와 공리로부터 출발하는 공리 체계로 조직하는 것" },
-    { q: "정의하기", a: "기본 성질로 설정하는 과정" },
-    { q: "정의-정리-증명의 순서는 □", a: "반교수학적 전도" },
-    { q: "확률 관점 3개", a: "고전적관점(수학적확률): 모든 근원사건의 확률이 동등하다는 가정, 무한 시행 적용 어려움, 순환논리 / 빈도적관점(통계적확률): 개념의 순환논리 / 공리적관점(공리적확률): 고전적 빈도적 관점에 대한 전체적인 체계 제공하지만 확률이 실제로 무엇인지 정보 제공 못함" },
-    { q: "피아제 피시바인 관점", a: "피아제: 교육받지 않아도 확률적 사고 발달 / 피시바인: 직관이 방해, 교육을 통한 직관 개발 강조, 직관 거부 태도 필요" },
-    { q: "판단 전략", a: "대표성전략(모집단과유사,무작위성반영) 정보의이용가능성전략(교통사고목격) 조정과고정전략(54321이더커) 결과중심판단전략(50%기준판단) 인과적정보에주목한판단전략(습도가70%라비올확률70%주사위던지는높이와방향에따라다름)" },
-    { q: "Jones 회전판돌리기 확률적사고 발달 수준", a: "주관적사고(좋아하니까) - 이행기(더많으니까) - 비형식적양적사고(3배니까) - 수치적사고" },
-    { q: "탐색적 자료 분석 개념 목표 의의", a: "개념: 통계계산과 그래프에 대한 해석에 기초하여 자료 이면에 들어있는 의미를 파악하는 것에 중점 / 목표: 자료에 감추어진 일반적인 패턴을 찾는 것, 자료 분석 결과를 바탕으로 추가 실험이나 추가 자료 수집 / 의의: 자료에 대한 새로운 통찰을 얻고 새로운 통계적 문제에 대한 아이디어를 얻는 기회로 삼는다." },
-    { q: "저항성", a: "일부 자료가 파손되어도 자료 전체에 대한 비교적 합리적인 해석을 내릴 수 있어야 한다." },
-    { q: "그래프의 현시성", a: "자료에 담긴 다양한 의미를 그래프가 적절히 담고 있어서 그것을 해석하고 특징을 파악할 수 있어야 한다." },
-    { q: "통계적 탐구문제 해결 단계", a: "탐구문제설정하기 – 자료수집하기파악하기 – 자료분석하기 – 결과해석하기" },
-    { q: "Gal 통계적 소양", a: "지식요소: 기본소양 통계적지식 수학적지식 맥락적지식 비판적질문 / 성향요소: 신념과태도 비판적자세" },
-    { q: "Sfard □수준 □수준", a: "대상수준: 구체적인 수학적 대상들에 직접적으로 관여하는 수준 / 메타수준: 대상수준보다 상위, 언제 어떤 개념이나 법칙을 적용해야하는지에 대한 이해를 하고 있는 상태" },
-    { q: "Wagner 문자의 성질", a: "동시표현의성질, 한계결정의자유성, 문자선택의자유성" },
-    { q: "수열의 직관적 정의 / 형식적 정의", a: "교수학적 지식, 종속적, 동적, 가능적 무한, 극한값 발견에 초점, 극한값 계산에 유용, 원인->결과 / 학문적 지식, 대응적, 정적, 실무한, 극한값임을 보증에 초점, 극한값 정당화에 유용, 결과->원인 / 형식적 정의는 자연스러운 사고 방향을 역행하는 논리적인 반전이 뒤따라야 하므로 이해하는데 어렵다" },
-    { q: "이항 교과서", a: "등식의 어느 한 변에 있는 항을 부호를 바꾸어 다른 변으로 옮기는 것" },
-    { q: "다각형의 성질", a: "평행사변형의 두 대각선은 서로 다른 것을 이등분한다, 직사각형의 두 대각선은 길이가 같다, 마름모의 두 대각선은 수직으로 만난다" },
-    { q: "증명 교과서", a: "이미 알고 있는 용어의 뜻이나 기본이 되는 성질 등을 이용하여 어떤 내용이 참인지 밝히는 것" },
-    { q: "정다면체 교과서", a: "모든 면이 합동인 정다각형이고, 각 꼭짓점에 모인 면의 개수가 모두 같은 다면체" },
-    { q: "회전체 성질", a: "회전축에 수직인 평면으로 자른 단면의 모양은 원, 회전축을 포함하는 평면으로 자른 단면은 모두 합동이고, 각 단면은 회전축을 대칭축으로 하는 선대칭도형" },
-    { q: "중학교 삭제,추가된 내용", a: "외분, 원순열 삭제 / 모비율 추가" },
-    { q: "미정계수법 교과서", a: "항등식의 뜻과 성질을 이용하여 주어진 등식에서 정해져 있지 않은 계수를 정하는 방법" },
-    { q: "나머지정리 교과서", a: "다항식 P(x)를 일차식 x-a로 나누었을 때의 나머지를 R이라고 하면 R=P(a)" },
-    { q: "인수정리 교과서", a: "다항식 P(x)에 대하여 P(a)=0이면 다항식 P(x)는 일차식 x-a로 나누어 떨어진다. P(x)가 일차식 x-a로 나누어 떨어지면 P(a)=0이다." },
-    { q: "명제 교과서", a: "참, 거짓을 명확하게 판별할 수 있는 문장이나 식" },
-    { q: "조건 교과서", a: "변수를 포함하는 문장이나 식이 변수의 값에 따라 참, 거짓이 판별될 때, 그 문장이나 식" },
-    { q: "합의 법칙 교과서", a: "두 사건 A,B가 동시에 일어나지 않을 때, 사건 A와 사건 B가 일어나는 경우의 수가 각각 m,n이면 사건 A 또는 사건 B가 일어나는 경우의 수는 m+n이다." },
-];
+    function renderCards() {
+        const container = document.getElementById('card-container');
+        if (!container) return;
+        container.innerHTML = '';
 
-let cardsData = [...originalCardsData];
+        const searchInput = document.getElementById('searchInput');
+        const searchKeyword = searchInput ? searchInput.value.toLowerCase().trim().replace(/\s+/g, '') : '';
 
-// 카드 렌더링 함수
-function renderCards() {
-    const container = document.getElementById('card-container');
-    if (!container) return;
-    container.innerHTML = '';
+        let hiddenList = hiddenCards; // 기존 Set 객체 사용
 
-    cardsData.forEach((item, index) => {
-        const card = document.createElement('div');
-        card.style.cssText = `
-            background-color: #252525;
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 120px;
-        `;
-        
-        card.innerHTML = `
-            <div style="font-size: 13px; color: #85c1e9; margin-bottom: 8px; font-weight: bold;">Q${index + 1}.</div>
-            <div style="font-size: 15px; color: #ffffff; font-weight: bold; margin-bottom: 12px; text-align: center;">${item.q}</div>
-            <div class="card-answer" style="font-size: 14px; color: #f39c12; background-color: #1a1a1a; padding: 10px; border-radius: 4px; text-align: center; display: none; border: 1px dashed #d4ac0d;">
-                💡 ${item.a}
-            </div>
-            <div style="font-size: 11px; color: #7f8c8d; text-align: center; margin-top: 8px;">클릭하여 정답 확인/숨기기</div>
-        `;
+        // 1. 필터링 로직: 숨겨진 카드 보기 모드(showHiddenMode)가 켜져 있으면 숨긴 카드도 포함해서 보여줌
+        let visibleCards = cardsData.filter((item) => {
+            const origIndex = originalCardsData.indexOf(item);
+            const isHidden = hiddenList.has(origIndex);
+            const cardText = (item.q + item.a).toLowerCase().replace(/\s+/g, '');
+            const isMatch = searchKeyword === '' || cardText.includes(searchKeyword);
 
-        card.addEventListener('click', () => {
-            const ansDiv = card.querySelector('.card-answer');
-            if (ansDiv.style.display === 'none') {
-                ansDiv.style.display = 'block';
-                card.style.borderColor = '#d4ac0d';
-            } else {
-                ansDiv.style.display = 'none';
-                card.style.borderColor = '#333';
-            }
+            if (isHidden && !showHiddenMode && searchKeyword === '') return false;
+            if (!isMatch) return false;
+            return true;
         });
 
-        container.appendChild(card);
-    });
-}
+        if (visibleCards.length === 0) {
+            container.innerHTML = `<div style="text-align: center; color: #7f8c8d; padding: 20px; grid-column: 1 / -1;">조건에 맞는 카드가 없습니다!</div>`;
+            return;
+        }
 
-function shuffleCards() {
-    for (let i = cardsData.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [cardsData[i], cardsData[j]] = [cardsData[j], cardsData[i]];
-    }
-    renderCards();
-}
+        // 2. 화면 렌더링
+        visibleCards.forEach((item, index) => {
+            const origIndex = originalCardsData.indexOf(item);
+            const isHidden = hiddenList.has(origIndex);
 
-function resetCards() {
-    cardsData = [...originalCardsData];
-    renderCards();
-}
-
-// 교육학 암기 카드 데이터 원본
-const originalEduCardsData = [
-    { q: "잭슨 잠재적 교육과정의 원천", a: "군상권 / 군집성, 상찬, 권력" },
-    { q: "영교육과정의 조건", a: "학교의 교육목표에 부합, 가르칠 만한 가치가 있음, 배울 기회를 갖지 못함" },
-    { q: "학문중심 교육과정의 엄격한 준거", a: "규범적 준거, 인지적 준거, 과정적 준거" },
-    { q: "역량중심 교육과정의 역량의 속성", a: "총수발 / 총체성, 수행능력, 발달적 성격" },
-    { q: "핵심아이디어의 기능", a: "학습의 전이, 학교교육과 삶의 연계, 깊이 있는 학습 가능" },
-    { q: "교육내용 조직", a: "수수총 범통계계연균 / 수평적조직, 수직적조직, 총체적 조직, 범위, 통합, 계속성, 계열성, 연계성, 균형" },
-    { q: "스나이더 교육과정 실행의 관점, 교사의 역할", a: "충상생 / 충실도-수용자, 상호적응-조정자, 생성형-개발자" },
-    { q: "드레이크 통합", a: "다간탈 / 다학문적 통합, 간학문적 통합, 탈학문적 통합" },
-    { q: "교과 통합의 원칙", a: "중일적 / 중요성의 원리, 일관성의 원리, 적합성의 원리" },
-    { q: "타일러 학습경험 선정의 원리", a: "기만가다다 / 기회의 원리, 만족의 원리, 가능성의 원리, 다경험의 원리, 다성과의 원리" },
-    { q: "타바 개발모형 절차", a: "요목내선조학선조평균 / 요구진단, 목표설정, 내용선정, 내용조직, 학습경험선정, 학습활동조직, 평가내용·방법결정, 균형·계열성검증" },
-    { q: "스킬벡 개발모형 절차", a: "상목프판평 / 상황분석, 목표설정, 프로그램구성, 판단(해석)과 실행, 평가(모니터링·피드백·평가·재구성)" },
-    { q: "아이즈너의 목표, 교사능력, 참평가", a: "목표: 문제해결목표 / 교사능력: 교육적 상상력, 교육적 감식안 / 참평가: 교육비평" },
-    { q: "아이즈너 개발모형 절차", a: "목선유조내제평 / 목표설정, 내용선정, 학습기회유형개발, 학습기회조직, 내용영역조직, 제시와반응양식개발, 다양한평가절차적용" },
-    { q: "파이너 쿠레레 단계", a: "회진분종 / 회귀, 진보, 분석, 종합" },
-    { q: "위긴스 맥타이 백워드 절차", a: "바수학 / 바라는 결과 확인하기, 수용 가능한 증거 결정하기, 학습경험과 수업계획하기" },
-    { q: "교육과정 재구성 절차", a: "분유목내방평 / 분석, 유형결정, 목표재구성, 내용재구성, 교수방법계획, 평가계획" },
-    { q: "뱅크스 다문화교육 유형", a: "기부전사혼 / 기여모형, 부가모형, 전환적모형, 사회행동모형, 혼합모형" },
-
-    { q: "벌로 SMCR모형 전달 내용 구성요소/내용 요소 구조", a: "통태지사문 / 통신기술, 태도, 지식수준, 사회체계, 문화양식 // 내요구코처 / 내용 요소, 구조, 코드, 처리" },
-    { q: "과제분석, 가네의 학습유형", a: "군위(삐)절통 / 군집분석, 위계분석, 절차분석, 통합분석 // 언지인운태 / 언어정보, 지적기능, 인지전략, 운동기능, 태도" },
-    { q: "ADDIE 모형", a: "분설개실평 / 분석, 설계, 개발, 실행, 평가 (분석: 요학환과 - 요구, 학습자, 환경, 과제)" },
-    { q: "딕, 캐리 체제적 교수설계모형", a: "요수학 목평가전 자형 총 / 요구분석, 수업분석, 학습자및학습환경분석, 성취목표진술, 평가도구개발, 수업전략수립, 수업자료개발, 형성평가설계및실행, 총괄평가설계및실행" },
-    { q: "교수의 3대 변인", a: "조방결 / 교수조건, 교수방법, 교수결과 / (특목제학 / 교과내용특성, 교수목적, 제약점, 학습자특성) // (조전관조거미 / 조직전략, 전달전략, 관리전략)\n(효효매 / 효과성, 효율성, 매력성)" },
-    { q: "가네 내적 외적 조건", a: "선학자주 / 선행학습, 학습동기, 자아개념, 주의력 // 강접연 / 강화의원리, 접근의원리, 연습의원리" },
-    { q: "가네 9가지 교수사태", a: "주목선 자학수피 평파 / 주의획득, 학습목표제시, 선수학습회상자극, 자극자료제시, 학습안내제공, 수행유도, 피드백제공, 수행평가, 파지와전이증진" },
-    { q: "메릴 내용요소 제시이론 내용-수행 행렬표\n자료 제시의 형태", a: "사개절원 기활발 / 내용범주(사실, 개념, 절차, 원리), 수행수준(기억하기, 활용하기, 발견하기) // 1차: 일사설질 / 일반설명식, 사례설명식, 일반질문식, 사례질문식 // 2차: 맥선기도표피 / 맥락, 선수학습, 기억촉진, 도움, 표현, 피드백" },
-    { q: "켈러 ARCS 동기부여 전략", a: "주관자만 / 주의, 관련성, 자신감, 만족감 // 지탐다 친목필 학성개 자긍공 / 지각적주의환기 탐구적주의환기 다양성 친밀성 목적지향성 필요나동기와의부합성 학습의필요조건제시 성공의기회제시 개인적인통제감제시 자연적결과강조 긍정적결과강조 공정성강조" },
-    { q: "캐롤의 학교학습이론 학습의 정도", a: "사용된시간/필요한시간=(학습지구력 × 학습기회) / (적성 × 수업이해력 × 수업의 질)" },
-    { q: "블룸의 완전학습이론 수업의 질 요인", a: "단참강피 / 단서, 참여, 강화, 피드백" },
-    { q: "조나센 구성주의 환경의 핵심요소", a: "문관정인대사 / 문제(프로젝트), 관련사례, 정보자원, 인지적도구, 대화협력도구, 사회적·맥락적지원" },
-    { q: "4C/ID", a: "학계 절절 지선 부자 / 학습과제 계열화, 지원적정보, 선언적지식, 절차적정보, 절차적지식, 부분과제연습, 자동화" },
-    { q: "콜린스 인지적 도제학습 교수절차", a: "모코스 명반탐 / 모델링, 코칭, 스캐폴딩, 명료화, 반추, 탐색" },
-    { q: "생크 목표기반시나리오 단계", a: "핵미커역시자피 / 핵심기술도출및목표설정, 미션설정, 커버스토리개발, 역할개발, 시나리오운영설계, 학습자원개발, 피드백제공" },
-    { q: "상보적교수 교수전략", a: "예질명요 / 예측하기, 질문하기, 명료화하기, 요약하기" },
-    { q: "배로우즈 문제중심학습 과제의 성격", a: "비실관복 / 비구조화, 실제성, 관련성, 복잡성" },
-    { q: "Big 6 Skills 6단계", a: "과정소활통평 / 과제정의, 정보탐색전략, 소재파악과접근, 정보활용, 통합정리, 평가" },
-    { q: "스캐폴딩 방안", a: "개메전동 / 개념적스캐폴딩, 메타인지적스캐폴딩, 전략적스캐폴딩, 동기적스캐폴딩" },
-    { q: "자기주도학습 능력 기르기 방안 측면", a: "인동행 / 인지적측면, 동기적측면, 행동적측면" },
-    { q: "협동학습의 원리", a: "이집사개면상 / 이질적팀구성, 집단과정, 사회기술, 개인적책무감, 면대면상호작용, 긍정적상호의존성" },
-    { q: "협동학습 종류", a: "성취과제분담학습, 팀경쟁학습, 직소모형, 자율적협동학습(co-op co-op), 액션러닝" },
-    { q: "하이니히 ASSURE 모형 절차", a: "학목선 활참평 / 학습자분석, 목표진술, 테크놀로지·매체·자료선정, 테크놀로지·매체·자료활용, 학습자참여요구, 평가와수정" },
-    { q: "ASSURE 활용단계 교사 활동", a: "사자환학수 / 자료에대한사전검토, 자료준비, 환경준비, 학습자준비시키기, 수업진행" },
-
-    { q: "평가의 개념에 따른 분류", a: "측총평 / 측정관, 총평관, 평가관 // 선인발 / 선발적교육관, 인본주의적교육관, 발달적교육관" },
-    { q: "스터플빔 CIPP 평가모형 의사결정모형의 하위평가", a: "상투과산 계구실재 / 상황평가, 투입평가, 과정평가, 산출평가 (계획, 구조화, 실행, 재순환)" },
-    { q: "루브릭 포함요소", a: "과기차척수 / 과제진술, 평가기준및차원, 평정을위한척도단계, 수행수준에대한기술" },
-    { q: "평가대상의 행동에 따른 분류", a: "인정심 / 인지적평가, 정의적평가, 심동적평가" },
-    { q: "평가양호도", a: "타신객실 / 타당도, 신뢰도, 객관도, 실용도" },
-    { q: "타당도 종류", a: "내안준구(오빠)결(혼까지)생(각했어) / 내용타당도, 안면타당도, 준거타당도, 구인타당도, 결과타당도, 생태학적타당도" },
-    { q: "내용타당도 종류", a: "교수타당도, 교과타당도" },
-    { q: "준거타당도 종류", a: "예공 / 예언타당도, 공인타당도" },
-    { q: "구인타당도 평가방법", a: "요인분석법" },
-    { q: "신뢰도 추정방법 (1회, 2회)", a: "1회:내적일관성신뢰도(동질성계수), 반분신뢰도(스피어만브라운공식), 문항내적합치도(크론바흐알파계수)\n2회: 검사재검사신뢰도(안정성계수), 동형검사신뢰도(동형성계수)" },
-    { q: "객관도 종류", a: "채점자내신뢰도, 채점자간신뢰도" },
-    { q: "수행평가 평정의 오류", a: "논리적오류, 후광효과(인상), 대비의오류, 근접의오류, 표준의오류, 집중경향의오류, 무관심의오류, 의도적오류, 일반화오류, 관대의오류, 엄격의오류" },
-
-    { q: "겟젤스 구바 → 겟젤스 텔렌 수정모형 차원", a: "규개 인조생 합소일 / 규범적차원(역할기대-합리성), 개인적차원(욕구성향-일체감), 인류학적차원, 조직풍토차원(공동체의식-소속감), 생물학적차원" },
-    { q: "호이 미스켈 학교체제 하위체제", a: "구개문정 / 구조체제, 개인체제, 문화체제, 정치체제" },
-    { q: "수직 계층적 구조 조직 명칭, 자문 조언 조직 명칭", a: "계선조직, 참모조직" },
-    { q: "조직의 유형-파슨스", a: "유형유지조직" },
-    { q: "조직의 유형-카츠·칸", a: "유지조직" },
-    { q: "조직의 유형-블라우·스콧", a: "봉사조직" },
-    { q: "조직의 유형-칼슨", a: "봉사조직 유형- 야생조직 사육조직(온상조직)" },
-    { q: "조직의 유형-에치오니", a: "순규 / 순응유형 규범조직-규범적권력 헌신적참여" },
-    { q: "조직의 유형- 민츠버그", a: "전문적관료제 기계식관료제" },
-    { q: "학교 조직의 특성", a: "전문적관료제, 조직화된무질서, 이완조직, 이중조직, 전문적학습공동체, 학습조직" },
-    { q: "조직화된 무질서 조직의 특징", a: "불불유 / 불분명한목표, 불확실한기술, 유동적참여" },
-    { q: "학습조직의 기본원리", a: "개정팀시공 / 개인적숙련, 정신모델, 팀학습, 시스템적사고, 공유된비전" },
-    { q: "조직풍토- 할핀, 크로포트", a: "개자통친간폐 / 개방적풍토 자율적풍토 통제적풍토 친교적풍토 간섭적풍토 폐쇄적풍토" },
-    { q: "조직풍토- 호이, 미스켈", a: "개몰일폐 / 개방풍토 몰입풍토 일탈풍토 폐쇄풍토" },
-    { q: "조직풍토- 윌로어", a: "윌인보 / 인간주의적학교 보호지향적학교" },
-    { q: "조직문화- 맥그리거", a: "X-Y" },
-    { q: "조직문화- 아지리스", a: "미성숙 성숙" },
-    { q: "조직문화- 세시아, 글리노우", a: "세글인성 / 인간에대한관심 성과에대한관심 // 보냉실통 / 보호문화 냉담문화 실적문화 통합문화" },
-    { q: "조직문화- 스타인호프, 오웬스", a: "가기공공 / 가족문화 기계문화 공연문화 공포문화" },
-    { q: "조직문화- 하그리브스", a: "학교문화유형론 // 형복온생효 / 형식적학교문화 복지주의자학교문화 온실학교문화 생존주의자학교문화 효과적학교문화" },
-    { q: "갈등관리전략", a: "협경회수타 / 협력, 경쟁, 회피, 수용, 타협" },
-    { q: "교육조직 관리기법", a: "과목정총조 / 과업평가검토기법(PERT), 목표관리기법(MBO), 정보관리체제(MIS), 총체적질관리(TQM), 조직개발기법(OD)" },
-    { q: "동기 내용이론-매슬로우", a: "생안소자자 / 생리적욕구, 안전의욕구, 소속의욕구, 자존의욕구, 자아실현의욕구" },
-    { q: "동기 내용이론-허즈버그", a: "동기요인 위생요인" },
-    { q: "동기 내용이론-엘더퍼", a: "생관성 / 생존욕구 관계욕구 성장욕구" },
-    { q: "동기 과정이론-브룸", a: "유보성 / 유인가 보상기대 성과기대" },
-    { q: "동기 과정이론-아담스 공정성회복을 위한 행동", a: "투성인비변조 / 투입조정, 성과조정, 투입과성과에대한인지적왜곡, 비교대상의투입과성과의변경, 비교대상의변경, 조직이탈" },
-    { q: "동기 과정이론-로크 라탐 목표의 기능", a: "주노지 / 주의력 노력 지속성" },
-    { q: "동기 과정이론-스티어스 좋은 목표 특징", a: "구곤참피경수 / 목표의구체성, 목표의곤란성, 목표설정에의참여, 노력에대한피드백, 목표달성에대한동료들간의경쟁, 목표의수용성" },
-    { q: "상황적 지도성이론-피들러", a: "관과지 / 지도자구성원관계 과업구조 지도자의지위권력" },
-    { q: "상황적 지도성이론-허쉬 블랜차드", a: "직무성숙도 심리적성숙도 // 유형: 위원(트)도시 / 위임형 지원형(참여형) 지도형(설득형) 지시형" },
-    { q: "상황적 지도성이론-커 제르미어", a: "대용상황 억제상황" },
-    { q: "의사소통의 원칙", a: "분포성의 원칙, 적응성의 원칙" },
-    { q: "조하리의 창", a: "개맹잠미 민독과폐 / 개방적영역(민주형), 맹목적영역(독단형), 잠재적영역(과묵형), 미지의영역(폐쇄형)" },
-    { q: "의사결정의 관점", a: "합참정우 / 합리적, 참여적, 정치적, 우연적" },
-    { q: "브릿지스 참여적 의사결정에 구성원 참여기준, 상급자의 의사결정 받아들일 수 있는 정도", a: "적절성(이해관계), 전문성, 수용영역" },
-    { q: "호이 타터 참여적 의사결정 참여기준", a: "관련성, 전문성, 헌신(신뢰)" },
-    { q: "교내자율장학의 방안", a: "임동자약 / 임상장학, 동료장학, 자기장학, 약식장학" },
-    { q: "컨설팅 장학의 기본원리", a: "자전(거를 탄)독한학자 / 자발성, 전문성, 독립성, 한시성, 학습성, 자문성" },
-    { q: "학교운영위원회 구성위원", a: "교원대표, 학부모대표, 지역사회인사" }
-];
-
-let eduCardsData = [...originalEduCardsData];
-
-// 교육학 카드 렌더링 함수
-function renderEduCards() {
-    const container = document.getElementById('edu-card-container');
-    if (!container) return;
-    container.innerHTML = '';
-
-    eduCardsData.forEach((item, index) => {
-        const card = document.createElement('div');
-        card.style.cssText = `
-            background-color: #252525;
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 120px;
-        `;
-        
-        card.innerHTML = `
-            <div style="font-size: 13px; color: #85c1e9; margin-bottom: 8px; font-weight: bold;">Q${index + 1}.</div>
-            <div style="font-size: 15px; color: #ffffff; font-weight: bold; margin-bottom: 12px; text-align: center;">${item.q}</div>
-            <div class="edu-card-answer" style="font-size: 14px; color: #f39c12; background-color: #1a1a1a; padding: 10px; border-radius: 4px; text-align: center; display: none; border: 1px dashed #d4ac0d; white-space: pre-line;">
-                💡 ${item.a}
-            </div>
-            <div style="font-size: 11px; color: #7f8c8d; text-align: center; margin-top: 8px;">클릭하여 정답 확인/숨기기</div>
-        `;
-
-        card.addEventListener('click', () => {
-            const ansDiv = card.querySelector('.edu-card-answer');
-            if (ansDiv.style.display === 'none') {
-                ansDiv.style.display = 'block';
-                card.style.borderColor = '#d4ac0d';
-            } else {
-                ansDiv.style.display = 'none';
-                card.style.borderColor = '#333';
-            }
-        });
-
-        container.appendChild(card);
-    });
-}
-
-function shuffleEduCards() {
-    for (let i = eduCardsData.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [eduCardsData[i], eduCardsData[j]] = [eduCardsData[j], eduCardsData[i]];
-    }
-    renderEduCards();
-}
-
-function resetEduCards() {
-    eduCardsData = [...originalEduCardsData];
-    renderEduCards();
-}
-const pedagogyData = [
-    { 
-        category: "수학교과역량",
-        title: "교수·학습 방법 : 문제해결 역량", 
-        content: `
-            <div class="concept-title">교수·학습 방법 : 문제해결 역량</div>
-            <p>㉠ 수학의 <span class="blank hidden" data-answer="개념">[□□]</span>, <span class="blank hidden" data-answer="원리">[□□]</span>, <span class="blank hidden" data-answer="법칙">[□□]</span>을 이용하여 <span class="blank hidden" data-answer="해결 가능한">[□□]</span> 문제를 학생에게 <span class="blank hidden" data-answer="제시">[□□]</span>한다. 이때 <span class="blank hidden" data-answer="다양한 방법">[□□]</span> 으로 해결 가능한 문제, <span class="blank hidden" data-answer="여러 가지 해답">[□□]</span>이 나올 수 있는 문제 등을 활용할 수 있다.</p>
-            <p>㉡ 문제에 주어진 <span class="blank hidden" data-answer="조건">[□□]</span>과 <span class="blank hidden" data-answer="정보">[□□]</span>를 <span class="blank hidden" data-answer="분석">[□□]</span>하고 적절한 문제해결 <span class="blank hidden" data-answer="계획">[□□]</span>을 수립하고 <span class="blank hidden" data-answer="실행">[□□]</span>하며 문제해결 <span class="blank hidden" data-answer="과정을">[□□]</span> <span class="blank hidden" data-answer="반성하도록">[□□]</span> 구체적인 <span class="blank hidden" data-answer="발문과">[□□]</span> <span class="blank hidden" data-answer="권고를">[□□]</span> 제시한다.</p>
-            <p>㉢ 문제해결 <span class="blank hidden" data-answer="과정">[□□]</span> 및 <span class="blank hidden" data-answer="결과">[□□]</span>의 의미를 <span class="blank hidden" data-answer="재해석">[□□]</span>하여 주어진 문제를 <span class="blank hidden" data-answer="변형">[□□]</span>하거나 <span class="blank hidden" data-answer="새로운">[□□]</span> 문제를 <span class="blank hidden" data-answer="만들어">[□□]</span> <span class="blank hidden" data-answer="해결하게">[□□]</span> 한다.</p>
-            <p>㉣ <span class="blank hidden" data-answer="성공적인">[□□]</span> 문제해결 경험을 바탕으로 <span class="blank hidden" data-answer="적극적이고">[□□]</span> <span class="blank hidden" data-answer="자신감있게">[□□]</span> 문제해결에 <span class="blank hidden" data-answer="참여">[□□]</span>하게 하고, <span class="blank hidden" data-answer="단번에">[□□]</span> 답이 나오지 않는 문제라도 <span class="blank hidden" data-answer="끈기있게">[□□]</span> <span class="blank hidden" data-answer="도전">[□□]</span>하여 <span class="blank hidden" data-answer="성취감을">[□□]</span> 느끼게 한다.</p>
-        ` 
-    },
-    { 
-        category: "수학교과역량",
-        title: "교수·학습 방법 : 추론 역량", 
-        content: `
-            <div class="concept-title">교수·학습 방법 : 추론 역량</div>
-            <p>㉠ <span class="blank hidden" data-answer="관찰">[□□]</span>, <span class="blank hidden" data-answer="실험">[□□]</span>, <span class="blank hidden" data-answer="측정">[□□]</span> 등 <span class="blank hidden" data-answer="구체적 조작">[□□]</span> 활동을 통해 수학의 개념, 원리, 법칙에 <span class="blank hidden" data-answer="흥미와">[□□]</span> <span class="blank hidden" data-answer="관심을">[□□]</span> 갖고 <span class="blank hidden" data-answer="다양한 방법으로">[□□]</span> <span class="blank hidden" data-answer="탐구하고">[□□]</span> 이해하게 한다.</p>
-            <p>㉡ <span class="blank hidden" data-answer="귀납">[□□]</span>, <span class="blank hidden" data-answer="유추">[□□]</span> 등의 <span class="blank hidden" data-answer="개연적 추론">[□□]</span>을 통해 <span class="blank hidden" data-answer="수학적 추측을">[□□]</span> 제기하고 <span class="blank hidden" data-answer="정당화하며">[□□]</span>, 수학적 <span class="blank hidden" data-answer="증거와">[□□]</span> 논리적 <span class="blank hidden" data-answer="근거를">[□□]</span> 바탕으로 <span class="blank hidden" data-answer="비판적으로">[□□]</span> 사고하는 태도를 갖게 한다.</p>
-            <p>㉢ 수학의 개념, 원리, 법칙을 도출하는 <span class="blank hidden" data-answer="과정과">[□□]</span> 수학적 <span class="blank hidden" data-answer="절차를">[□□]</span> <span class="blank hidden" data-answer="논리적이고">[□□]</span> <span class="blank hidden" data-answer="체계적으로">[□□]</span> 수행하고 <span class="blank hidden" data-answer="반성하게">[□□]</span> 한다.</p>
-        ` 
-    },
-    { 
-        category: "수학교과역량",
-        title: "교수·학습 방법 : 의사소통 역량", 
-        content: `
-            <div class="concept-title">교수·학습 방법 : 의사소통 역량</div>
-            <p>㉠ 수학 <span class="blank hidden" data-answer="용어">[□□]</span>, <span class="blank hidden" data-answer="기호">[□□]</span>, <span class="blank hidden" data-answer="표">[□□]</span>, <span class="blank hidden" data-answer="그래프">[□□]</span> 등의 수학적 <span class="blank hidden" data-answer="표현을">[□□]</span> 정확하게 사용하고 <span class="blank hidden" data-answer="표현끼리">[□□]</span> 변환하게 한다.</p>
-            <p>㉡ 학생이 자신의 <span class="blank hidden" data-answer="사고와">[□□]</span> <span class="blank hidden" data-answer="전략을">[□□]</span> 수학적 <span class="blank hidden" data-answer="표현으로">[□□]</span> 나타내고 설명하면서 수학적 <span class="blank hidden" data-answer="표현의">[□□]</span> <span class="blank hidden" data-answer="편리함을">[□□]</span> 인식하게 한다.</p>
-            <p>㉢ 학생 간 <span class="blank hidden" data-answer="상호 작용과">[□□]</span> <span class="blank hidden" data-answer="질문이">[□□]</span> 활발한 교실 <span class="blank hidden" data-answer="문화를">[□□]</span> 조성하고 수학적으로 의미 있는 <span class="blank hidden" data-answer="의사소통이">[□□]</span> 이루어지도록 적절한 <span class="blank hidden" data-answer="과제를">[□□]</span> 제시하고 안내한다.</p>
-            <p>㉣ 수학적 <span class="blank hidden" data-answer="아이디어에">[□□]</span> 대해 <span class="blank hidden" data-answer="상호 작용">[□□]</span>하는 과정에서 <span class="blank hidden" data-answer="타인을">[□□]</span> 배려하고 의견을 <span class="blank hidden" data-answer="존중하는">[□□]</span> <span class="blank hidden" data-answer="태도를">[□□]</span> 기르게 한다.</p>
-        ` 
-    },
-    { 
-        category: "수학교과역량",
-        title: "교수·학습 방법 : 연결 역량", 
-        content: `
-            <div class="concept-title">교수·학습 방법 : 연결 역량</div>
-            <p>㉠ <span class="blank hidden" data-answer="영역이나">[□□]</span> <span class="blank hidden" data-answer="학년(군)">[□□]</span> 내용 간에 관련된 수학의 개념, 원리, 법칙 등을 <span class="blank hidden" data-answer="유기적으로">[□□]</span> 연계하여 <span class="blank hidden" data-answer="새로운 지식">[□□]</span>을 <span class="blank hidden" data-answer="생성하면서">[□□]</span> <span class="blank hidden" data-answer="창의성을">[□□]</span> 기르게 한다.</p>
-            <p>㉡ <span class="blank hidden" data-answer="수학과 실생활">[□□]</span>, <span class="blank hidden" data-answer="사회 및 자연 현상">[□□]</span>, <span class="blank hidden" data-answer="타 교과의 내용">[□□]</span>을 연계하는 <span class="blank hidden" data-answer="과제를">[□□]</span> 활용하여 수학의 <span class="blank hidden" data-answer="유용성을">[□□]</span> 인식하게 한다.</p>
-        ` 
-    },
-    { 
-        category: "수학교과역량",
-        title: "교수·학습 방법 : 정보처리 역량", 
-        content: `
-            <div class="concept-title">교수·학습 방법 : 정보처리 역량</div>
-            <p>㉠ <span class="blank hidden" data-answer="실생활 및 수학적 문제">[□□]</span> 상황에서 <span class="blank hidden" data-answer="자료를">[□□]</span> 탐색하고 <span class="blank hidden" data-answer="수집하며">[□□]</span> 수학적으로 <span class="blank hidden" data-answer="처리하여">[□□]</span> <span class="blank hidden" data-answer="합리적인">[□□]</span> <span class="blank hidden" data-answer="의사 결정">[□□]</span>을 하는 태도를 기르게 한다.</p>
-            <p>㉡ <span class="blank hidden" data-answer="교구나 공학 도구">[□□]</span>를 활용하여 <span class="blank hidden" data-answer="추상적인">[□□]</span> 수학 내용을 <span class="blank hidden" data-answer="시각화하고">[□□]</span> 수학의 개념, 원리, 법칙에 대한 <span class="blank hidden" data-answer="직관적 이해와">[□□]</span> <span class="blank hidden" data-answer="논리적 사고를">[□□]</span> 돕는다.</p>
-            <p>㉢ 학생이 <span class="blank hidden" data-answer="주도적으로">[□□]</span> <span class="blank hidden" data-answer="교구나 공학 도구">[□□]</span>를 활용하여 <span class="blank hidden" data-answer="탐구하게">[□□]</span> 한다.</p>
-            <p>㉣ <span class="blank hidden" data-answer="계산 기능 함양">[□□]</span>을 <span class="blank hidden" data-answer="목표로">[□□]</span> 하지 않는 <span class="blank hidden" data-answer="교수·학습 상황">[□□]</span>에서는 <span class="blank hidden" data-answer="복잡한 계산을">[□□]</span> 할 때 <span class="blank hidden" data-answer="공학 도구를">[□□]</span> 이용할 수 있게 한다.</p>
-        ` 
-    },
-    { 
-        category: "교수학습방안",
-        title: "교수·학습 방법 : 교수·학습 방안", 
-        content: `
-            <div class="concept-title">교수·학습 방법 : 교수·학습 방안</div>
-            <p>① 설명식 교수는 <span class="blank hidden" data-answer="교사가">[□□]</span>가 <span class="blank hidden" data-answer="설명과">[□□]</span> <span class="blank hidden" data-answer="시연을">[□□]</span> 통해 수업을 <span class="blank hidden" data-answer="주도하는">[□□]</span> 교수·학습 방안으로, 수업 내용을 <span class="blank hidden" data-answer="구조화하여">[□□]</span> <span class="blank hidden" data-answer="체계적으로">[□□]</span> 지도하는 데 효과적이다. 이때, 교사는 학생의 적극적인 수업 <span class="blank hidden" data-answer="참여를">[□□]</span> 유도하고, <span class="blank hidden" data-answer="사고를">[□□]</span> 촉진하는 <span class="blank hidden" data-answer="발문을">[□□]</span> 적절히 활용한다.</p>
-            <p>② 토의·토론 학습은 <span class="blank hidden" data-answer="특정 주제에">[□□]</span> 대해 <span class="blank hidden" data-answer="협의하거나">[□□]</span> <span class="blank hidden" data-answer="논의하는">[□□]</span> 교수·학습 방안으로, 학생들이 수학 내용을 폭넓게 <span class="blank hidden" data-answer="이해하고">[□□]</span> 자신의 주장을 <span class="blank hidden" data-answer="효과적으로">[□□]</span> <span class="blank hidden" data-answer="표현하고">[□□]</span> 다른 사람의 의견을 <span class="blank hidden" data-answer="비판적 사고를">[□□]</span> 통해 <span class="blank hidden" data-answer="수용하여">[□□]</span> <span class="blank hidden" data-answer="합리적으로">[□□]</span> <span class="blank hidden" data-answer="의사 결정하는">[□□]</span> 태도를 기를 수 있게 한다.</p>
-            <p>③ 협력 학습은 <span class="blank hidden" data-answer="모둠 내의">[□□]</span> <span class="blank hidden" data-answer="상호 작용">[□□]</span>, <span class="blank hidden" data-answer="의사소통">[□□]</span>, <span class="blank hidden" data-answer="참여를">[□□]</span> 통해 <span class="blank hidden" data-answer="공동의">[□□]</span> 학습 <span class="blank hidden" data-answer="목표에">[□□]</span> 도달하도록 하는 교수·학습 방안으로, 다른 사람을 <span class="blank hidden" data-answer="존중하고">[□□]</span> <span class="blank hidden" data-answer="배려하며">[□□]</span> 모둠 내의 <span class="blank hidden" data-answer="역할을">[□□]</span> <span class="blank hidden" data-answer="수행하고">[□□]</span> <span class="blank hidden" data-answer="책임감을">[□□]</span> 기를 수 있게 한다.</p>
-            <p>④ 탐구 학습은 <span class="blank hidden" data-answer="학생이">[□□]</span> <span class="blank hidden" data-answer="중심이">[□□]</span> 되어 수학의 <span class="blank hidden" data-answer="개념, 원리, 법칙">[□□]</span>을 <span class="blank hidden" data-answer="발견하고">[□□]</span> 구성하는 교수·학습 방안으로, 학생 스스로 <span class="blank hidden" data-answer="자료와">[□□]</span> <span class="blank hidden" data-answer="정보로부터">[□□]</span> <span class="blank hidden" data-answer="지식을">[□□]</span> <span class="blank hidden" data-answer="도출하거나">[□□]</span> 지식의 <span class="blank hidden" data-answer="타당성을">[□□]</span> <span class="blank hidden" data-answer="확인하는">[□□]</span> 것이 중요함을 알게 할 수 있다.</p>
-            <p>⑤ 프로젝트 학습은 학생 <span class="blank hidden" data-answer="스스로">[□□]</span> <span class="blank hidden" data-answer="특정 주제나">[□□]</span> <span class="blank hidden" data-answer="과제를">[□□]</span> 탐구하고 해결하기 위해 <span class="blank hidden" data-answer="계획을">[□□]</span> 수립하고 <span class="blank hidden" data-answer="수행하여">[□□]</span> <span class="blank hidden" data-answer="결과물을">[□□]</span> 산출하고 <span class="blank hidden" data-answer="공유하는">[□□]</span> 교수·학습 방안으로, <span class="blank hidden" data-answer="자기주도적으로">[□□]</span> <span class="blank hidden" data-answer="수학 지식과 경험">[□□]</span>을 <span class="blank hidden" data-answer="통합하게">[□□]</span> 할 수 있다.</p>
-            <p>⑥ 수학적 모델링은 학생의 <span class="blank hidden" data-answer="삶과 연계된 현상">[□□]</span>을 다양한 <span class="blank hidden" data-answer="수학적 표현">[□□]</span> 방식을 이용하여 <span class="blank hidden" data-answer="수학적 모델로">[□□]</span> 만들고 수학적 모델을 다시 <span class="blank hidden" data-answer="실생활이나">[□□]</span> <span class="blank hidden" data-answer="사회 및 자연 현상에">[□□]</span> <span class="blank hidden" data-answer="적용하는">[□□]</span> 교수·학습 방안으로, <span class="blank hidden" data-answer="수학의 응용에">[□□]</span> 대한 <span class="blank hidden" data-answer="넓은 안목">[□□]</span>을 갖게 할 수 있다.</p>
-            <p>⑦ 놀이 및 게임 학습은 <span class="blank hidden" data-answer="호기심과">[□□]</span> <span class="blank hidden" data-answer="흥미를">[□□]</span> 유발하는 놀이 및 게임 활동을 활용하는 교수·학습 방안으로, <span class="blank hidden" data-answer="활동">[□□]</span> 속에서 수학 <span class="blank hidden" data-answer="개념이나">[□□]</span> <span class="blank hidden" data-answer="원리를">[□□]</span> <span class="blank hidden" data-answer="탐구하고">[□□]</span> 동료와 <span class="blank hidden" data-answer="경쟁">[□□]</span> 또는 <span class="blank hidden" data-answer="협력하면서">[□□]</span> <span class="blank hidden" data-answer="자연스럽게">[□□]</span> <span class="blank hidden" data-answer="수학에 접근">[□□]</span>하고 수학 학습에 대한 <span class="blank hidden" data-answer="자신감 및 의사소통 역량">[□□]</span>을 기르게 할 수 있다.</p>
-        ` 
-    },
-    { 
-        category: "평가방안",
-        title: "평가 방법 : 평가 방안", 
-        content: `
-            <div class="concept-title">평가 방법 : 평가 방안</div>
-            <p>① <span class="blank hidden" data-answer="지필평가는">[□□]</span> 수학 내용 체계의 <span class="blank hidden" data-answer="지식·이해">[□□]</span>, <span class="blank hidden" data-answer="과정·기능을">[□□]</span> 평가하는 데 활용할 수 있고, 선택형, <span class="blank hidden" data-answer="단답형">[□□]</span>, <span class="blank hidden" data-answer="서·논술형">[□□]</span> 등의 다양한 문항 유형을 사용할 수 있다.</p>
-            <p>② 프로젝트 평가는 학생 스스로 <span class="blank hidden" data-answer="특정 주제나">[□□]</span> <span class="blank hidden" data-answer="과제를">[□□]</span> 탐구하고 해결하기 위해 <span class="blank hidden" data-answer="계획을">[□□]</span> 수립하고 <span class="blank hidden" data-answer="수행하는">[□□]</span> <span class="blank hidden" data-answer="과정과">[□□]</span> 그 <span class="blank hidden" data-answer="결과물을">[□□]</span> 평가하는 방안으로, 수학 내용 체계의 세 범주를 종합적으로 평가할 때 활용할 수 있다.</p>
-            <p>③ 포트폴리오 평가는 학생의 <span class="blank hidden" data-answer="성장에">[□□]</span> 대한 <span class="blank hidden" data-answer="정보를">[□□]</span> 얻기 위해 수학 학습 <span class="blank hidden" data-answer="수행과">[□□]</span> 그 <span class="blank hidden" data-answer="결과물을">[□□]</span> <span class="blank hidden" data-answer="일정 기간">[□□]</span> <span class="blank hidden" data-answer="수집하여">[□□]</span> 평가하는 방안으로, 수학 교과 역량의 발달을 <span class="blank hidden" data-answer="종합적으로">[□□]</span> 평가할 때 활용할 수 있다.</p>
-            <p>④ <span class="blank hidden" data-answer="관찰">[□□]</span> 평가, <span class="blank hidden" data-answer="면담">[□□]</span> 평가, <span class="blank hidden" data-answer="구술">[□□]</span> 평가는 학생 <span class="blank hidden" data-answer="개인">[□□]</span> 및 <span class="blank hidden" data-answer="소집단을">[□□]</span> 관찰, 학생과의 <span class="blank hidden" data-answer="질의응답">[□□]</span>, 학생의 <span class="blank hidden" data-answer="발표를">[□□]</span> 통해 평가하는 방안으로, 학생의 <span class="blank hidden" data-answer="사고 방법">[□□]</span>, <span class="blank hidden" data-answer="수행 과정">[□□]</span>, 수학 내용 체계의 <span class="blank hidden" data-answer="가치·태도">[□□]</span> 등을 평가할 때 활용할 수 있다.</p>
-            <p>⑤ <span class="blank hidden" data-answer="자기">[□□]</span> 평가는 학생 <span class="blank hidden" data-answer="스스로">[□□]</span> 자신의 학습 <span class="blank hidden" data-answer="과정과">[□□]</span> <span class="blank hidden" data-answer="결과를">[□□]</span> 평가하는 방안으로, 수학 내용의 이해와 <span class="blank hidden" data-answer="수행 과정">[□□]</span>, 문제해결과 추론 과정의 <span class="blank hidden" data-answer="반성">[□□]</span>, 자신의 <span class="blank hidden" data-answer="생각 표현">[□□]</span>, 수학 내용 체계의 <span class="blank hidden" data-answer="가치·태도">[□□]</span> 등을 평가할 때 활용할 수 있다.</p>
-            <p>⑥ 동료 평가는 <span class="blank hidden" data-answer="동료">[□□]</span> 학생들이 <span class="blank hidden" data-answer="상대방을">[□□]</span> 서로 평가하는 방안으로, <span class="blank hidden" data-answer="협력">[□□]</span> 학습 상황에서 학생 <span class="blank hidden" data-answer="개개인의">[□□]</span> 역할 <span class="blank hidden" data-answer="수행이나">[□□]</span> 집단 <span class="blank hidden" data-answer="활동의">[□□]</span> <span class="blank hidden" data-answer="기여를">[□□]</span> 평가할 때 활용할 수 있다.</p>
-        ` 
-    },
-{ 
-        category: "기타",
-        title: "교수·학습 방법 : 학생 주도적 참여", 
-        content: `
-            <div class="concept-title">교수·학습 방법 : 학생 주도적 참여</div>
-            <p>(나) 학생들이 수학 학습에 주도적으로 참여하는 교수·학습 환경과 분위기를 조성한다.</p>
-            <p>① 수학 <span class="blank hidden" data-answer="학습의">[□□]</span> <span class="blank hidden" data-answer="주체가">[□□]</span> 학생 <span class="blank hidden" data-answer="자신임을">[□□]</span> 인식하고 수학 학습에 <span class="blank hidden" data-answer="적극적으로">[□□]</span> <span class="blank hidden" data-answer="참여하도록">[□□]</span> 유도한다.</p>
-            <p>② <span class="blank hidden" data-answer="스스로">[□□]</span> 수학 학습 <span class="blank hidden" data-answer="목표와">[□□]</span> <span class="blank hidden" data-answer="계획을">[□□]</span> 세우고 학습 결과를 <span class="blank hidden" data-answer="평가하고">[□□]</span> <span class="blank hidden" data-answer="성찰하도록">[□□]</span> 안내한다.</p>
-            <p>③ 수학을 <span class="blank hidden" data-answer="효과적으로">[□□]</span> 학습하는 <span class="blank hidden" data-answer="방법을">[□□]</span> 탐색하고 자신의 학습 <span class="blank hidden" data-answer="과정과">[□□]</span> <span class="blank hidden" data-answer="태도를">[□□]</span> <span class="blank hidden" data-answer="돌아보고">[□□]</span> 조절하는 <span class="blank hidden" data-answer="자기주도적">[□□]</span> 학습 <span class="blank hidden" data-answer="습관을">[□□]</span> 형성하도록 지도한다.</p>
-            <p>④ 교사 및 동료와 <span class="blank hidden" data-answer="협력적">[□□]</span> 관계 속에서 수학 학습에 대한 <span class="blank hidden" data-answer="조언과">[□□]</span> 의견을 <span class="blank hidden" data-answer="경청하고">[□□]</span> 수용할 수 있도록 <span class="blank hidden" data-answer="허용적인">[□□]</span> 분위기를 조성한다.</p>
-            <p>⑤ 수학 학습에 <span class="blank hidden" data-answer="자신감을">[□□]</span> 가지고 <span class="blank hidden" data-answer="실수가">[□□]</span> <span class="blank hidden" data-answer="배움의">[□□]</span> <span class="blank hidden" data-answer="기회임을">[□□]</span> 인식하며 <span class="blank hidden" data-answer="끈기">[□□]</span> 있게 <span class="blank hidden" data-answer="도전하도록">[□□]</span> <span class="blank hidden" data-answer="격려하고">[□□]</span> <span class="blank hidden" data-answer="지원한다">[□□]</span>.</p>
-        ` 
-    },
-    { 
-        category: "평가방향",
-        title: "평가의 방향", 
-        content: `
-            <div class="concept-title">평가의 방향</div>
-              <p>(가) 학생의 수학 <span class="blank hidden" data-answer="학습에">[□□]</span> 대한 <span class="blank hidden" data-answer="정보를">[□□]</span> 수집·<span class="blank hidden" data-answer="활용하여">[□□]</span> 학생의 <span class="blank hidden" data-answer="주도적">[□□]</span> 학습과 <span class="blank hidden" data-answer="성장을">[□□]</span> 지원하고 교사의 <span class="blank hidden" data-answer="수업">[□□]</span> <span class="blank hidden" data-answer="개선을">[□□]</span> 돕도록 지속적으로 평가를 실시한다.</p>
-            <p>(나) 수학과 교육과정에 제시된 성격, <span class="blank hidden" data-answer="목표">[□□]</span>, 내용 체계, <span class="blank hidden" data-answer="성취기준">[□□]</span>, 교수·학습과 <span class="blank hidden" data-answer="일관성을">[□□]</span> 가지도록 평가를 실시한다.</p>
-            <p>(다) 학생의 수학 학습을 돕기 위해 <span class="blank hidden" data-answer="수업과">[□□]</span> <span class="blank hidden" data-answer="평가를">[□□]</span> <span class="blank hidden" data-answer="통합하여">[□□]</span> <span class="blank hidden" data-answer="과정을">[□□]</span> 중시하는 평가를 실시한다.</p>
-            <p>(라) 수학 내용 체계의 지식·이해, 과정·기능, 가치·태도를 학습 <span class="blank hidden" data-answer="결과뿐">[□□]</span> 아니라 학습 <span class="blank hidden" data-answer="과정에서">[□□]</span> 균형 있게 평가한다.</p>
-            <p>(마) <span class="blank hidden" data-answer="학생이">[□□]</span>이 <span class="blank hidden" data-answer="평가">[□□]</span> 과정에 적극적으로 <span class="blank hidden" data-answer="참여하고">[□□]</span> <span class="blank hidden" data-answer="스스로">[□□]</span> <span class="blank hidden" data-answer="설정한">[□□]</span> 수학 학습 <span class="blank hidden" data-answer="목표에">[□□]</span> 대한 <span class="blank hidden" data-answer="달성">[□□]</span> 여부를 <span class="blank hidden" data-answer="점검할">[□□]</span> 수 있게 한다.</p>
-            <p>(바) 학생의 <span class="blank hidden" data-answer="사회·문화적 배경">[□□]</span>, <span class="blank hidden" data-answer="신체 특성">[□□]</span> 등이 <span class="blank hidden" data-answer="불리하게">[□□]</span> 작용하지 않도록 평가를 실시하고, 학생의 <span class="blank hidden" data-answer="사전 지식">[□□]</span>, 수학에 대한 <span class="blank hidden" data-answer="흥미">[□□]</span>, 학습 <span class="blank hidden" data-answer="유형">[□□]</span>, 학습 <span class="blank hidden" data-answer="수준을">[□□]</span> 고려하여 평가 <span class="blank hidden" data-answer="목적">[□□]</span>, 교수·학습 내용 및 방법에 따라 <span class="blank hidden" data-answer="다양한">[□□]</span> 평가 <span class="blank hidden" data-answer="방법을">[□□]</span> 적용한다.</p>
-            <p>(사) <span class="blank hidden" data-answer="진단">[□□]</span>평가, <span class="blank hidden" data-answer="형성">[□□]</span>평가, <span class="blank hidden" data-answer="총괄">[□□]</span>평가 등을 적절히 활용하여 수학 학습 과정과 결과에 대한 구체적인 <span class="blank hidden" data-answer="정보를">[□□]</span> 바탕으로 학생의 <span class="blank hidden" data-answer="특성과">[□□]</span> 학습 <span class="blank hidden" data-answer="결손을">[□□]</span> 파악하고 <span class="blank hidden" data-answer="개별적">[□□]</span> <span class="blank hidden" data-answer="지원 방안을">[□□]</span> 마련한다.</p>
-            <p>(아) <span class="blank hidden" data-answer="온라인">[□□]</span> 수학 수업에서 평가를 할 때 학습 <span class="blank hidden" data-answer="환경">[□□]</span> 등의 <span class="blank hidden" data-answer="외적 요소가">[□□]</span> 수학 학습 <span class="blank hidden" data-answer="과정과">[□□]</span> 평가 <span class="blank hidden" data-answer="결과에">[□□]</span> 영향을 미치지 않도록 한다.</p>
-            <p>(자) 평가 <span class="blank hidden" data-answer="절차를">[□□]</span> <span class="blank hidden" data-answer="개방적이고">[□□]</span> <span class="blank hidden" data-answer="공정하게">[□□]</span> 시행하고 학생의 수학 학습에 대한 <span class="blank hidden" data-answer="의미있는">[□□]</span> <span class="blank hidden" data-answer="정보를">[□□]</span> 학생, 학부모에게 제공한다.</p>
-        ` 
-    },
-];
-
-// 전공 공식 요약 데이터 원본 (10개 과목 체계 적용)
-const originalFormulaData = [
-    { 
-        category: "미적",
-        title: "미적분학 - 역삼각함수 도함수", 
-        content: "$$\\frac{d}{dx}(\\sin^{-1}x) = \\frac{1}{\\sqrt{1-x^2}}$$ $$\\frac{d}{dx}(\\tan^{-1}x) = \\frac{1}{1+x^2}$$" 
-    },
-    { 
-        category: "미적",
-        title: "삼각함수 배각 공식", 
-        content: "$$\\cos^2\\theta = \\frac{1+\\cos 2\\theta}{2}$$ $$\\sin^2\\theta = \\frac{1-\\cos 2\\theta}{2}$$" 
-    },
-    { 
-        category: "미적",
-        title: "극곡선의 길이", 
-        content: "극곡선 $r = f(\\theta), \\; a \\le \\theta \\le b$인 곡선의 길이:<br>$$L = \\int_a^b \\sqrt{r^2 + \\left(\\frac{dr}{d\\theta}\\right)^2} d\\theta$$" 
-    },
-    { 
-        category: "미적",
-        title: "극곡선 영역의 넓이", 
-        content: "$R$을 $r = f(\\theta)$와 $\\theta = a, \\; \\theta = b$로 유계된 영역 ($f$는 양의 연속함수, $0 < b - a < 2\\pi$)<br>$R$의 넓이 $A$:<br>$$A = \\frac{1}{2} \\int_a^b r^2 d\\theta$$" 
-    },
-    { 
-        category: "미적",
-        title: "벡터미적분학 - 발산 정리", 
-        content: "$$\\iint_S \\mathbf{F} \\cdot \\mathbf{n} \\, dS = \\iiint_D \\nabla \\cdot \\mathbf{F} \\, dV$$" 
-    },
-
-    { 
-        category: "해석",
-        title: "해석학 - Darboux 정리", 
-        content: "$f : [a, b] \\to \\mathbb{R}$ 미분가능 $\\implies$ $f'(a)$와 $f'(b)$ 사이의 임의의 실수 $k$에 대하여<br><div style='text-align: center; margin: 12px 0;'>$$\\exists c \\in (a, b) \\text{ s.t. } f'(c) = k$$</div>" 
-    },
-    { 
-        category: "해석",
-        title: "해석학 - Cauchy 평균값 정리", 
-        content: "$f, g : [a, b]$ 연속, $(a, b)$ 미분가능, $\\forall x \\in (a, b), g'(x) \\neq 0$<br><div style='text-align: center; margin: 12px 0;'>$$\\exists c \\in (a, b) \\text{ s.t. } \\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$$</div>" 
-    },
-    { 
-        category: "해석",
-        title: "해석학 - 적분의 평균값 정리 (제2형)", 
-        content: "$f, g : [a, b]$ 연속, $g(x) \\ge 0$<br><div style='text-align: center; margin: 12px 0;'>$$\\exists c \\in (a, b) \\text{ s.t. } \\int_a^b f g \\, dx = f(c) \\int_a^b g \\, dx$$</div>" 
-    },
-    { 
-        category: "해석",
-        title: "해석학 - Abel의 판정법", 
-        content: "$\{x_n\}$ : 수렴하는 단조수열, $\\sum y_n$ : 수렴<br><div style='text-align: center; margin: 12px 0;'>$$\\implies \\sum x_n y_n \\text{ 수렴}$$</div>" 
-    },
-    { 
-        category: "해석",
-        title: "해석학 - Raabe의 판정법", 
-        content: "$\{x_n\}$ : 0이 아닌 실수열<br><div style='text-align: center; margin: 12px 0;'>$$\\lim_{n \\to \\infty} n \\left( 1 - \\left| \\frac{x_{n+1}}{x_n} \\right| \\right) = a$$</div>- $a > 1$ 일 때, $\\sum x_n$ 절대수렴<br>- $a < 1$ 일 때, $\\sum x_n$ 절대수렴하지 않음<br><div style='font-size: 13px; color: #e74c3c; margin-top: 6px;'>(⚠️ 다른 test와 반대임에 유의)</div>" 
-    },
-
-
-    { 
-        category: "복소",
-        title: "복소함수론 - Laurent 전개", 
-        content: "$C$: 원환영역의 임의의 단순 닫힌 곡선<br>$$f(z) = \\sum_{n=0}^{\\infty} a_n (z-z_0)^n + \\sum_{n=1}^{\\infty} b_n (z-z_0)^{-n}$$ $$a_n = \\frac{1}{2\\pi i} \\int_C \\frac{f(z)}{(z-z_0)^{n+1}} \\, dz,$$ $$\\quad b_n = \\frac{1}{2\\pi i} \\int_C \\frac{f(z)}{(z-z_0)^{-n+1}} \\, dz$$" 
-    },
-    { 
-        category: "복소",
-        title: "복소함수론 - 무한대에서의 유수", 
-        content: "$f$가 C 내부 유한개 제외하고 전체에서 해석적일 때:<br>$$\\int_C f(z) \\, dz = 2\\pi i \\operatorname{Res}_{z=0} \\left( \\frac{1}{z^2} f\\left(\\frac{1}{z}\\right) \\right)$$" 
-    },
-    { 
-        category: "복소",
-        title: "복소함수론 - Jordan의 보조정리", 
-        content: "반원 $C_R$ 바깥 상반평면에서 해석적, $C_R$ 위 모든 $z$에 대해 $|f(z)| \\le M_R \\to 0$ as $R \\to \\infty$<br>$$\\lim_{R \\to \\infty} \\int_{C_R} f(z) e^{iaz} \\, dz = 0 \\quad (a > 0)$$" 
-    },
-    { 
-        category: "복소",
-        title: "복소함수론 - 편각 원리", 
-        content: "$$\\int_C \\frac{f'(z)}{f(z)} \\, dz = 2\\pi i (Z - P)$$($Z$: 영역 내 영점의 중복도 포함 개수, $P$: 영역 내 극점의 중복도 포함 개수)" 
-    },
-
-
-
-
-    { 
-        category: "미기",
-        title: "미분기하학 - 접선의 방정식", 
-        content: "$$X(t) = \\alpha(t_0) + t\\alpha'(t_0)$$" 
-    },
-    { 
-        category: "미기",
-        title: "미분기하학 - 곡선의 T, N, B, κ, τ", 
-        content: "• 단위속력곡선 ($|\\alpha'(s)| = 1$)<br>$$T = \\alpha', \\quad N = \\frac{T'}{\\kappa}, \\quad B = T \\times N$$ $$\\kappa = \\|T'\\|, \\quad \\tau = -\\langle B', N \\rangle$$ • 정칙곡선 ($\\alpha' \\neq 0$)<br>$$T = \\frac{\\alpha'}{\\|\\alpha'\\|}, \\quad N = B \\times T, \\quad B = \\frac{\\alpha' \\times \\alpha''}{\\|\\alpha' \\times \\alpha''\\|}$$ $$\\kappa = \\frac{\\|\\alpha' \\times \\alpha''\\|}{\\|\\alpha'\\|^3}, \\quad \\tau = \\frac{\\langle \\alpha' \\times \\alpha'', \\alpha''' \\rangle}{\\|\\alpha' \\times \\alpha''\\|^2}$$" 
-    },
-    { 
-        category: "미기",
-        title: "미분기하학 - 법곡률(Normal Curvature)", 
-        content: "$$k_n = \\langle \\mathbf{T}', \\mathbf{U} \\rangle = \\kappa \\langle \\mathbf{N}, \\mathbf{U} \\rangle$$• $(du, dv)$ 방향:$$k_n = \\frac{II}{I} = \\frac{L(du)^2 + 2M dudv + N(dv)^2}{E(du)^2 + 2F dudv + G(dv)^2}$$• 정칙 곡선 $\\alpha'$ 방향:$$k_n = \\frac{\\langle \\alpha'', \\mathbf{U} \\rangle}{\\langle \\alpha', \\alpha' \\rangle}$$" 
-    },
-    { 
-        category: "미기",
-        title: "미분기하학 - 측지곡률(Geodesic Curvature)", 
-        content: "$$\\kappa_g = \\langle \\alpha'', \\mathbf{V} \\rangle \\quad (\\text{단, } \\mathbf{V} = \\mathbf{U} \\times \\mathbf{T})$$ $$\\kappa_g = \\kappa \\langle \\mathbf{U}, \\mathbf{B} \\rangle = \\frac{\\langle \\alpha' \\times \\alpha'', \\mathbf{U} \\rangle}{\\|\\alpha'\\|^3}$$" 
-    },
-    { 
-        category: "미기",
-        title: "미분기하학 - 가우스 곡률과 평균 곡률", 
-        content: "$$K = \\frac{LN - M^2}{EG - F^2} = k_1 k_2$$ $$H = \\frac{EN + GL - 2FM}{2(EG - F^2)} = \\frac{k_1 + k_2}{2}$$" 
-    },
-    { 
-        category: "미기",
-        title: "미분기하학 - 전곡률 (Total Curvature)", 
-        content: "• 곡선의 전곡률 (정칙 곡선 $\\alpha(t)$, $a \\le t \\le b$):<br>$$\\int_a^b \\kappa(t) \\|\\alpha'(t)\\| \\, dt$$<br>• 곡선의 전곡률 (평면 단순 닫힌 곡선, 회전수 $N$):<br>$$\\int \\kappa \\, ds = 2\\pi N$$<br>• 곡면의 전곡률 (컴팩트 곡면 $M$, 가우스 곡률 $K$):<br>$$\\iint_M K \\, dS = \\iint_D \\frac{LN - M^2}{EG - F^2} \\sqrt{EG - F^2} \\, dudv$$" 
-    },
-    { 
-        category: "위상",
-        title: "위상수학 - 연결성과 컴팩트", 
-        content: "• 연결의 연속상은 연결<br>• cpt의 연속상은 cpt<br>• cpt의 폐부부분집합은 cpt<br>• $T_2$ 공간의 cpt 부분집합은 폐집합" 
-    },
-
-    { 
-        category: "정수",
-        title: "정수론 - 헨젤의 정리", 
-        content: "$p^k \\mid f(a)$ 일 때, 다음 합동식으로 해 $t$를 구하여 $a + p^k t$ 로 확장 $$f'(a) t \\equiv -\\frac{f(a)}{p^k} \\pmod p$$" 
-    },
-
-    { 
-        category: "선대",
-        title: "선형대수학 - 정사영 연산자", 
-        content: "$\\mathbf{u} \\in \\mathbb{R}^n$: 단위벡터, $\\operatorname{span}\\{\\mathbf{u}\\}$의 직교여공간에 대한 정사영 연산자 $$T(\\mathbf{x}) = (I - \\mathbf{u}\\mathbf{u}^T)\\mathbf{x}$$" 
-    },
-
-    {
-    category: "선대",
-    title: "선형대수학 - 가역행렬의 동치 조건",
-    content: "$n \\times n$ 행렬 $A$에 대해 다음은 모두 동치 <br>• $A$는 가역행렬이다. <br>• $T_A(\\mathbf{x}) = A\\mathbf{x}$는 단사이다. <br>• $A\\mathbf{x} = \\mathbf{0}$은 자명해($\\mathbf{x}=\\mathbf{0}$)만 갖는다. <br>• $0$은 $A$의 고윳값이 아니다 ($\\det A \\neq 0$). <br>• 대칭행렬 $A^T A$는 가역행렬이다. <br>• $\\operatorname{rank}(A) = n$ 및 열벡터들이 선형 독립이다."
-    },
-
-    { 
-        category: "이산",
-        title: "이산수학 - 유향그래프의 행렬", 
-        content: "$B$가 유향그래프의 근접행렬, $A$와 $D$는 방향제거한 그래프의 인접행렬과 차수행렬일 때, $$B B^T = D - A$$" 
-    },
-
-
-    { 
-        category: "확통",
-        title: "확률과 통계 - 공분산과 상관계수", 
-        content: "$$\\begin{aligned}\\sigma_{XY} &= E[(X - \\mu_X)(Y - \\mu_Y)] \\\\&= E(XY) - \\mu_X \\mu_Y\\end{aligned}$$ $$\\rho_{XY} = \\frac{\\sigma_{XY}}{\\sigma_X \\sigma_Y}$$" 
-    },
-    { 
-        category: "확통",
-        title: "확률과 통계 - 적률생성함수", 
-        content: "$$M_X(t) = E(e^{tX})$$ $$M_X^{(k)}(0) = E(X^k) \\quad (k = 1, 2, \\dots)$$" 
-    },
-    { 
-        category: "확통",
-        title: "확률과 통계 - 표본평균과 표본분산의 성질", 
-        content: "$$S^2 = \\frac{1}{n-1} \\sum_{i=1}^n (X_i - \\overline{X})^2$$ $$E(\\overline{X}) = \\mu, \\quad \\operatorname{Var}(\\overline{X}) = \\frac{\\sigma^2}{n}, \\quad E(S^2) = \\sigma^2$$" 
-    },
-    { 
-        category: "확통",
-        title: "확률과 통계 - 모평균의 신뢰구간", 
-        content: "$$\\left[ \\overline{X} - z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}}, \\; \\overline{X} + z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}} \\right]$$ $$\\left[ \\overline{X} - t_{\\alpha/2}(n-1) \\frac{S}{\\sqrt{n}}, \\; \\overline{X} + t_{\\alpha/2}(n-1) \\frac{S}{\\sqrt{n}} \\right]$$" 
-    },
-    { 
-        category: "확통",
-        title: "확률과 통계 - 모비율의 신뢰구간", 
-        content: "$$\\left[ \\hat{p} - z_{\\alpha/2} \\sqrt{\\frac{\\hat{p}\\hat{q}}{n}}, \\; \\hat{p} + z_{\\alpha/2} \\sqrt{\\frac{\\hat{p}\\hat{q}}{n}} \\right]$$" 
-    },
-    { 
-        category: "확통",
-        title: "확률과 통계 - 가설 검정의 기본 개념과 용어", 
-        content: "• 가설 설정:<br>- 귀무가설 ($H_0$): 효과가 없다 (차이가 없다)<br>- 대립가설 ($H_1$): 효과가 있다 (차이가 있다)<br><br>• 기각역과 검정통계량:<br>- 기각역: $H_1$이 참이라고 판단하는 영역<br>- 검정통계량값이 기각역에 포함 $\\implies H_0$ 기각 ($H_1$ 채택)<br>- 검정통계량값이 기각역에 미포함 $\\implies H_0$ 기각 실패 ($H_1$을 주장할 충분한 근거 없음)<br><br>• 검정통계량 ($Z$ 통계량):<br>$$Z = \\frac{\\overline{X} - \\mu_0}{\\sigma / \\sqrt{n}}$$<br>• 유의수준 ($\\alpha$):<br>- 기각역 영역의 확률 = 1종 오류를 범할 확률 ($H_0$이 참인데 기각할 확률)" 
-    },
-
-];
-
-// 1. 탭1(교수·학습 방법) 관련 상태 및 함수
-let currentPedagogyCategory = '수학교과역량'; // 초기 선택된 서브탭
-
-function filterPedagogy(category, event) {
-    currentPedagogyCategory = category;
-    localStorage.setItem('selectedPedagogyCategory', category);
-
-    const buttons = event.currentTarget.parentElement.querySelectorAll('.sub-tab-btn');
-    buttons.forEach(btn => {
-        btn.style.backgroundColor = '#2c2c2c';
-        btn.style.color = '#b0b0b0';
-    });
-    if (event && event.currentTarget) {
-        event.currentTarget.style.backgroundColor = '#3498db';
-        event.currentTarget.style.color = 'white';
-    }
-
-    renderPedagogyList();
-}
-
-function renderPedagogyList() {
-    const container = document.getElementById('pedagogy-list-container');
-    if (!container) return;
-    container.innerHTML = '';
-
-    let filteredData = pedagogyData.filter(item => item.category === currentPedagogyCategory);
-
-    const searchInput = document.getElementById('searchInput');
-    const rawKeyword = searchInput ? searchInput.value.toLowerCase().trim() : '';
-    const keyword = rawKeyword.replace(/\s+/g, '');
-
-    if (keyword !== '') {
-        let processedData = [];
-
-        filteredData.forEach(item => {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = item.content;
+            const card = document.createElement('div');
+            card.style.cssText = `
+                background-color: #252525;
+                border: ${isHidden ? '1.5px dashed #f39c12' : '1px solid #333'};
+                border-radius: 8px;
+                padding: 20px;
+                cursor: pointer;
+                transition: all 0.2s;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                min-height: 120px;
+                position: relative;
+            `;
             
-            // 빈칸(.blank)의 정답을 텍스트로 치환하여 검색 정확도 높이기
-            tempDiv.querySelectorAll('.blank').forEach(blank => {
-                const ans = blank.getAttribute('data-answer');
-                if (ans) blank.textContent = ans;
+            card.innerHTML = `
+                <div style="font-size: 13px; color: #85c1e9; margin-bottom: 8px; font-weight: bold;">
+                    Q${index + 1}. ${isHidden ? '<span style="color:#f39c12; font-size:11px;">(숨김 상태)</span>' : ''}
+                </div>
+                <div style="font-size: 15px; color: #ffffff; font-weight: bold; margin-bottom: 12px; text-align: center;">${item.q}</div>
+                <div class="card-answer" style="font-size: 14px; color: #f39c12; background-color: #1a1a1a; padding: 10px; border-radius: 4px; text-align: center; display: none; border: 1px dashed #d4ac0d;">
+                    💡 ${item.a}
+                </div>
+                <div style="font-size: 11px; color: #7f8c8d; text-align: center; margin-top: 8px;">클릭하여 정답 확인</div>
+            `;
+
+            card.addEventListener('click', () => {
+                const ansDiv = card.querySelector('.card-answer');
+                ansDiv.style.display = ansDiv.style.display === 'none' ? 'block' : 'none';
             });
 
-            const titleEl = tempDiv.querySelector('.concept-title');
-            const titleHtml = titleEl ? titleEl.outerHTML : '';
-            const pTags = tempDiv.querySelectorAll('p');
+            // ✨ 숨김 상태 여부(isHidden)를 함께 전달하여 우측 상단 버튼 모양과 기능을 다르게 설정
+            setupCardInteractions(card, origIndex, hiddenCards, renderCards, isHidden);
 
-            let matchedParagraphs = [];
-            pTags.forEach(p => {
-                const pText = p.textContent.toLowerCase().replace(/\s+/g, '');
-                if (pText.includes(keyword)) {
-                    matchedParagraphs.push(p.outerHTML);
+            container.appendChild(card);
+        });
+    }
+
+    // ✨ [추가] 특정 카드의 숨기기를 취소하고 원래 상태로 되돌리는 함수
+    function cancelHideCard(origIndex) {
+        hiddenCards.delete(origIndex);
+        renderCards();
+    }
+
+    function shuffleCards() {
+        let available = cardsData.filter(item => !hiddenCards.has(originalCardsData.indexOf(item)));
+        let hidden = cardsData.filter(item => hiddenCards.has(originalCardsData.indexOf(item)));
+
+        for (let i = available.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [available[i], available[j]] = [available[j], available[i]];
+        }
+        cardsData = [...available, ...hidden];
+        renderCards();
+    }
+
+    function resetCards() {
+        hiddenCards.clear();
+        showHiddenMode = false;
+        const btn = document.getElementById('toggleHiddenBtn');
+        if (btn) {
+            btn.style.backgroundColor = '#2c2c2c';
+            btn.style.color = '#b0b0b0';
+            btn.style.borderColor = '#444';
+            btn.textContent = '👓 숨김 (OFF)';
+        }
+        cardsData = [...originalCardsData];
+        renderCards();
+    }
+
+    function renderEduCards() {
+        const container = document.getElementById('edu-card-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        eduCardsData.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.style.cssText = `
+                background-color: #252525;
+                border: 1px solid #333;
+                border-radius: 8px;
+                padding: 20px;
+                cursor: pointer;
+                transition: all 0.2s;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                min-height: 120px;
+            `;
+            
+            card.innerHTML = `
+                <div style="font-size: 13px; color: #85c1e9; margin-bottom: 8px; font-weight: bold;">Q${index + 1}.</div>
+                <div style="font-size: 15px; color: #ffffff; font-weight: bold; margin-bottom: 12px; text-align: center;">${item.q}</div>
+                <div class="edu-card-answer" style="font-size: 14px; color: #f39c12; background-color: #1a1a1a; padding: 10px; border-radius: 4px; text-align: center; display: none; border: 1px dashed #d4ac0d; white-space: pre-line;">
+                    💡 ${item.a}
+                </div>
+                <div style="font-size: 11px; color: #7f8c8d; text-align: center; margin-top: 8px;">클릭하여 정답 확인</div>
+            `;
+
+            card.addEventListener('click', () => {
+                const ansDiv = card.querySelector('.edu-card-answer');
+                if (ansDiv.style.display === 'none') {
+                    ansDiv.style.display = 'block';
+                    card.style.borderColor = '#d4ac0d';
+                } else {
+                    ansDiv.style.display = 'none';
+                    card.style.borderColor = '#333';
                 }
             });
 
-            if (matchedParagraphs.length > 0) {
-                processedData.push({
-                    title: item.title,
-                    content: titleHtml + matchedParagraphs.join('')
+            container.appendChild(card);
+        });
+    }
+
+    function shuffleEduCards() {
+        for (let i = eduCardsData.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [eduCardsData[i], eduCardsData[j]] = [eduCardsData[j], eduCardsData[i]];
+        }
+        renderEduCards();
+    }
+
+    function resetEduCards() {
+        eduCardsData = [...window.originalEduCardsData];
+        renderEduCards();
+    }
+
+    let currentPedagogyCategory = '수학교과역량';
+
+    function filterPedagogy(category, event) {
+        currentPedagogyCategory = category;
+        localStorage.setItem('selectedPedagogyCategory', category);
+
+        const buttons = event.currentTarget.parentElement.querySelectorAll('.sub-tab-btn');
+        buttons.forEach(btn => {
+            btn.style.backgroundColor = '#2c2c2c';
+            btn.style.color = '#b0b0b0';
+        });
+        if (event && event.currentTarget) {
+            event.currentTarget.style.backgroundColor = '#3498db';
+            event.currentTarget.style.color = 'white';
+        }
+
+        renderPedagogyList();
+    }
+
+    function renderPedagogyList() {
+        const container = document.getElementById('pedagogy-list-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        let filteredData = window.pedagogyData.filter(item => item.category === currentPedagogyCategory);
+        const searchInput = document.getElementById('searchInput');
+        const rawKeyword = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        const keyword = rawKeyword.replace(/\s+/g, '');
+
+        if (keyword !== '') {
+            let processedData = [];
+            filteredData.forEach(item => {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = item.content;
+                tempDiv.querySelectorAll('.blank').forEach(blank => {
+                    const ans = blank.getAttribute('data-answer');
+                    if (ans) blank.textContent = ans;
                 });
-            }
-        });
 
-        filteredData = processedData;
-    }
+                const titleEl = tempDiv.querySelector('.concept-title');
+                const titleHtml = titleEl ? titleEl.outerHTML : '';
+                const pTags = tempDiv.querySelectorAll('p');
 
-    if (filteredData.length === 0) {
-        container.innerHTML = `<div style="text-align: center; color: #7f8c8d; padding: 20px;">현재 서브탭에 검색 결과가 없습니다.</div>`;
-        return;
-    }
+                let matchedParagraphs = [];
+                pTags.forEach(p => {
+                    const pText = p.textContent.toLowerCase().replace(/\s+/g, '');
+                    if (pText.includes(keyword)) {
+                        matchedParagraphs.push(p.outerHTML);
+                    }
+                });
 
-    filteredData.forEach((item) => {
-        const itemBox = document.createElement('div');
-        itemBox.style.cssText = `margin-bottom: 25px;`;
-        
-        itemBox.innerHTML = `
-            <div style="font-size: 16px; color: #ffffff; line-height: 2.2;">
-                ${item.content}
-            </div>
-        `;
-
-        container.appendChild(itemBox);
-    });
-
-    if (window.renderMathInElement) {
-        renderMathInElement(container, {
-            delimiters: [
-                {left: '$$', right: '$$', display: true},
-                {left: '$', right: '$', display: false}
-            ]
-        });
-    }
-}
-
-// 현재 선택된 과목 필터 상태 관리용 변수
-let currentCategory = 'all';
-
-// 서브 탭 클릭 시 필터링하고 렌더링하는 함수
-function filterFormulas(category, event) {
-    currentCategory = category;
-
-    document.querySelectorAll('.sub-tab-btn').forEach(btn => {
-        btn.style.backgroundColor = '#2c2c2c';
-        btn.style.color = '#b0b0b0';
-    });
-    if (event && event.currentTarget) {
-        event.currentTarget.style.backgroundColor = '#3498db';
-        event.currentTarget.style.color = 'white';
-    }
-
-    renderFormulaList();
-}
-
-// 요약 노트 형식으로 화면에 과목별 순서대로 렌더링하는 함수
-function renderFormulaList() {
-    const container = document.getElementById('formula-list-container');
-    if (!container) return;
-    container.innerHTML = '';
-
-    // 1. 과목별 필터링
-    let filteredData = currentCategory === 'all' 
-        ? [...originalFormulaData] 
-        : originalFormulaData.filter(item => item.category === currentCategory);
-
-    // ✨ [핵심] 현재 검색창에 검색어가 입력되어 있다면, 해당 과목 서브탭 내에서도 검색어(띄어쓰기 무시)로 필터링!
-    const searchInput = document.getElementById('searchInput');
-    const rawKeyword = searchInput ? searchInput.value.toLowerCase().trim() : '';
-    const keyword = rawKeyword.replace(/\s+/g, '');
-
-    if (keyword !== '') {
-        filteredData = filteredData.filter(item => {
-            const combinedText = (item.title + item.content).toLowerCase().replace(/\s+/g, '');
-            return combinedText.includes(keyword);
-        });
-    }
-
-    if (filteredData.length === 0) {
-        container.innerHTML = `<div style="text-align: center; color: #7f8c8d; padding: 20px;">해당 과목에 검색 결과가 없습니다.</div>`;
-        return;
-    }
-
-    // 2. 화면에 렌더링
-    filteredData.forEach((item, index) => {
-        const itemBox = document.createElement('div');
-        itemBox.style.cssText = `
-            background-color: #1e1e1e;
-            border: 1px solid #333;
-            border-left: 4px solid #3498db;
-            border-radius: 6px;
-            padding: 18px 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        `;
-        
-        itemBox.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-size: 15px; color: #5dade2; font-weight: bold;">${index + 1}. ${item.title}</span>
-                <span style="font-size: 11px; background-color: #2b3e50; color: #85c1e9; padding: 2px 8px; border-radius: 4px;">${item.category}</span>
-            </div>
-            <div class="formula-text" style="font-size: 16px; color: #ffffff; line-height: 2.0; padding-left: 5px;">
-                ${item.content}
-            </div>
-        `;
-
-        container.appendChild(itemBox);
-    });
-
-    if (window.renderMathInElement) {
-        renderMathInElement(container, {
-            delimiters: [
-                {left: '$$', right: '$$', display: true},
-                {left: '$', right: '$', display: false}
-            ]
-        });
-    }
-}
-
-// 서브탭 영역 및 모든 탭 통합 실시간 검색 기능 함수 (띄어쓰기 무시)
-function filterContent() {
-    const rawKeyword = document.getElementById('searchInput').value.toLowerCase().trim();
-    const keyword = rawKeyword.replace(/\s+/g, '');
-    
-    if (keyword === '') {
-        if (typeof renderPedagogyList === 'function') renderPedagogyList();
-        document.querySelectorAll('#card-container > div, #edu-card-container > div, #formula-list-container > div').forEach(el => {
-            el.style.display = el.closest('#card-container, #edu-card-container') ? 'flex' : 'block';
-        });
-        document.querySelectorAll('.tab-content:not(#tab1):not(#tab-edumath):not(#tab-edu):not(#tab-math) p').forEach(p => {
-            p.style.display = 'block';
-        });
-        return;
-    }
-
-    // 탭1 현재 서브탭 내에서만 검색 (빈칸 정답 data-answer 포함 추출)
-    const pedagogyContainer = document.getElementById('pedagogy-list-container');
-    if (pedagogyContainer && document.getElementById('tab1').classList.contains('active')) {
-        pedagogyContainer.innerHTML = '';
-        let currentSubData = pedagogyData.filter(item => item.category === currentPedagogyCategory);
-        let processedData = [];
-
-        currentSubData.forEach(item => {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = item.content;
-            
-            // 빈칸(.blank) 요소가 있다면 텍스트를 실제 data-answer 값으로 치환하여 검색 대상 텍스트 생성
-            tempDiv.querySelectorAll('.blank').forEach(blank => {
-                const ans = blank.getAttribute('data-answer');
-                if (ans) blank.textContent = ans;
-            });
-
-            const titleEl = tempDiv.querySelector('.concept-title');
-            const titleHtml = titleEl ? titleEl.outerHTML : '';
-            const pTags = tempDiv.querySelectorAll('p');
-
-            let matchedParagraphs = [];
-            pTags.forEach(p => {
-                const cleanText = p.textContent.toLowerCase().replace(/\s+/g, '');
-                if (cleanText.includes(keyword)) {
-                    matchedParagraphs.push(p.outerHTML); // 원본 HTML 유지하여 출력
+                if (matchedParagraphs.length > 0) {
+                    processedData.push({
+                        title: item.title,
+                        content: titleHtml + matchedParagraphs.join('')
+                    });
                 }
             });
+            filteredData = processedData;
+        }
 
-            if (matchedParagraphs.length > 0) {
-                processedData.push({ content: titleHtml + matchedParagraphs.join('') });
-            }
+        if (filteredData.length === 0) {
+            container.innerHTML = `<div style="text-align: center; color: #7f8c8d; padding: 20px;">현재 서브탭에 검색 결과가 없습니다.</div>`;
+            return;
+        }
+
+        filteredData.forEach((item) => {
+            const itemBox = document.createElement('div');
+            itemBox.style.cssText = `margin-bottom: 25px;`;
+            itemBox.innerHTML = `<div style="font-size: 16px; color: #ffffff; line-height: 2.2;">${item.content}</div>`;
+            container.appendChild(itemBox);
         });
 
-        if (processedData.length > 0) {
-            processedData.forEach(item => {
-                const itemBox = document.createElement('div');
-                itemBox.style.cssText = `margin-bottom: 25px;`;
-                itemBox.innerHTML = `<div style="font-size: 16px; color: #ffffff; line-height: 2.2;">${item.content}</div>`;
-                pedagogyContainer.appendChild(itemBox);
+        if (window.renderMathInElement) {
+            renderMathInElement(container, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
             });
-            if (window.renderMathInElement) {
-                renderMathInElement(pedagogyContainer, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });
-            }
-        } else {
-            pedagogyContainer.innerHTML = `<div style="text-align: center; color: #7f8c8d; padding: 20px;">현재 서브탭에 검색 결과가 없습니다.</div>`;
         }
     }
 
-    // 나머지 카드/리스트/성취기준 탭 검색 처리 (빈칸 정답 data-answer 포함)
-    document.querySelectorAll('#card-container > div, #edu-card-container > div, #formula-list-container > div').forEach(item => {
-        // 복사본을 만들어 blank 요소의 텍스트를 data-answer로 교체 후 텍스트 추출
-        const clone = item.cloneNode(true);
-        clone.querySelectorAll('.blank').forEach(b => {
-            const ans = b.getAttribute('data-answer');
-            if (ans) b.textContent = ans;
-        });
-        const text = clone.textContent.toLowerCase().replace(/\s+/g, '');
-        item.style.display = text.includes(keyword) ? (item.closest('#card-container, #edu-card-container') ? 'flex' : 'block') : 'none';
-    });
+    let currentCategory = 'all';
 
-    document.querySelectorAll('.tab-content:not(#tab1):not(#tab-edumath):not(#tab-edu):not(#tab-math) p').forEach(p => {
-        const clone = p.cloneNode(true);
-        clone.querySelectorAll('.blank').forEach(b => {
-            const ans = b.getAttribute('data-answer');
-            if (ans) b.textContent = ans;
+    function filterFormulas(category, event) {
+        currentCategory = category;
+        document.querySelectorAll('.sub-tab-btn').forEach(btn => {
+            btn.style.backgroundColor = '#2c2c2c';
+            btn.style.color = '#b0b0b0';
         });
-        const text = clone.textContent.toLowerCase().replace(/\s+/g, '');
-        p.style.display = text.includes(keyword) ? 'block' : 'none';
-    });
-}
+        if (event && event.currentTarget) {
+            event.currentTarget.style.backgroundColor = '#3498db';
+            event.currentTarget.style.color = 'white';
+        }
+        renderFormulaList();
+    }
+
+    function renderFormulaList() {
+        const container = document.getElementById('formula-list-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        let filteredData = currentCategory === 'all' 
+            ? [...window.originalFormulaData] 
+            : window.originalFormulaData.filter(item => item.category === currentCategory);
+
+        const searchInput = document.getElementById('searchInput');
+        const rawKeyword = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        const keyword = rawKeyword.replace(/\s+/g, '');
+
+        if (keyword !== '') {
+            filteredData = filteredData.filter(item => {
+                const combinedText = (item.title + item.content).toLowerCase().replace(/\s+/g, '');
+                return combinedText.includes(keyword);
+            });
+        }
+
+        if (filteredData.length === 0) {
+            container.innerHTML = `<div style="text-align: center; color: #7f8c8d; padding: 20px;">해당 과목에 검색 결과가 없습니다.</div>`;
+            return;
+        }
+
+        filteredData.forEach((item, index) => {
+            const itemBox = document.createElement('div');
+            itemBox.style.cssText = `
+                background-color: #1e1e1e;
+                border: 1px solid #333;
+                border-left: 4px solid #3498db;
+                border-radius: 6px;
+                padding: 18px 20px;
+                margin-bottom: 15px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            `;
+            
+            itemBox.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 15px; color: #5dade2; font-weight: bold;">${index + 1}. ${item.title}</span>
+                    <span style="font-size: 11px; background-color: #2b3e50; color: #85c1e9; padding: 2px 8px; border-radius: 4px;">${item.category}</span>
+                </div>
+                <div class="formula-text" style="font-size: 16px; color: #ffffff; line-height: 2.0; padding-left: 5px;">
+                    ${item.content}
+                </div>
+            `;
+            container.appendChild(itemBox);
+        });
+
+        if (window.renderMathInElement) {
+            renderMathInElement(container, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
+            });
+        }
+    }
+
+    function filterContent() {
+        const rawKeyword = document.getElementById('searchInput').value.toLowerCase().trim();
+        const keyword = rawKeyword.replace(/\s+/g, '');
+        renderCards();
+        renderEduCards();
+        if (keyword === '') {
+            if (typeof renderPedagogyList === 'function') renderPedagogyList();
+            document.querySelectorAll('#card-container > div, #edu-card-container > div, #formula-list-container > div').forEach(el => {
+                el.style.display = el.closest('#card-container, #edu-card-container') ? 'flex' : 'block';
+            });
+            document.querySelectorAll('.tab-content:not(#tab1):not(#tab-edumath):not(#tab-edu):not(#tab-math) p').forEach(p => {
+                p.style.display = 'block';
+            });
+            return;
+        }
+
+        const pedagogyContainer = document.getElementById('pedagogy-list-container');
+        if (pedagogyContainer && document.getElementById('tab1').classList.contains('active')) {
+            pedagogyContainer.innerHTML = '';
+            let currentSubData = window.pedagogyData.filter(item => item.category === currentPedagogyCategory);
+            let processedData = [];
+
+            currentSubData.forEach(item => {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = item.content;
+                tempDiv.querySelectorAll('.blank').forEach(blank => {
+                    const ans = blank.getAttribute('data-answer');
+                    if (ans) blank.textContent = ans;
+                });
+
+                const titleEl = tempDiv.querySelector('.concept-title');
+                const titleHtml = titleEl ? titleEl.outerHTML : '';
+                const pTags = tempDiv.querySelectorAll('p');
+
+                let matchedParagraphs = [];
+                pTags.forEach(p => {
+                    const cleanText = p.textContent.toLowerCase().replace(/\s+/g, '');
+                    if (cleanText.includes(keyword)) {
+                        matchedParagraphs.push(p.outerHTML);
+                    }
+                });
+
+                if (matchedParagraphs.length > 0) {
+                    processedData.push({ content: titleHtml + matchedParagraphs.join('') });
+                }
+            });
+
+            if (processedData.length > 0) {
+                processedData.forEach(item => {
+                    const itemBox = document.createElement('div');
+                    itemBox.style.cssText = `margin-bottom: 25px;`;
+                    itemBox.innerHTML = `<div style="font-size: 16px; color: #ffffff; line-height: 2.2;">${item.content}</div>`;
+                    pedagogyContainer.appendChild(itemBox);
+                });
+                if (window.renderMathInElement) {
+                    renderMathInElement(pedagogyContainer, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });
+                }
+            } else {
+                pedagogyContainer.innerHTML = `<div style="text-align: center; color: #7f8c8d; padding: 20px;">현재 서브탭에 검색 결과가 없습니다.</div>`;
+            }
+        }
+
+        document.querySelectorAll('#card-container > div, #edu-card-container > div, #formula-list-container > div').forEach(item => {
+            const clone = item.cloneNode(true);
+            clone.querySelectorAll('.blank').forEach(b => {
+                const ans = b.getAttribute('data-answer');
+                if (ans) b.textContent = ans;
+            });
+            const text = clone.textContent.toLowerCase().replace(/\s+/g, '');
+            item.style.display = text.includes(keyword) ? (item.closest('#card-container, #edu-card-container') ? 'flex' : 'block') : 'none';
+        });
+
+        document.querySelectorAll('.tab-content:not(#tab1):not(#tab-edumath):not(#tab-edu):not(#tab-math) p').forEach(p => {
+            const clone = p.cloneNode(true);
+            clone.querySelectorAll('.blank').forEach(b => {
+                const ans = b.getAttribute('data-answer');
+                if (ans) b.textContent = ans;
+            });
+            const text = clone.textContent.toLowerCase().replace(/\s+/g, '');
+            p.style.display = text.includes(keyword) ? 'block' : 'none';
+        });
+    }
+    // 숨김 상태 관리 (새로고침 시 자동 초기화)
+    let hiddenCards = new Set();
+    let hiddenEduCards = new Set();
+
+    // 카드 인터랙션(모바일 스와이프 + PC X버튼) 설정 함수
+    function setupCardInteractions(cardElement, origIndex, hiddenSet, renderCallback, isHidden = false) {
+        cardElement.classList.add('swipeable-card');
+
+        // PC용 우측 상단 버튼 (일반 카드: '×' 숨기기 / 숨긴 카드: '↩️' 숨기기 취소)
+        const actionBtn = document.createElement('button');
+        actionBtn.innerHTML = isHidden ? '↩️' : '×';
+        actionBtn.title = isHidden ? '숨기기 취소' : '숨기기';
+        actionBtn.style.cssText = `
+            position: absolute; 
+            top: 8px; 
+            right: 8px; 
+            background: transparent; 
+            border: none; 
+            color: ${isHidden ? '#f39c12' : '#7f8c8d'}; 
+            font-size: ${isHidden ? '14px' : '18px'}; 
+            font-weight: bold; 
+            cursor: pointer; 
+            width: 24px; 
+            height: 24px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 4px; 
+            z-index: 10;
+        `;
+
+        actionBtn.onclick = (e) => {
+            e.stopPropagation();
+            if (isHidden) {
+                // 숨기기 취소 동작
+                hiddenSet.delete(origIndex);
+            } else {
+                // 숨기기 동작
+                hiddenSet.add(origIndex);
+                cardElement.classList.add('swiped-out');
+            }
+            setTimeout(() => renderCallback(), 300);
+        };
+        cardElement.appendChild(actionBtn);
+
+        // 모바일 터치 스와이프 (일반 카드일 때만 우측으로 밀어서 숨기기 가능)
+        if (!isHidden) {
+            let startX = 0;
+            let currentX = 0;
+            let isDragging = false;
+
+            cardElement.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            }, {passive: true});
+
+            cardElement.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                currentX = e.touches[0].clientX;
+                let diff = currentX - startX;
+                if (diff > 0) {
+                    cardElement.style.transform = `translateX(${diff}px)`;
+                }
+            }, {passive: true});
+
+            cardElement.addEventListener('touchend', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                let diff = currentX - startX;
+                if (diff > 100) {
+                    hiddenSet.add(origIndex);
+                    cardElement.classList.add('swiped-out');
+                    setTimeout(() => renderCallback(), 300);
+                } else {
+                    cardElement.style.transform = 'translateX(0px)';
+                }
+                startX = 0;
+                currentX = 0;
+            });
+        }
+    }
 </script>
 
 </body>

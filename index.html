@@ -887,31 +887,51 @@ function renderCards() {
         // 모바일 터치 스와이프
         if (!isHidden) {
             let startX = 0;
+            let startY = 0;
             let currentX = 0;
+            let currentY = 0;
             let isDragging = false;
+            let isHorizontalSwipe = false;
 
             cardElement.addEventListener('touchstart', (e) => {
                 startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
                 currentX = startX;
+                currentY = startY;
                 isDragging = true;
+                isHorizontalSwipe = false;
             }, {passive: true});
 
             cardElement.addEventListener('touchmove', (e) => {
                 if (!isDragging) return;
                 currentX = e.touches[0].clientX;
-                let diff = currentX - startX;
-                if (diff < 0) {
-                    cardElement.style.transform = `translateX(${diff}px)`;
+                currentY = e.touches[0].clientY;
+                let diffX = currentX - startX;
+                let diffY = currentY - startY;
+
+                // 터치 직후 수평으로 움직이는지 수직(스크롤)으로 움직이는지 판단
+                if (!isHorizontalSwipe && (Math.abs(diffX) > 10 || Math.abs(diffY) > 10)) {
+                    if (Math.abs(diffX) > Math.abs(diffY)) {
+                        isHorizontalSwipe = true; // 가로 방향 움직임이 더 크면 스와이프로 인정
+                    } else {
+                        isDragging = false; // 세로 스크롤이면 드래그 취소
+                        return;
+                    }
+                }
+
+                // 가로 스와이프일 때, 오직 왼쪽으로 밀 때(diffX < 0)만 카드가 따라오도록 함
+                if (isHorizontalSwipe && diffX < 0) {
+                    cardElement.style.transform = `translateX(${diffX}px)`;
                 }
             }, {passive: true});
 
             cardElement.addEventListener('touchend', () => {
                 if (!isDragging) return;
                 isDragging = false;
-                let diff = currentX - startX;
+                let diffX = currentX - startX;
                 
-                if (diff < -80) {
-                    // ✨ [추가] 스와이프 시에도 열려 있던 정답 상태 기억
+                // ✨ 민감도 조정: 왼쪽으로 100픽셀 이상 확실하게 밀었을 때만 숨김 처리 실행
+                if (isHorizontalSwipe && diffX < -100) {
                     const openedOriginalIndices = [];
                     document.querySelectorAll('#card-container > div').forEach(card => {
                         const ans = card.querySelector('.card-answer');
@@ -938,7 +958,10 @@ function renderCards() {
                     cardElement.style.transform = 'translateX(0px)';
                 }
                 startX = 0;
+                startY = 0;
                 currentX = 0;
+                currentY = 0;
+                isHorizontalSwipe = false;
             });
         }
     }

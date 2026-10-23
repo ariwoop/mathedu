@@ -216,7 +216,8 @@
         <div class="concept-title">📚 교육학 핵심 키워드 암기 카드</div>
         <div style="text-align: center; margin-bottom: 20px;">
             <button onclick="shuffleEduCards()" style="background-color: #3498db; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-right: 10px;">🔀 랜덤 섞기</button>
-            <button onclick="resetEduCards()" style="background-color: #555; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;">🔄 기본 정렬</button>
+            <button onclick="resetEduCards()" style="background-color: #555; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-right: 10px;">🔄 기본 정렬</button>
+            <button id="toggleEduHiddenBtn" onclick="toggleShowHiddenEduCards()" style="background-color: #2c2c2c; color: #b0b0b0; border: 1px solid #444; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.2s;">👓 숨김 (OFF)</button>
         </div>
         <div id="edu-card-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;"></div>
     </div>
@@ -241,7 +242,6 @@
     </div>
 </div>
 
-<!-- 데이터 파일들을 먼저 로드합니다 -->
 <script src="mathedu-data.js"></script>
 <script src="edu-data.js"></script>
 <script src="content-data.js"></script>
@@ -266,23 +266,19 @@
             btn.style.borderColor = '#444';
             btn.textContent = '👓 숨김 (OFF)';
         }
-        
-        // 열려 있던 정답 상태 기억
         const openedAnswers = [];
         document.querySelectorAll('#card-container > div').forEach((card, idx) => {
-            const ansDiv = card.querySelector('.card-answer');
+            const ansDiv = card.querySelector('.card-answer, .edu-card-answer');
             if (ansDiv && ansDiv.style.display === 'block') {
                 openedAnswers.push(card.getAttribute('data-original-index'));
             }
         });
 
         renderCards();
-
-        // 렌더링 직후 정답 상태 복원
         document.querySelectorAll('#card-container > div').forEach(card => {
             const origIdx = card.getAttribute('data-original-index');
             if (origIdx !== null && openedAnswers.includes(origIdx)) {
-                const ansDiv = card.querySelector('.card-answer');
+                const ansDiv = card.querySelector('.card-answer, .edu-card-answer');
                 if (ansDiv) ansDiv.style.display = 'block';
             }
         });
@@ -400,11 +396,9 @@
 function renderCards() {
         const container = document.getElementById('card-container');
         if (!container) return;
-
-        // ✨ 1. 카드를 다시 그리기 전에, 현재 열려 있는 정답들의 '고유 번호'를 미리 수집해 둡니다.
         const openedOriginalIndices = [];
         document.querySelectorAll('#card-container > div').forEach(card => {
-            const ansDiv = card.querySelector('.card-answer');
+            const ansDiv = card.querySelector('.card-answer, .edu-card-answer');
             const origIdx = card.getAttribute('data-original-index');
             if (ansDiv && ansDiv.style.display === 'block' && origIdx !== null) {
                 openedOriginalIndices.push(parseInt(origIdx, 10));
@@ -416,7 +410,6 @@ function renderCards() {
         const searchInput = document.getElementById('searchInput');
         const searchKeyword = searchInput ? searchInput.value.toLowerCase().trim().replace(/\s+/g, '') : '';
 
-        // 숨김 조건에 맞는 카드들 필터링
         let visibleCards = cardsData.filter((item) => {
             const origIndex = originalCardsData.indexOf(item);
             const isHidden = hiddenCards.has(origIndex);
@@ -433,13 +426,11 @@ function renderCards() {
             return;
         }
 
-        // ✨ 2. visibleCards를 순회하면서 화면에 보여지는 순서대로 Q1, Q2, Q3... 번호 부여
         visibleCards.forEach((item, index) => {
             const origIndex = originalCardsData.indexOf(item);
             const isHidden = hiddenCards.has(origIndex);
 
             const card = document.createElement('div');
-            // 정답 상태 유지를 위해 고유 인덱스는 속성으로 심어둠
             card.setAttribute('data-original-index', origIndex);
             
             card.style.cssText = `
@@ -457,7 +448,6 @@ function renderCards() {
                 position: relative;
             `;
             
-            // ✨ 핵심: 번호는 현재 화면 순서인 index + 1을 사용합니다.
             card.innerHTML = `
                 <div style="font-size: 13px; color: #85c1e9; margin-bottom: 8px; font-weight: bold;">
                     Q${index + 1}. ${isHidden ? '<span style="color:#f39c12; font-size:11px;">(숨김)</span>' : ''}
@@ -469,9 +459,7 @@ function renderCards() {
                 <div style="font-size: 11px; color: #7f8c8d; text-align: center; margin-top: 8px;">클릭하여 정답 확인</div>
             `;
 
-            const ansDiv = card.querySelector('.card-answer');
-
-            // ✨ 3. 아까 수집한 고유 번호 목록에 해당하면 정답 창을 다시 열어줌 (닫힘 방지)
+            const ansDiv = card.querySelector('.card-answer, .edu-card-answer');
             if (openedOriginalIndices.includes(origIndex)) {
                 ansDiv.style.display = 'block';
             }
@@ -490,7 +478,6 @@ function renderCards() {
         });
     }
 
-    // ✨ [추가] 특정 카드의 숨기기를 취소하고 원래 상태로 되돌리는 함수
     function cancelHideCard(origIndex) {
         hiddenCards.delete(origIndex);
         renderCards();
@@ -522,16 +509,50 @@ function renderCards() {
         renderCards();
     }
 
-    function renderEduCards() {
+function renderEduCards() {
         const container = document.getElementById('edu-card-container');
         if (!container) return;
+        const openedOriginalIndices = [];
+        document.querySelectorAll('#edu-card-container > div').forEach(card => {
+            const ansDiv = card.querySelector('.edu-card-answer, .edu-card-answer');
+            const origIdx = card.getAttribute('data-original-index');
+            if (ansDiv && ansDiv.style.display === 'block' && origIdx !== null) {
+                openedOriginalIndices.push(parseInt(origIdx, 10));
+            }
+        });
+
         container.innerHTML = '';
 
-        eduCardsData.forEach((item, index) => {
+        const searchInput = document.getElementById('searchInput');
+        const searchKeyword = searchInput ? searchInput.value.toLowerCase().trim().replace(/\s+/g, '') : '';
+
+        // 숨김 및 검색 조건에 맞는 교육학 카드 필터링
+        let visibleCards = eduCardsData.filter((item) => {
+            const origIndex = originalEduCardsData.indexOf(item);
+            const isHidden = hiddenEduCards.has(origIndex);
+            const cardText = (item.q + item.a).toLowerCase().replace(/\s+/g, '');
+            const isMatch = searchKeyword === '' || cardText.includes(searchKeyword);
+
+            if (isHidden && searchKeyword === '' && !showHiddenEduMode) return false;
+            if (!isMatch) return false;
+            return true;
+        });
+
+        if (visibleCards.length === 0) {
+            container.innerHTML = `<div style="text-align: center; color: #7f8c8d; padding: 20px; grid-column: 1 / -1;">조건에 맞는 카드가 없습니다!</div>`;
+            return;
+        }
+
+        visibleCards.forEach((item, index) => {
+            const origIndex = originalEduCardsData.indexOf(item);
+            const isHidden = hiddenEduCards.has(origIndex);
+
             const card = document.createElement('div');
+            card.setAttribute('data-original-index', origIndex);
+            
             card.style.cssText = `
                 background-color: #252525;
-                border: 1px solid #333;
+                border: ${isHidden ? '1.5px dashed #f39c12' : '1px solid #333'};
                 border-radius: 8px;
                 padding: 20px;
                 cursor: pointer;
@@ -541,10 +562,13 @@ function renderCards() {
                 flex-direction: column;
                 justify-content: space-between;
                 min-height: 120px;
+                position: relative;
             `;
             
             card.innerHTML = `
-                <div style="font-size: 13px; color: #85c1e9; margin-bottom: 8px; font-weight: bold;">Q${index + 1}.</div>
+                <div style="font-size: 13px; color: #85c1e9; margin-bottom: 8px; font-weight: bold;">
+                    Q${index + 1}. ${isHidden ? '<span style="color:#f39c12; font-size:11px;">(숨김)</span>' : ''}
+                </div>
                 <div style="font-size: 15px; color: #ffffff; font-weight: bold; margin-bottom: 12px; text-align: center;">${item.q}</div>
                 <div class="edu-card-answer" style="font-size: 14px; color: #f39c12; background-color: #1a1a1a; padding: 10px; border-radius: 4px; text-align: center; display: none; border: 1px dashed #d4ac0d; white-space: pre-line;">
                     💡 ${item.a}
@@ -552,30 +576,49 @@ function renderCards() {
                 <div style="font-size: 11px; color: #7f8c8d; text-align: center; margin-top: 8px;">클릭하여 정답 확인</div>
             `;
 
+            const ansDiv = card.querySelector('.edu-card-answer, .edu-card-answer');
+
+            if (openedOriginalIndices.includes(origIndex)) {
+                ansDiv.style.display = 'block';
+            }
+
             card.addEventListener('click', () => {
-                const ansDiv = card.querySelector('.edu-card-answer');
-                if (ansDiv.style.display === 'none') {
+                if (ansDiv.style.display === 'none' || ansDiv.style.display === '') {
                     ansDiv.style.display = 'block';
-                    card.style.borderColor = '#d4ac0d';
                 } else {
                     ansDiv.style.display = 'none';
-                    card.style.borderColor = '#333';
                 }
             });
+
+            // 수교론과 공용으로 쓰는 스와이프 및 숨기기 인터랙션 함수 연결
+            setupCardInteractions(card, origIndex, hiddenEduCards, renderEduCards, isHidden);
 
             container.appendChild(card);
         });
     }
 
     function shuffleEduCards() {
-        for (let i = eduCardsData.length - 1; i > 0; i--) {
+        let available = eduCardsData.filter(item => !hiddenEduCards.has(originalEduCardsData.indexOf(item)));
+        let hidden = eduCardsData.filter(item => hiddenEduCards.has(originalEduCardsData.indexOf(item)));
+
+        for (let i = available.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [eduCardsData[i], eduCardsData[j]] = [eduCardsData[j], eduCardsData[i]];
+            [available[i], available[j]] = [available[j], available[i]];
         }
+        eduCardsData = [...available, ...hidden];
         renderEduCards();
     }
 
     function resetEduCards() {
+        hiddenEduCards.clear();
+        showHiddenEduMode = false;
+        const btn = document.getElementById('toggleEduHiddenBtn');
+        if (btn) {
+            btn.style.backgroundColor = '#2c2c2c';
+            btn.style.color = '#b0b0b0';
+            btn.style.borderColor = '#444';
+            btn.textContent = '👓 숨김 (OFF)';
+        }
         eduCardsData = [...window.originalEduCardsData];
         renderEduCards();
     }
@@ -819,9 +862,43 @@ function renderCards() {
             p.style.display = text.includes(keyword) ? 'block' : 'none';
         });
     }
-    // 숨김 상태 관리 (새로고침 시 자동 초기화)
+
     let hiddenCards = new Set();
+    let showHiddenEduMode = false;
     let hiddenEduCards = new Set();
+
+    function toggleShowHiddenEduCards() {
+        showHiddenEduMode = !showHiddenEduMode;
+        const btn = document.getElementById('toggleEduHiddenBtn');
+        if (showHiddenEduMode) {
+            btn.style.backgroundColor = '#3498db';
+            btn.style.color = 'white';
+            btn.style.borderColor = '#3498db';
+            btn.textContent = '👓 숨김 (ON)';
+        } else {
+            btn.style.backgroundColor = '#2c2c2c';
+            btn.style.color = '#b0b0b0';
+            btn.style.borderColor = '#444';
+            btn.textContent = '👓 숨김 (OFF)';
+        }
+        
+        const openedAnswers = [];
+        document.querySelectorAll('#edu-card-container > div').forEach((card) => {
+            const ansDiv = card.querySelector('.edu-card-answer, .edu-card-answer');
+            if (ansDiv && ansDiv.style.display === 'block') {
+                openedAnswers.push(card.getAttribute('data-original-index'));
+            }
+        });
+
+        renderEduCards();
+        document.querySelectorAll('#edu-card-container > div').forEach(card => {
+            const origIdx = card.getAttribute('data-original-index');
+            if (origIdx !== null && openedAnswers.includes(origIdx)) {
+                const ansDiv = card.querySelector('.edu-card-answer, .edu-card-answer');
+                if (ansDiv) ansDiv.style.display = 'block';
+            }
+        });
+    }
 
     // 카드 인터랙션(모바일 스와이프 + PC X버튼) 설정 함수
     function setupCardInteractions(cardElement, origIndex, hiddenSet, renderCallback, isHidden = false) {
@@ -851,11 +928,9 @@ function renderCards() {
 
         actionBtn.onclick = (e) => {
             e.stopPropagation();
-            
-            // ✨ [추가] 숨기기 버튼을 누르기 전 열려 있던 정답들의 고유 인덱스 수집
             const openedOriginalIndices = [];
             document.querySelectorAll('#card-container > div').forEach(card => {
-                const ans = card.querySelector('.card-answer');
+                const ans = card.querySelector('.card-answer, .edu-card-answer');
                 const origIdx = card.getAttribute('data-original-index');
                 if (ans && ans.style.display === 'block' && origIdx !== null) {
                     openedOriginalIndices.push(parseInt(origIdx, 10));
@@ -870,13 +945,11 @@ function renderCards() {
             }
             
             setTimeout(() => {
-                renderCallback(); // 카드 다시 그림
-                
-                // ✨ [추가] 새로 그려진 카드들 중 아까 열려 있던 카드들의 정답을 다시 열어줌
+                renderCallback();
                 document.querySelectorAll('#card-container > div').forEach(card => {
                     const origIdx = card.getAttribute('data-original-index');
                     if (origIdx !== null && openedOriginalIndices.includes(parseInt(origIdx, 10))) {
-                        const ans = card.querySelector('.card-answer');
+                        const ans = card.querySelector('.card-answer, .edu-card-answer');
                         if (ans) ans.style.display = 'block';
                     }
                 });
@@ -909,17 +982,15 @@ function renderCards() {
                 let diffX = currentX - startX;
                 let diffY = currentY - startY;
 
-                // 터치 직후 수평으로 움직이는지 수직(스크롤)으로 움직이는지 판단
                 if (!isHorizontalSwipe && (Math.abs(diffX) > 10 || Math.abs(diffY) > 10)) {
                     if (Math.abs(diffX) > Math.abs(diffY)) {
-                        isHorizontalSwipe = true; // 가로 방향 움직임이 더 크면 스와이프로 인정
+                        isHorizontalSwipe = true;
                     } else {
-                        isDragging = false; // 세로 스크롤이면 드래그 취소
+                        isDragging = false;
                         return;
                     }
                 }
 
-                // 가로 스와이프일 때, 오직 왼쪽으로 밀 때(diffX < 0)만 카드가 따라오도록 함
                 if (isHorizontalSwipe && diffX < 0) {
                     cardElement.style.transform = `translateX(${diffX}px)`;
                 }
@@ -930,11 +1001,10 @@ function renderCards() {
                 isDragging = false;
                 let diffX = currentX - startX;
                 
-                // ✨ 민감도 조정: 왼쪽으로 100픽셀 이상 확실하게 밀었을 때만 숨김 처리 실행
                 if (isHorizontalSwipe && diffX < -100) {
                     const openedOriginalIndices = [];
                     document.querySelectorAll('#card-container > div').forEach(card => {
-                        const ans = card.querySelector('.card-answer');
+                        const ans = card.querySelector('.card-answer, .edu-card-answer');
                         const origIdx = card.getAttribute('data-original-index');
                         if (ans && ans.style.display === 'block' && origIdx !== null) {
                             openedOriginalIndices.push(parseInt(origIdx, 10));
@@ -949,7 +1019,7 @@ function renderCards() {
                         document.querySelectorAll('#card-container > div').forEach(card => {
                             const origIdx = card.getAttribute('data-original-index');
                             if (origIdx !== null && openedOriginalIndices.includes(parseInt(origIdx, 10))) {
-                                const ans = card.querySelector('.card-answer');
+                                const ans = card.querySelector('.card-answer, .edu-card-answer');
                                 if (ans) ans.style.display = 'block';
                             }
                         });

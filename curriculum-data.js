@@ -292,7 +292,7 @@ window.tab6Data = `
         <p>② 성취기준 적용 시 고려사항: 통계적 확률과 수학적 확률의 관계를 이해하고 통계적 확률을 다룰 때 <span class="blank hidden" data-answer="충분히 많은 횟수의 시행">□□</span>을 구현하기 위하여 <span class="blank hidden" data-answer="공학 도구">□□</span>를 이용할 수 있다.</p>
 
         <p>&lt;모비율&gt;</p>
-        <p>① 성취기준 해설: [12확통03-06] 표본평균 및 표본비율은 추출한 표본에 따라 다른 값을 가질 수 있는 <span class="blank hidden" data-answer="확률 변수">□□</span>임을 알게 하고, 모평균 및 모비율의 추정에 관한 <span class="blank hidden" data-answer="수학적 원리">□□</span>를 이해하게 한다. 모평균 추정은 모집단의 분포가 <span class="blank hidden" data-answer="정규분포">□□</span>인 경우만 다루고, <span class="blank hidden" data-answer="모비율">모비율</span>의 추정은 표본의 크기가 <span class="blank hidden" data-answer="큰 경우만">□□</span> 다룬다.</p>
+        <p>① 성취기준 해설: [12확통03-06] 표본평균 및 표본비율은 추출한 표본에 따라 다른 값을 가질 수 있는 <span class="blank hidden" data-answer="확률 변수">□□</span>임을 알게 하고, 모평균 및 모비율의 추정에 관한 <span class="blank hidden" data-answer="수학적 원리">□□</span>를 이해하게 한다. 모평균 추정은 모집단의 분포가 <span class="blank hidden" data-answer="정규분포">□□</span>인 경우만 다루고, <span class="blank hidden" data-answer="모비율">□□</span>의 추정은 표본의 크기가 <span class="blank hidden" data-answer="큰 경우만">□□</span> 다룬다.</p>
         <p>② 성취기준 해설: [12확통03-07] <span class="blank hidden" data-answer="공학 도구를">□□</span> 이용하여 실생활 자료에서 모평균 또는 모비율을 추정하고, 그 결과를 해석하는 과정을 통해 <span class="blank hidden" data-answer="유용성을">□□</span> 인식할 수 있다.</p>
         <p>③ 성취기준 적용 시 고려사항: 모평균 및 모비율의 추정을 지도할 때, <span class="blank hidden" data-answer="복잡한 신뢰구간의 계산">□□</span>은 다루지 않는다.</p>
         <p>④ 성취기준 적용 시 고려사항: 모집단의 설정, 표본추출, 모평균 또는 모비율의 추정과 그 결과의 해석을 평가할 때는 <span class="blank hidden" data-answer="통계적 문제해결에">□□</span> 기반한 평가를 할 수 있다.</p>

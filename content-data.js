@@ -162,6 +162,12 @@ window.originalFormulaData = [
         content: "$\{x_n\}$ : 0이 아닌 실수열<br><div style='text-align: center; margin: 12px 0;'>$$\\lim_{n \\to \\infty} n \\left( 1 - \\left| \\frac{x_{n+1}}{x_n} \\right| \\right) = a$$</div>- $a > 1$ 일 때, $\\sum x_n$ 절대수렴<br>- $a < 1$ 일 때, $\\sum x_n$ 절대수렴하지 않음<br><div style='font-size: 13px; color: #e74c3c; margin-top: 6px;'>(⚠️ 다른 test와 반대임에 유의)</div>" 
     },
 
+    { 
+        category: "대수",
+        title: "현대대수학 - 갈루아 확대체", 
+        content: "- 유한, 분리 $\\implies$ 단순<br>- 분해체 $\\iff$ 유한, 정규<br>- 유한 $\\implies$ 대수적<br>- 표수0, 대수적 $\\implies$ 분리<br>- 유한, 정규, 분리 $\\iff$ 갈루아" 
+    },
+    
 
     { 
         category: "복소",

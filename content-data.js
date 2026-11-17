@@ -171,7 +171,7 @@ window.originalFormulaData = [
     { 
         category: "복소", 
         title: "복소함수론 - 극좌표계에서의 도함수", 
-        content: "$$f'(z) = e^{i\\theta}(u_r + iv_r)$$" 
+        content: "$$f'(z) = e^{-i\\theta}(u_r + iv_r)$$" 
     },
     { 
         category: "복소",

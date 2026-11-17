@@ -168,7 +168,11 @@ window.originalFormulaData = [
         content: "- 유한, 분리 $\\implies$ 단순<br>- 분해체 $\\iff$ 유한, 정규<br>- 유한 $\\implies$ 대수적<br>- 표수0, 대수적 $\\implies$ 분리<br>- 유한, 정규, 분리 $\\iff$ 갈루아" 
     },
     
-
+    { 
+        category: "복소", 
+        title: "복소함수론 - 극좌표계에서의 도함수", 
+        content: "$$f'(z) = e^{i\\theta}(u_r + iv_r)$$" 
+    },
     { 
         category: "복소",
         title: "복소함수론 - Laurent 전개", 

@@ -252,6 +252,19 @@
     let eduCardsData = [...originalEduCardsData];
     let showHiddenMode = false;
 
+    function getSessionHidden() {
+        let hidden = localStorage.getItem('sessionHiddenItems');
+        return hidden ? JSON.parse(hidden) : [];
+    }
+
+    function addSessionHidden(id) {
+        let hidden = getSessionHidden();
+        if (!hidden.includes(id)) {
+            hidden.push(id);
+            localStorage.setItem('sessionHiddenItems', JSON.stringify(hidden));
+        }
+    }
+    
     function toggleShowHiddenCards() {
         showHiddenMode = !showHiddenMode;
         const btn = document.getElementById('toggleHiddenBtn');
@@ -285,6 +298,10 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+        const navEntries = performance.getEntriesByType('navigation');
+        if (navEntries.length > 0 && navEntries[0].type === 'reload') {
+            localStorage.removeItem('sessionHiddenItems');
+        }
         const savedTab = localStorage.getItem('selectedTab');
         const savedScroll = localStorage.getItem('scrollPos');
 

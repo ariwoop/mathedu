@@ -103,16 +103,16 @@ window.tab3Data = `
         <p>⑤ 방정식과 부등식은 <span class="blank hidden" data-answer="여러 가지">□□</span> 방법으로 풀어 보면서 <span class="blank hidden" data-answer="더 나은">□□</span> 풀이 <span class="blank hidden" data-answer="방법">□□</span>으로 <span class="blank hidden" data-answer="해">□□</span>를 찾게 한다. 구한 <span class="blank hidden" data-answer="해">□□</span>가 문제 상황에 <span class="blank hidden" data-answer="적합">□□</span>한지 <span class="blank hidden" data-answer="확인">□□</span>하는 과정을 통해 <span class="blank hidden" data-answer="타당한">□□</span> <span class="blank hidden" data-answer="근거">□□</span>에 따라 자신의 의견을 <span class="blank hidden" data-answer="논리적으로">□□</span> <span class="blank hidden" data-answer="설명">□□</span>하는 태도를 갖게 한다.</p>
         <p>&lt;함수-변환 활동&gt;</p>
         <p style="font-weight: bold;">⑥ 다양한 상황을 <span class="blank hidden" data-answer="일상 언어">□□</span>, 표, <span class="blank hidden" data-answer="그래프">□□</span>, <span class="blank hidden" data-answer="식">□□</span>으로 나타내고 이들 사이의 <span class="blank hidden" data-answer="상호 변환">□□</span> 활동을 하게 한다.</p>
-        <p style="font-weight: bold;">&lt;함수 개념 도입&gt;</p>
-        <p>⑦ 함수의 개념은 <span class="blank hidden" data-answer="다양한">□□</span> 상황에서 <span class="blank hidden" data-answer="한 양이 변함에 따라 다른 양이 하나씩 정해지는 두 양 사이의 대응 관계">□□</span>를 이용하여 도입한다.</p>
+        <p>&lt;함수 개념 도입&gt;</p>
+        <p style="font-weight: bold;">⑦ 함수의 개념은 <span class="blank hidden" data-answer="다양한">□□</span> 상황에서 <span class="blank hidden" data-answer="한 양이 변함에 따라 다른 양이 하나씩 정해지는 두 양 사이의 대응 관계">□□</span>를 이용하여 도입한다.</p>
         <p>&lt;일차함수, 이차함수 지도&gt;</p>
         <p>⑧ <span class="blank hidden" data-answer="다양한 상황">□□</span>을 이용하여 일차함수와 이차함수의 의미를 다룬다.</p>
         <p>&lt;공학 도구 활용-함수의 그래프&gt;</p>
         <p>⑨ <span class="blank hidden" data-answer="공학 도구">□□</span>를 이용하여 함수의 <span class="blank hidden" data-answer="그래프">□□</span>를 그리거나 함수의 그래프의 <span class="blank hidden" data-answer="성질">□□</span>을 탐구하게 한다.</p>
         <p>&lt;이차방정식 관련&gt;</p>
         <p>⑩ 이차방정식은 <span class="blank hidden" data-answer="해가 실수">□□</span>인 경우만 다룬다. 이차방정식의 <span class="blank hidden" data-answer="근과 계수와의 관계">□□</span>는 다루지 않는다.</p>
-        <p style="font-weight: bold;">&lt;수학적 모델링, 생태전환&gt;</p>
-        <p>⑫ <span class="blank hidden" data-answer="실생활">□□</span>이나 <span class="blank hidden" data-answer="사회 및 자연">□□</span> 현상과 관련된 <span class="blank hidden" data-answer="문제">□□</span>를 해결할 때 <span class="blank hidden" data-answer="수학적 모델링">□□</span>을 <span class="blank hidden" data-answer="적용">□□</span>하고 <span class="blank hidden" data-answer="도전적으로">□□</span> 문제를 해결할 수 있게 한다. 이때, <span class="blank hidden" data-answer="환경 및 기후">□□</span> 변화 등과 관련된 다양한 문제 상황을 통해 <span class="blank hidden" data-answer="생태전환">□□</span>에 관심을 갖게 한다.</p>
+        <p>&lt;수학적 모델링, 생태전환&gt;</p>
+        <p style="font-weight: bold;">⑫ <span class="blank hidden" data-answer="실생활">□□</span>이나 <span class="blank hidden" data-answer="사회 및 자연">□□</span> 현상과 관련된 <span class="blank hidden" data-answer="문제">□□</span>를 해결할 때 <span class="blank hidden" data-answer="수학적 모델링">□□</span>을 <span class="blank hidden" data-answer="적용">□□</span>하고 <span class="blank hidden" data-answer="도전적으로">□□</span> 문제를 해결할 수 있게 한다. 이때, <span class="blank hidden" data-answer="환경 및 기후">□□</span> 변화 등과 관련된 다양한 문제 상황을 통해 <span class="blank hidden" data-answer="생태전환">□□</span>에 관심을 갖게 한다.</p>
         <p>&lt;방정식, 부등식, 함수 활용 관련&gt;</p>
         <p>⑬ 방정식, 부등식, 함수에 대한 지나치게 복잡한 활용 문제는 다루지 않는다</p>
         <p>⑭ '식의 값', '좌변', '우변', '양변', '이차식', '전개식', '연립일차방정식', '소거', '가감법', '대입법', '함수의 그래프' 용어는 교수·학습 상황에서 사용할 수 있다.</p>
